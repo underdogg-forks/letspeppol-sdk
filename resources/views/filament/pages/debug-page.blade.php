@@ -25,10 +25,12 @@
 
                 <div class="space-y-2">
                     <h2 class="fi-header text-xl font-semibold">Badges</h2>
-                    <span class="fi-badge fi-badge-primary">Primary</span>
-                    <span class="fi-badge fi-badge-success">Success</span>
-                    <span class="fi-badge fi-badge-warning">Warning</span>
-                    <span class="fi-badge fi-badge-danger">Danger</span>
+                    <div class="fi-badges-row">
+                        <span class="fi-badge fi-badge-primary">Primary</span>
+                        <span class="fi-badge fi-badge-success">Success</span>
+                        <span class="fi-badge fi-badge-warning">Warning</span>
+                        <span class="fi-badge fi-badge-danger">Danger</span>
+                    </div>
                 </div>
 
                 <div class="space-y-2">
@@ -93,7 +95,7 @@
                             <tr class="fi-table-row-odd">
                                 <td class="fi-table-cell">Alice</td>
                                 <td class="fi-table-cell">Admin</td>
-                                <td class="fi-table-cell"><span class="fi-badge fi-badge-success">Active</span></td>
+                                <td class="fi-table-cell"><span class="fi-badge fi-badge-active">Active</span></td>
                             </tr>
                             <tr class="fi-table-row-even">
                                 <td class="fi-table-cell">Bob</td>

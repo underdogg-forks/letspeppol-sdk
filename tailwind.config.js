@@ -7,6 +7,8 @@ module.exports = {
     ],
     safelist: [
         'fi-header',
+        'fi-header-bar',
+        'fi-page-title',
         'fi-main',
         'fi-main-text',
         'fi-btn',
@@ -15,10 +17,12 @@ module.exports = {
         'fi-btn-success',
         'fi-btn-danger',
         'fi-badge',
+        'fi-badges-row',
         'fi-badge-primary',
         'fi-badge-success',
         'fi-badge-warning',
         'fi-badge-danger',
+        'fi-badge-active',
         'fi-alert',
         'fi-alert-info',
         'fi-alert-success',
@@ -41,13 +45,15 @@ module.exports = {
         'fi-sidebar',
         'fi-sidebar-panel',
         'fi-topbar',
-        'fi-header-bar',
         'fi-user-menu',
         'fi-user-menu-panel',
-        'fi-page-title',
         // Patterns for nested/variant classes:
         { pattern: /fi-main-text/ }, // .fi-main-text, .fi-main-text ul li, etc.
-        { pattern: /fi-card/ }      // .fi-card, .fi-card .fi-header, etc.
+        { pattern: /fi-badge/ },     // .fi-badge, .fi-badge-success, etc.
+        { pattern: /fi-badges-row/ },
+        { pattern: /fi-table-header/ },
+        { pattern: /fi-card/ },      // .fi-card, .fi-card .fi-header, etc.
+        { pattern: /fi-header/ }    // .fi-header, h1.fi-header, etc.
     ],
     theme: {
         extend: {}

@@ -174,21 +174,75 @@
     background: var(--color-danger-700);
 }
 
-.fi-badge {
-    display: inline-block;
-    padding: 0.25rem 0.75rem;
-    border-radius: 9999px;
-    font-size: 0.75rem;
+/* Headings: Remove background, set high-contrast text color */
+.fi-header, .fi-header-bar, .fi-page-title, .fi-card .fi-header, h1.fi-header, h2.fi-header, h3.fi-header {
+    background: none !important;
+    color: var(--color-primary-900) !important;
+}
+
+.dark .fi-header, .dark .fi-header-bar, .dark .fi-page-title, .dark .fi-card .fi-header, .dark h1.fi-header, .dark h2.fi-header, .dark h3.fi-header {
+    background: none !important;
+    color: var(--color-snowstorm-600) !important;
+}
+
+/* Main text and form elements: High contrast */
+.fi-main-text, .fi-main-text p, .fi-main-text label, .fi-main-text input, .fi-main-text select {
+    color: var(--color-primary-900) !important;
+}
+
+.dark .fi-main-text, .dark .fi-main-text p, .dark .fi-main-text label, .dark .fi-main-text input, .dark .fi-main-text select {
+    color: var(--color-snowstorm-500) !important;
+}
+
+/* List items: Even more contrast */
+.fi-main-text ul li {
+    color: var(--color-primary-900) !important;
     font-weight: 600;
 }
 
-.fi-badge-primary {
-    background: var(--color-primary-200);
-    color: var(--color-primary-900);
+.dark .fi-main-text ul li {
+    color: var(--color-snowstorm-600) !important;
+    font-weight: 700;
 }
 
-.fi-badge-success {
-    background: var(--color-success-500);
+/* Table header: Ensure robust color */
+.fi-table-header {
+    background: var(--color-primary-200) !important;
+    color: var(--color-primary-900) !important;
+}
+
+.dark .fi-table-header {
+    background: var(--color-primary-900) !important;
+    color: var(--color-snowstorm-400) !important;
+}
+
+/* Badges: Ensure robust color and alignment */
+.fi-badges-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.fi-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    min-height: 2rem;
+    line-height: 1.5;
+}
+
+.fi-badge-primary {
+    background: var(--color-primary-500);
+    color: var(--color-snowstorm-600);
+    border: 1px solid var(--color-primary-700);
+}
+
+.fi-badge-success, .fi-badge-active {
+    background: var(--color-success-700);
     color: var(--color-snowstorm-600);
     border: 1px solid var(--color-success-900);
 }
@@ -202,6 +256,7 @@
 .fi-badge-danger {
     background: var(--color-danger-500);
     color: var(--color-snowstorm-600);
+    border: 1px solid var(--color-danger-700);
 }
 
 .fi-alert {
@@ -314,53 +369,35 @@
     color: var(--color-snowstorm-400);
 }
 
-/* --- List Item Contrast --- */
+/* --- List Items: Even More Contrast --- */
 .fi-main-text ul li {
-    color: var(--color-primary-800);
+    color: var(--color-primary-900);
+    font-weight: 500;
 }
 
 .dark .fi-main-text ul li {
-    color: var(--color-snowstorm-500);
-}
-
-/* --- General Text Contrast --- */
-.fi-main-text, .fi-main-text p, .fi-main-text label, .fi-main-text span, .fi-main-text select, .fi-main-text input {
-    color: var(--color-primary-900);
-}
-
-.dark .fi-main-text, .dark .fi-main-text p, .dark .fi-main-text label, .dark .fi-main-text span, .dark .fi-main-text select, .dark .fi-main-text input {
-    color: var(--color-snowstorm-500);
-}
-
-/* --- Form Labels and Inputs --- */
-.fi-input, .fi-main-text label, .fi-main-text select, .fi-main-text input[type="text"], .fi-main-text textarea {
-    color: var(--color-primary-900);
-}
-
-.dark .fi-input, .dark .fi-main-text label, .dark .fi-main-text select, .dark .fi-main-text input[type="text"], .dark .fi-main-text textarea {
-    color: var(--color-snowstorm-500);
-}
-
-/* --- Sidebar: More Contrast --- */
-.fi-sidebar, .fi-sidebar nav, .fi-sidebar-panel {
-    background: var(--color-primary-800) !important;
-    color: var(--color-snowstorm-600) !important;
-}
-
-.dark .fi-sidebar, .dark .fi-sidebar nav, .dark .fi-sidebar-panel {
-    background: var(--color-polarnight-950) !important;
-    color: var(--color-snowstorm-500) !important;
-}
-
-/* --- Main Page Title (Debug - TailwindCSS Test) --- */
-.fi-page-title, .fi-header-bar, .fi-header {
-    background: none !important;
-    color: var(--color-primary-900);
-}
-
-.dark .fi-page-title, .dark .fi-header-bar, .dark .fi-header {
-    background: none !important;
     color: var(--color-snowstorm-600);
+    font-weight: 600;
+}
+
+/* --- Badges: High Contrast and Flex Alignment --- */
+.fi-badges-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* --- Topbar: Distinct Nord Color --- */
+.fi-topbar, .fi-header-bar, .fi-header nav {
+    background: var(--color-frost-700) !important;
+    color: var(--color-snowstorm-600) !important;
+    border-bottom: 1px solid var(--color-frost-600) !important;
+}
+
+.dark .fi-topbar, .dark .fi-header-bar, .dark .fi-header nav {
+    background: var(--color-polarnight-700) !important;
+    color: var(--color-snowstorm-400) !important;
+    border-bottom: 1px solid var(--color-frost-400) !important;
 }
 
 /* --- End of ERP Nord Customizations --- */
