@@ -108,3 +108,235 @@
     --color-info-900: #4d6175;
     --color-info-950: #405162;
 }
+
+/* Filament Nord Theme Utility Classes */
+.fi-header {
+    color: var(--color-primary-700);
+    background: var(--color-snowstorm-600);
+}
+
+.fi-main {
+    background: var(--color-snowstorm-500);
+    color: var(--color-polarnight-900);
+}
+
+.dark .fi-main {
+    background: var(--color-polarnight-900) !important;
+    color: var(--color-snowstorm-400) !important;
+}
+
+.fi-main-text {
+    color: var(--color-polarnight-700);
+}
+
+.fi-btn {
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.fi-btn-primary {
+    background: var(--color-primary-500);
+    color: var(--color-snowstorm-600);
+}
+
+.fi-btn-primary:hover {
+    background: var(--color-primary-700);
+}
+
+.fi-btn-secondary {
+    background: var(--color-secondary-200);
+    color: var(--color-secondary-900);
+}
+
+.fi-btn-secondary:hover {
+    background: var(--color-secondary-400);
+}
+
+.fi-btn-success {
+    background: var(--color-success-700);
+    color: var(--color-snowstorm-600);
+}
+
+.fi-btn-success:hover {
+    background: var(--color-success-900);
+}
+
+.fi-btn-danger {
+    background: var(--color-danger-500);
+    color: var(--color-snowstorm-600);
+}
+
+.fi-btn-danger:hover {
+    background: var(--color-danger-700);
+}
+
+.fi-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.fi-badge-primary {
+    background: var(--color-primary-200);
+    color: var(--color-primary-900);
+}
+
+.fi-badge-success {
+    background: var(--color-success-500);
+    color: var(--color-snowstorm-600);
+    border: 1px solid var(--color-success-900);
+}
+
+.fi-badge-warning {
+    background: var(--color-warning-400);
+    color: var(--color-polarnight-900);
+    border: 1px solid var(--color-warning-900);
+}
+
+.fi-badge-danger {
+    background: var(--color-danger-500);
+    color: var(--color-snowstorm-600);
+}
+
+.fi-alert {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.fi-alert-info {
+    background: var(--color-info-100);
+    color: var(--color-info-700);
+    border-left: 4px solid var(--color-info-500);
+}
+
+.fi-alert-success {
+    background: var(--color-success-100);
+    color: var(--color-success-900);
+    border-left: 4px solid var(--color-success-700);
+}
+
+.fi-alert-warning {
+    background: var(--color-warning-100);
+    color: var(--color-warning-900);
+    border-left: 4px solid var(--color-warning-700);
+}
+
+.fi-alert-danger {
+    background: var(--color-danger-100);
+    color: var(--color-danger-900);
+    border-left: 4px solid var(--color-danger-700);
+}
+
+.fi-input {
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 0.375rem;
+    border: 1px solid var(--color-primary-200);
+    background: var(--color-snowstorm-500);
+    color: var(--color-polarnight-900);
+    font-size: 1rem;
+}
+
+.fi-checkbox, .fi-radio {
+    accent-color: var(--color-primary-500);
+}
+
+.fi-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--color-snowstorm-600);
+}
+
+.fi-table-header {
+    background: var(--color-snowstorm-400);
+    color: var(--color-polarnight-900);
+    font-weight: 700;
+    padding: 0.75rem 1rem;
+    border-bottom: 2px solid var(--color-polarnight-200);
+}
+
+.fi-table-cell {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--color-polarnight-100);
+}
+
+/* --- Table Alternating Row Colors --- */
+.fi-table-row-odd {
+    background: var(--color-snowstorm-500);
+}
+
+.fi-table-row-even {
+    background: var(--color-snowstorm-400);
+}
+
+.dark .fi-table-row-odd {
+    background: var(--color-polarnight-700);
+}
+
+.dark .fi-table-row-even {
+    background: var(--color-polarnight-800);
+}
+
+/* --- Card Colors --- */
+.fi-card {
+    background: var(--color-snowstorm-600);
+    color: var(--color-polarnight-900);
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 8px 0 rgba(44, 62, 80, 0.08);
+    padding: 1.5rem;
+}
+
+.dark .fi-card {
+    background: var(--color-polarnight-700);
+    color: var(--color-snowstorm-400);
+}
+
+/* --- List Item Contrast --- */
+.fi-main-text ul li {
+    color: var(--color-polarnight-600);
+}
+
+.dark .fi-main-text ul li {
+    color: var(--color-snowstorm-500);
+}
+
+/* --- Filament Sidebar, Topbar, User Menu --- */
+.fi-sidebar, .fi-sidebar nav, .fi-sidebar-panel {
+    background: var(--color-snowstorm-600) !important;
+    color: var(--color-polarnight-900) !important;
+}
+
+.dark .fi-sidebar, .dark .fi-sidebar nav, .dark .fi-sidebar-panel {
+    background: var(--color-polarnight-900) !important;
+    color: var(--color-snowstorm-400) !important;
+}
+
+.fi-topbar, .fi-header nav, .fi-header-bar {
+    background: var(--color-snowstorm-500) !important;
+    color: var(--color-polarnight-900) !important;
+}
+
+.dark .fi-topbar, .dark .fi-header nav, .dark .fi-header-bar {
+    background: var(--color-polarnight-800) !important;
+    color: var(--color-snowstorm-400) !important;
+}
+
+.fi-user-menu, .fi-user-menu-panel {
+    background: var(--color-snowstorm-600) !important;
+    color: var(--color-polarnight-900) !important;
+}
+
+.dark .fi-user-menu, .dark .fi-user-menu-panel {
+    background: var(--color-polarnight-800) !important;
+    color: var(--color-snowstorm-400) !important;
+}
+
+/* --- End of ERP Nord Customizations --- */
