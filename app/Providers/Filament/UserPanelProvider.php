@@ -28,6 +28,7 @@ class UserPanelProvider extends PanelProvider
         return $panel
             ->id('user')
             ->path('user')
+            ->viteTheme('resources/css/theme/nord/nord.css')
             ->login()
             ->colors([
                 'primary' => Color::Orange,

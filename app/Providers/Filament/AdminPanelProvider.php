@@ -29,6 +29,7 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
+            ->viteTheme('resources/css/theme/nord/nord.css')
             ->login()
             ->colors([
                 'primary' => Color::Slate,

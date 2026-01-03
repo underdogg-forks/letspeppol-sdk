@@ -28,6 +28,7 @@ class CompanyPanelProvider extends PanelProvider
         return $panel
             ->id('company')
             ->path('company')
+            ->viteTheme('resources/css/theme/nord/nord.css')
             ->login()
             ->colors([
                 'primary' => Color::Sky,
