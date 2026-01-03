@@ -26,8 +26,9 @@ class CompanyPanelProvider extends PanelProvider
         return $panel
             ->id('company')
             ->path('company')
+            ->login()
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::Sky,
             ])
             ->discoverResources(in: app_path('Filament/Company/Resources'), for: 'App\Filament\Company\Resources')
             ->discoverPages(in: app_path('Filament/Company/Pages'), for: 'App\Filament\Company\Pages')

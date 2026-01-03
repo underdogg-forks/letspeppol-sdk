@@ -1,2 +1,79 @@
 parameters:
-	ignoreErrors: []
+	ignoreErrors:
+		-
+			message: '#^Access to an undefined property Illuminate\\Http\\Request\:\:\$password\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Auth/ConfirmationController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Auth\\ConfirmationController\:\:create\(\) should return Illuminate\\View\\View but returns Illuminate\\Contracts\\View\\View\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Http/Controllers/Auth/ConfirmationController.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Contracts\\Auth\\Guard\:\:logout\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Http/Controllers/Auth/LoginController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Auth\\LoginController\:\:create\(\) should return Illuminate\\View\\View but returns Illuminate\\Contracts\\View\\View\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Http/Controllers/Auth/LoginController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Http\\Request\:\:\$password\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Auth/NewPasswordController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Auth\\NewPasswordController\:\:create\(\) should return Illuminate\\View\\View but returns Illuminate\\Contracts\\View\\View\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Http/Controllers/Auth/NewPasswordController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Auth\\PasswordResetLinkController\:\:create\(\) should return Illuminate\\View\\View but returns Illuminate\\Contracts\\View\\View\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Http/Controllers/Auth/PasswordResetLinkController.php
+
+		-
+			message: '#^Call to an undefined static method App\\Models\\User\:\:create\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Http/Controllers/Auth/RegistrationController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Auth\\RegistrationController\:\:create\(\) should return Illuminate\\View\\View but returns Illuminate\\Contracts\\View\\View\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Http/Controllers/Auth/RegistrationController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Settings\\AppearanceController\:\:edit\(\) should return Illuminate\\View\\View but returns Illuminate\\Contracts\\View\\View\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Http/Controllers/Settings/AppearanceController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Settings\\PasswordController\:\:edit\(\) should return Illuminate\\View\\View but returns Illuminate\\Contracts\\View\\View\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Http/Controllers/Settings/PasswordController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\Settings\\ProfileController\:\:edit\(\) should return Illuminate\\View\\View but returns Illuminate\\Contracts\\View\\View\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Http/Controllers/Settings/ProfileController.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\User\:\:\$name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/User.php
