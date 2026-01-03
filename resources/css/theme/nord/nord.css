@@ -216,6 +216,11 @@
     color: var(--color-snowstorm-400) !important;
 }
 
+/* --- Table Header and Row Padding --- */
+.fi-table-header th, .fi-table-row td {
+    padding: 1rem 1.25rem !important;
+}
+
 /* Badges: Ensure robust color and alignment */
 .fi-badges-row {
     display: flex;
@@ -290,43 +295,101 @@
     border-left: 4px solid var(--color-danger-700);
 }
 
+/* --- Input Styling --- */
 .fi-input {
-    width: 100%;
-    padding: 0.5rem;
-    border-radius: 0.375rem;
-    border: 1px solid var(--color-primary-200);
-    background: var(--color-snowstorm-500);
-    color: var(--color-polarnight-900);
-    font-size: 1rem;
+    background: var(--color-snowstorm-600) !important;
+    color: var(--color-polarnight-900) !important;
+    border: 1px solid var(--color-polarnight-100) !important;
 }
 
-.fi-checkbox, .fi-radio {
-    accent-color: var(--color-primary-500);
+.dark .fi-input {
+    background: var(--color-polarnight-800) !important;
+    color: var(--color-snowstorm-400) !important;
+    border: 1px solid var(--color-polarnight-700) !important;
 }
 
-.fi-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: var(--color-snowstorm-600);
+/* --- Dropdown Panel Styling --- */
+.fi-dropdown-panel,
+.fi-dropdown-list,
+.fi-dropdown-listbox {
+    background: var(--color-snowstorm-600) !important;
+    color: var(--color-polarnight-900) !important;
+    border-radius: 0.5rem !important;
+    /* fallback shadow color for compatibility */
+    box-shadow: 0 4px 24px 0 var(--color-polarnight-800);
 }
 
-.fi-table-header {
-    background: var(--color-primary-200);
-    color: var(--color-primary-900);
-    font-weight: 700;
-    padding: 0.75rem 1rem;
-    border-bottom: 2px solid var(--color-primary-400);
+.dark .fi-dropdown-panel,
+.dark .fi-dropdown-list,
+.dark .fi-dropdown-listbox {
+    background: var(--color-polarnight-800) !important;
+    color: var(--color-snowstorm-400) !important;
+    box-shadow: 0 4px 24px 0 var(--color-polarnight-900);
 }
 
-.dark .fi-table-header {
-    background: var(--color-primary-900);
-    color: var(--color-snowstorm-400);
-    border-bottom: 2px solid var(--color-primary-700);
+/* --- Dropdown List Item Label --- */
+.fi-dropdown-list-item-label {
+    color: var(--color-polarnight-900) !important;
+    background: transparent !important;
 }
 
-.fi-table-cell {
-    padding: 0.75rem 1rem;
-    border-bottom: 1px solid var(--color-polarnight-100);
+.dark .fi-dropdown-list-item-label {
+    color: var(--color-snowstorm-400) !important;
+}
+
+/* --- Column Manager Styling --- */
+.fi-ta-col-manager,
+.fi-ta-col-manager-label {
+    background: var(--color-snowstorm-600) !important;
+    color: var(--color-polarnight-900) !important;
+    border-radius: 0.375rem !important;
+}
+
+.dark .fi-ta-col-manager,
+.dark .fi-ta-col-manager-label {
+    background: var(--color-polarnight-800) !important;
+    color: var(--color-snowstorm-400) !important;
+}
+
+/* --- Action Bar/Buttons Background --- */
+.fi-header-actions-ctn,
+.fi-modal-footer-actions,
+.fi-modal-footer,
+.fi-modal-header,
+.fi-action-group,
+.fi-action-bar,
+.fi-ta-header-toolbar {
+    background: var(--color-primary-100) !important;
+    color: var(--color-primary-900) !important;
+}
+
+.dark .fi-header-actions-ctn,
+.dark .fi-modal-footer-actions,
+.dark .fi-modal-footer,
+.dark .fi-modal-header,
+.dark .fi-action-group,
+.dark .fi-action-bar,
+.dark .fi-ta-header-toolbar {
+    background: var(--color-primary-800) !important;
+    color: var(--color-snowstorm-400) !important;
+}
+
+/* --- Fix for dark mode right bar --- */
+body.dark {
+    background: var(--color-polarnight-900) !important;
+}
+
+/* --- Dropdown Option Hover/Active --- */
+.fi-dropdown-list-item:hover,
+.fi-dropdown-list-item[aria-selected="true"] {
+    background: var(--color-primary-200) !important;
+    color: var(--color-primary-900) !important;
+}
+
+.dark .fi-dropdown-list-item:hover,
+.dark .fi-dropdown-list-item[aria-selected="true"] {
+    background: var(--color-primary-700) !important;
+    color: var(--color-snowstorm-400) !important;
 }
 
 /* --- Table Alternating Row Colors --- */
@@ -546,14 +609,32 @@
     color: var(--color-snowstorm-400) !important;
 }
 
-.fi-modal-close-btn, .fi-icon-btn {
-    background: var(--color-danger-500) !important;
+/* --- Icon Button Backgrounds: Subtle Nord Style --- */
+.fi-icon-btn, .fi-modal-close-btn {
+    background-color: var(--color-polarnight-100) !important;
+    color: var(--color-polarnight-500) !important;
+    border-radius: 0.5rem !important;
+    box-shadow: 0 1px 4px 0 rgba(44, 62, 80, 0.10);
+    transition: background 0.2s, color 0.2s;
+}
+
+.fi-icon-btn:hover, .fi-modal-close-btn:hover {
+    background-color: var(--color-polarnight-200) !important;
+    color: var(--color-polarnight-700) !important;
+}
+
+.dark .fi-icon-btn, .dark .fi-modal-close-btn {
+    background-color: var(--color-polarnight-800) !important;
+    color: var(--color-snowstorm-400) !important;
+}
+
+.dark .fi-icon-btn:hover, .dark .fi-modal-close-btn:hover {
+    background-color: var(--color-polarnight-700) !important;
     color: var(--color-snowstorm-600) !important;
 }
 
-.dark .fi-modal-close-btn, .dark .fi-icon-btn {
-    background: var(--color-danger-700) !important;
-    color: var(--color-snowstorm-400) !important;
+.fi-icon-btn svg, .fi-modal-close-btn svg {
+    fill: currentColor !important;
 }
 
 .fi-absolute-positioning-context {
@@ -593,9 +674,6 @@
 .fi-align-start {
     background: var(--color-polarnight-100) !important;
     color: var(--color-polarnight-900) !important;
-    border-radius: 0.375rem;
-    box-shadow: 0 1px 2px 0 var(--color-polarnight-50);
-    padding: 0.75rem 1.25rem;
 }
 
 .dark .fi-ta-header-toolbar,
@@ -605,5 +683,9 @@
 .dark .fi-align-start {
     background: var(--color-polarnight-800) !important;
     color: var(--color-snowstorm-500) !important;
-    box-shadow: 0 1px 2px 0 var(--color-polarnight-900);
+}
+
+/* --- Form Elements: Rounded Corners --- */
+.fi-input, .fi-select-input, .fi-textarea {
+    border-radius: 0.5rem !important;
 }
