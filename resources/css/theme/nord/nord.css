@@ -400,4 +400,17 @@
     border-bottom: 1px solid var(--color-frost-400) !important;
 }
 
+/* --- Sidebar: Force Nord Color (override Filament) --- */
+.fi-sidebar, .fi-sidebar nav, .fi-sidebar-panel, .fi-sidebar-content, .fi-sidebar-header, .fi-sidebar-footer {
+    background: var(--color-primary-800) !important;
+    color: var(--color-snowstorm-600) !important;
+    border-right: 1px solid var(--color-primary-900) !important;
+}
+
+.dark .fi-sidebar, .dark .fi-sidebar nav, .dark .fi-sidebar-panel, .dark .fi-sidebar-content, .dark .fi-sidebar-header, .dark .fi-sidebar-footer {
+    background: var(--color-polarnight-950) !important;
+    color: var(--color-snowstorm-500) !important;
+    border-right: 1px solid var(--color-polarnight-800) !important;
+}
+
 /* --- End of ERP Nord Customizations --- */
