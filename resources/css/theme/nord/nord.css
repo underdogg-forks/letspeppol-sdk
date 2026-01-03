@@ -413,4 +413,174 @@
     border-right: 1px solid var(--color-polarnight-800) !important;
 }
 
-/* --- End of ERP Nord Customizations --- */
+/* --- Filament/ERP Utility Classes Nord Styling --- */
+.fi-size-sm {
+    font-size: 0.875rem !important;
+}
+
+.fi-size-md {
+    font-size: 1rem !important;
+}
+
+.fi-ta-text-item, .fi-ta-text, .fi-ta-header-toolbar, .fi-ta-selection-indicator, .fi-ta-cell, .fi-ta-actions, .fi-color, .fi-color-primary, .fi-text-color-500, .fi-link, .fi-ac-link-action {
+    color: var(--color-primary-900) !important;
+}
+
+.dark .fi-ta-text-item, .dark .fi-ta-text, .dark .fi-ta-header-toolbar, .dark .fi-ta-selection-indicator, .dark .fi-ta-cell, .dark .fi-ta-actions, .dark .fi-color, .dark .fi-color-primary, .dark .fi-text-color-500, .dark .fi-link, .dark .fi-ac-link-action {
+    color: var(--color-snowstorm-500) !important;
+}
+
+.fi-header, .fi-header-has-breadcrumbs {
+    background: none !important;
+    color: var(--color-primary-900) !important;
+}
+
+.dark .fi-header, .dark .fi-header-has-breadcrumbs {
+    background: none !important;
+    color: var(--color-snowstorm-600) !important;
+}
+
+.fi-page-main, .fi-page-content {
+    background: var(--color-snowstorm-500) !important;
+    color: var(--color-primary-900) !important;
+}
+
+.dark .fi-page-main, .dark .fi-page-content {
+    background: var(--color-polarnight-900) !important;
+    color: var(--color-snowstorm-400) !important;
+}
+
+.fi-sc, .fi-sc-has-gap, .fi-grid {
+    background: none !important;
+}
+
+.fi-ta-ctn, .fi-ta-ctn-with-footer, .fi-ta-ctn-with-header, .fi-ta-main {
+    background: var(--color-snowstorm-600) !important;
+    color: var(--color-primary-900) !important;
+}
+
+.dark .fi-ta-ctn, .dark .fi-ta-ctn-with-footer, .dark .fi-ta-ctn-with-header, .dark .fi-ta-main {
+    background: var(--color-polarnight-800) !important;
+    color: var(--color-snowstorm-400) !important;
+}
+
+.fi-ta-header-toolbar {
+    background: var(--color-primary-200) !important;
+    color: var(--color-primary-900) !important;
+}
+
+.dark .fi-ta-header-toolbar {
+    background: var(--color-primary-900) !important;
+    color: var(--color-snowstorm-400) !important;
+}
+
+.fi-ta-selection-indicator {
+    background: var(--color-frost-400) !important;
+    color: var(--color-primary-900) !important;
+}
+
+.dark .fi-ta-selection-indicator {
+    background: var(--color-frost-700) !important;
+    color: var(--color-snowstorm-400) !important;
+}
+
+.fi-ta-cell {
+    border-bottom: 1px solid var(--color-primary-100) !important;
+}
+
+.dark .fi-ta-cell {
+    border-bottom: 1px solid var(--color-polarnight-700) !important;
+}
+
+.fi-ta-actions {
+    background: none !important;
+}
+
+.fi-color-primary {
+    color: var(--color-primary-500) !important;
+}
+
+.fi-text-color-500 {
+    color: var(--color-primary-500) !important;
+}
+
+.dark .fi-text-color-500, .dark .fi-color-primary {
+    color: var(--color-primary-300) !important;
+}
+
+.fi-link, .fi-ac-link-action {
+    color: var(--color-frost-700) !important;
+    text-decoration: underline;
+}
+
+.dark .fi-link, .dark .fi-ac-link-action {
+    color: var(--color-frost-400) !important;
+}
+
+.fi-pagination, .fi-pagination-overview, .fi-pagination-records-per-page-select-ctn, .fi-pagination-records-per-page-select {
+    background: none !important;
+    color: var(--color-primary-900) !important;
+}
+
+.dark .fi-pagination, .dark .fi-pagination-overview, .dark .fi-pagination-records-per-page-select-ctn, .dark .fi-pagination-records-per-page-select {
+    color: var(--color-snowstorm-500) !important;
+}
+
+.fi-modal-header, .fi-modal-footer-actions {
+    background: var(--color-primary-200) !important;
+    color: var(--color-primary-900) !important;
+}
+
+.dark .fi-modal-header, .dark .fi-modal-footer-actions {
+    background: var(--color-primary-900) !important;
+    color: var(--color-snowstorm-400) !important;
+}
+
+.fi-modal-content {
+    background: var(--color-snowstorm-600) !important;
+    color: var(--color-primary-900) !important;
+}
+
+.dark .fi-modal-content {
+    background: var(--color-polarnight-800) !important;
+    color: var(--color-snowstorm-400) !important;
+}
+
+.fi-modal-close-btn, .fi-icon-btn {
+    background: var(--color-danger-500) !important;
+    color: var(--color-snowstorm-600) !important;
+}
+
+.dark .fi-modal-close-btn, .dark .fi-icon-btn {
+    background: var(--color-danger-700) !important;
+    color: var(--color-snowstorm-400) !important;
+}
+
+.fi-absolute-positioning-context {
+    position: relative !important;
+}
+
+.fi-modal-open {
+    display: block !important;
+}
+
+.fi-modal-close-overlay {
+    background: rgba(0, 0, 0, 0.5) !important;
+}
+
+/* --- Alternating Row Colors for Table/Grid --- */
+.fi-ta-row-odd {
+    background: var(--color-snowstorm-500) !important;
+}
+
+.fi-ta-row-even {
+    background: var(--color-snowstorm-400) !important;
+}
+
+.dark .fi-ta-row-odd {
+    background: var(--color-polarnight-700) !important;
+}
+
+.dark .fi-ta-row-even {
+    background: var(--color-polarnight-800) !important;
+}

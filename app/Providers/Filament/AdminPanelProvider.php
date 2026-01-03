@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Pages\DebugPage;
+use App\Filament\Resources\Users\UserResource;
 use Filament\FontProviders\GoogleFontProvider;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -51,6 +52,11 @@ class AdminPanelProvider extends PanelProvider
                             //->icon('heroicon-o-building-office')
                             ->items([
                                 ...DebugPage::getNavigationItems(),
+                            ]),
+                        NavigationGroup::make('users & roles')
+                            //->icon('heroicon-o-building-office')
+                            ->items([
+                                ...UserResource::getNavigationItems(),
                             ]),
                     ]);
             })
