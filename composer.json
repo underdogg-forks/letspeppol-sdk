@@ -3,10 +3,7 @@
     "name": "laraveldaily/starter-kit",
     "type": "project",
     "description": "LaravelDaily Starter Kit for the Laravel framework.",
-    "keywords": [
-        "laravel",
-        "framework"
-    ],
+    "keywords": ["laravel", "framework"],
     "license": "MIT",
     "config": {
         "optimize-autoloader": true,
@@ -20,32 +17,25 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
-        "php": "^8.2",
-        "blade-ui-kit/blade-icons": "^1.8",
-        "filament/filament": "^4.2",
-        "internachi/modular": "^2.3",
-        "laravel/framework": "^12.39",
-        "laravel/tinker": "^2.10.1",
-        "modules/core": "*",
-        "modules/crm": "*",
-        "modules/invoices": "*",
-        "modules/payments": "*",
-        "modules/products": "*",
-        "modules/projects": "*",
-        "modules/quotes": "*",
-        "owenvoke/blade-fontawesome": "^2.9.1"
+        "php": "^8.4",
+        "blade-ui-kit/blade-icons": ">=1.8",
+        "filament/filament": ">=4.4",
+        "internachi/modular": ">=2.3",
+        "laravel/framework": "^12.44",
+        "owenvoke/blade-fontawesome": ">=3"
     },
     "require-dev": {
-        "driftingly/rector-laravel": "^2.1",
-        "fakerphp/faker": "^1.24.1",
-        "larastan/larastan": "^3.8",
-        "laravel/pail": "^1.2.3",
-        "laravel/pint": "^1.25",
-        "laravel/sail": "^1.48.1",
-        "mockery/mockery": "^1.6.12",
-        "nunomaduro/collision": "^8.8.3",
-        "phpunit/phpunit": "^11.5.44",
-        "rector/rector": "^2.2",
+        "driftingly/rector-laravel": ">=2.1.9",
+        "fakerphp/faker": ">=1.24.1",
+        "larastan/larastan": ">=3.8.1",
+        "laravel/pail": ">=1.2.4",
+        "laravel/pint": "dev-feat/blade",
+        "laravel/sail": ">=1.51",
+        "laravel/tinker": ">=2.10.2",
+        "mockery/mockery": ">=1.6.12",
+        "nunomaduro/collision": ">=8.8.3",
+        "phpunit/phpunit": ">=12.5.4",
+        "rector/rector": ">=2.3",
         "roave/security-advisories": "dev-latest"
     },
     "autoload": {
@@ -63,7 +53,8 @@
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi"
+            "@php artisan package:discover --ansi",
+            "@php artisan filament:upgrade"
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
@@ -89,14 +80,5 @@
         "laravel": {
             "dont-discover": []
         }
-    },
-    "repositories": [
-        {
-            "type": "path",
-            "url": "Modules/*",
-            "options": {
-                "symlink": true
-            }
-        }
-    ]
+    }
 }
