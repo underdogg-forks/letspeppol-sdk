@@ -3,51 +3,145 @@
 @source '../../../../app/Filament/**/*';
 @source '../../../../resources/views/**/*';
 
-@theme {
-  --color-secondary-50: rgba(var(--secondary-50), <alpha-value>);
-  --color-secondary-100: rgba(var(--secondary-100), <alpha-value>);
-  --color-secondary-200: rgba(var(--secondary-200), <alpha-value>);
-  --color-secondary-300: rgba(var(--secondary-300), <alpha-value>);
-  --color-secondary-400: rgba(var(--secondary-400), <alpha-value>);
-  --color-secondary-500: rgba(var(--secondary-500), <alpha-value>);
-  --color-secondary-600: rgba(var(--secondary-600), <alpha-value>);
-  --color-secondary-700: rgba(var(--secondary-700), <alpha-value>);
-  --color-secondary-800: rgba(var(--secondary-800), <alpha-value>);
-  --color-secondary-900: rgba(var(--secondary-900), <alpha-value>);
-  --color-secondary-950: rgba(var(--secondary-950), <alpha-value>);
+/* ============================================
+   THEME CONFIGURATION
+   ============================================
+   This section defines all color variables used throughout the theme.
+   Each color is annotated with its primary usage context.
+   ============================================ */
 
-  --color-polarnight-50: #e5e9f0;  /* Lightest (pale version of #2E3440) */
-  --color-polarnight-100: #d1d7e0; /* Light shade of #2E3440 */
-  --color-polarnight-200: #a7b1c5; /* Lighter shade of #3B4252 */
-  --color-polarnight-300: #8c9ab3; /* Lighter shade of #3B4252 */
-  --color-polarnight-400: #71829b; /* Lighter shade of #434C5E */
-  --color-polarnight-500: #4c566a; /* Base color (#4C566A) */
-  --color-polarnight-600: #434c5e; /* Darker shade of #434C5E */
-  --color-polarnight-700: #3b4252; /* Darker shade of #3B4252 */
-  --color-polarnight-800: #2e3440; /* Base color (#2E3440) */
-  --color-polarnight-900: #232831; /* Darker shade of #2E3440 */
-  --color-polarnight-950: #1b2027; /* Darkest shade, almost black */
+@theme {
+  /* Primary colors - Used for main brand elements and active states */
+  --color-primary-50: #F2F7FD;    /* LIGHT: Very light accent backgrounds */
+  --color-primary-100: #E3EFFB;   /* LIGHT: Active tab backgrounds */
+  --color-primary-200: #C1DFF6;   /* DARK:  Badge backgrounds */
+  --color-primary-300: #8FC0EE;   /* LIGHT: Badge backgrounds */
+  --color-primary-400: #429AE1;   /* DARK:  Active text and icons */
+  --color-primary-500: #2684D1;   /* BOTH:  Primary buttons, toggles, active buttons */
+  --color-primary-600: #1868B1;   /* Medium shade */
+  --color-primary-700: #145390;   /* Medium-dark shade */
+  --color-primary-800: #154777;   /* LIGHT: Active text and icons */
+  --color-primary-900: #173C63;   /* Dark shade */
+  --color-primary-950: #0F2742;   /* BOTH:  Button labels and dark text */
+
+  /* Secondary colors - Used for complementary UI elements */
+  --color-secondary-50: #E3E9F0;   /* Light shade */
+  --color-secondary-100: #D1D7E0;  /* Light shade */
+  --color-secondary-200: #A7B1C5;  /* Light shade */
+  --color-secondary-300: #8C9AB3;  /* Light shade */
+  --color-secondary-400: #71829B;  /* LIGHT: Hover backgrounds, secondary actions */
+  --color-secondary-500: #5E81AC;  /* BOTH:  Active backgrounds and text */
+  --color-secondary-600: #527397;  /* DARK:  Gradient borders */
+  --color-secondary-700: #466582;  /* Medium-dark shade */
+  --color-secondary-800: #3A576D;  /* Dark shade */
+  --color-secondary-900: #2E4958;  /* DARK:  Widget backgrounds, tab text */
+  --color-secondary-950: #223B43;  /* Darkest shade */
+
+  /* Polar Night - Nord's dark color palette for backgrounds and text */
+  --color-polarnight-50: #e5e9f0;  /* DARK:  Light text on dark backgrounds */
+  --color-polarnight-100: #d1d7e0; /* Light gray */
+  --color-polarnight-200: #a7b1c5; /* Medium-light gray */
+  --color-polarnight-300: #8c9ab3; /* Medium gray */
+  --color-polarnight-400: #71829b; /* BOTH:  Breadcrumb text */
+  --color-polarnight-500: #4c566a; /* BOTH:  Form labels */
+  --color-polarnight-600: #434c5e; /* LIGHT: Text and headers */
+  --color-polarnight-700: #3b4252; /* DARK:  Table headers, gradients */
+  --color-polarnight-800: #2e3440; /* DARK:  Table backgrounds, main gradients */
+  --color-polarnight-900: #232831; /* DARK:  Primary backgrounds */
+  --color-polarnight-950: #1b2027; /* Darkest background */
+
+  /* Snow Storm - Nord's light color palette for backgrounds */
+  --color-snowstorm-400: #d8dee9;  /* LIGHT: Hover backgrounds, input rings */
+  --color-snowstorm-500: #e5e9f0;  /* Light background alternative */
+  --color-snowstorm-600: #eceff4;  /* LIGHT: Primary backgrounds, headers, inputs */
+
+  /* Frost - Nord's accent colors for interactive elements */
+  --color-frost-400: #8fbcbb;      /* Accent shade */
+  --color-frost-500: #88c0d0;      /* BOTH:  Primary button backgrounds */
+  --color-frost-600: #81a1c1;      /* Accent shade */
+  --color-frost-700: #5e81ac;      /* Accent shade */
+
+  /* Aurora - Nord's special colors for states and notifications */
+  --color-aurora-danger: #bf616a;   /* LIGHT: Error messages, invalid inputs */
+  --color-aurora-warning: #ebcb8b;  /* Warning states */
+  --color-aurora-success: #a3be8c;  /* Success states */
+  --color-aurora-info: #81a1c1;     /* Info states */
+  --color-aurora-purple: #b48ead;   /* Special accent */
+  --color-aurora-orange: #d08770;   /* DARK:  Error messages, invalid inputs */
+
+  /* Semantic color scales - Danger */
+  --color-danger-50: #fef2f2;
+  --color-danger-100: #fee2e2;
+  --color-danger-200: #fecaca;
+  --color-danger-300: #fca5a5;
+  --color-danger-400: #f87171;
+  --color-danger-500: #bf616a;
+  --color-danger-600: #b85860;
+  --color-danger-700: #a84f56;
+  --color-danger-800: #98464c;
+  --color-danger-900: #883d42;
+  --color-danger-950: #782f34;
+
+  /* Semantic color scales - Warning */
+  --color-warning-50: #fefce8;
+  --color-warning-100: #fef9c3;
+  --color-warning-200: #fef08a;
+  --color-warning-300: #fde047;
+  --color-warning-400: #facc15;
+  --color-warning-500: #ebcb8b;
+  --color-warning-600: #d4b87a;
+  --color-warning-700: #bda569;
+  --color-warning-800: #a69258;
+  --color-warning-900: #8f7f47;
+  --color-warning-950: #786c36;
+
+  /* Semantic color scales - Success */
+  --color-success-50: #f0fdf4;
+  --color-success-100: #dcfce7;
+  --color-success-200: #bbf7d0;
+  --color-success-300: #86efac;
+  --color-success-400: #4ade80;
+  --color-success-500: #a3be8c;
+  --color-success-600: #93ae7d;
+  --color-success-700: #839e6e;
+  --color-success-800: #738e5f;
+  --color-success-900: #637e50;
+  --color-success-950: #536e41;
+
+  /* Semantic color scales - Info */
+  --color-info-50: #eff6ff;
+  --color-info-100: #dbeafe;
+  --color-info-200: #bfdbfe;
+  --color-info-300: #93c5fd;
+  --color-info-400: #60a5fa;
+  --color-info-500: #81a1c1;
+  --color-info-600: #7491ae;
+  --color-info-700: #67819b;
+  --color-info-800: #5a7188;
+  --color-info-900: #4d6175;
+  --color-info-950: #405162;
 }
 
-/* ===========================
-   Layout & Structure
-   =========================== */
+/* ============================================
+   LIGHT MODE STYLES (Default)
+   ============================================
+   These styles apply by default and define the light theme appearance.
+   Colors use: snowstorm (backgrounds), polarnight (text), primary/secondary colors.
+   ============================================ */
 
+/* Layout & Structure */
 .fi-layout {
-    @apply bg-[#f5f8fa] dark:bg-[#252a35]; /*#2e3440*/
+    @apply bg-snowstorm-600;
 }
 
 .fi-body {
-    @apply bg-[#f5f8fa] dark:bg-polarnight-900;
+    @apply bg-snowstorm-600;
 }
 
-/* ===========================
-   Topbar & Sidebar
-   =========================== */
-
+/* Topbar & Sidebar */
 .fi-topbar {
     & nav {
-        @apply bg-[#f5f8fa] dark:bg-[#252a35];
+        @apply bg-snowstorm-600;
     }
 
     & .fi-tenant-menu {
@@ -56,18 +150,13 @@
 }
 
 .fi-sidebar-header {
-    @apply bg-[#f5f8fa] dark:bg-[#252a35];
-}
-
-.fi-sidebar-item-label,
-.fi-topbar-item-label {
-    @apply dark:text-gray-400;
+    @apply bg-snowstorm-600;
 }
 
 /* Sidebar Items */
 .fi-sidebar-item {
     & .fi-sidebar-item-button {
-        @apply rounded-lg hover:bg-[#d8dee9] dark:hover:bg-white/5;
+        @apply rounded-lg hover:bg-snowstorm-400;
     }
 
     &-active {
@@ -77,12 +166,12 @@
             }
 
             & span {
-                @apply text-primary-800 dark:text-primary-400;
+                @apply text-primary-800;
             }
         }
 
         & .fi-sidebar-item-button {
-            @apply rounded-lg bg-[#eceff4] dark:focus-visible:bg-white/5 dark:bg-white/5;
+            @apply rounded-lg bg-snowstorm-600;
         }
     }
 }
@@ -90,7 +179,7 @@
 /* Topbar Items */
 .fi-topbar-item {
     & .fi-topbar-item-button {
-        @apply rounded-lg hover:bg-[#d8dee9] dark:hover:bg-white/5;
+        @apply rounded-lg hover:bg-snowstorm-400;
     }
 
     &-active {
@@ -99,20 +188,16 @@
         }
 
         & a span {
-            @apply text-primary-800 dark:text-primary-400;
+            @apply text-primary-800;
         }
 
         & .fi-topbar-item-button {
-            @apply rounded-lg bg-[#eceff4] dark:focus-visible:bg-white/5 dark:bg-white/5;
+            @apply rounded-lg bg-snowstorm-600;
         }
 
         & a,
         & button {
-            @apply bg-secondary-500 hover:bg-secondary-400 dark:bg-primary-500 dark:text-secondary-500 dark:hover:bg-primary-400;
-        }
-
-        & svg {
-            @apply dark:text-secondary-500;
+            @apply bg-secondary-500 hover:bg-secondary-400;
         }
     }
 }
@@ -121,7 +206,7 @@
 .fi-sidebar-item-button,
 .fi-topbar-item-button {
     & .fi-badge {
-        @apply bg-primary-300 dark:bg-primary-200;
+        @apply bg-primary-300;
 
         & span span {
             @apply text-gray-700;
@@ -131,7 +216,7 @@
 
 .fi-sidebar-item-badge-ctn {
     & .fi-badge {
-        @apply bg-primary-300 dark:bg-primary-200;
+        @apply bg-primary-300;
 
         & span span {
             @apply text-gray-700;
@@ -139,17 +224,14 @@
     }
 }
 
-/* ===========================
-   Buttons
-   =========================== */
-
+/* Buttons */
 .fi-btn {
     &:not(.fi-btn-group .fi-btn) {
         @apply rounded-full;
     }
 
     &-color-primary {
-        @apply bg-[#88c0d0];
+        @apply bg-frost-500;
 
         & .fi-btn-label {
             @apply text-primary-950;
@@ -157,7 +239,7 @@
     }
 
     &-color-gray span {
-        @apply text-[#434c5e] dark:text-[#e5e9f0];
+        @apply text-polarnight-600;
     }
 }
 
@@ -175,27 +257,19 @@
     }
 }
 
-/* ===========================
-   Tables
-   =========================== */
-
+/* Tables */
 .fi-ta-ctn {
-    @apply shadow-md rounded-2xl border-none ring-0 dark:ring-1 divide-gray-100 dark:divide-white/20;
-
-    &,
-    & .fi-ta-ctn-with-header {
-        @apply dark:bg-[var(--color-polarnight-800)];
-    }
+    @apply shadow-md rounded-2xl border-none ring-0 divide-gray-100;
 }
 
 .fi-ta-table {
     & thead tr {
-        @apply bg-[#fbfcfd] dark:bg-[#3b414e];
+        @apply bg-snowstorm-600;
     }
 }
 
 .fi-ta-header-cell-label {
-    @apply text-[#434c5e] dark:text-[#e5e9f0];
+    @apply text-polarnight-600;
 }
 
 .fi-ta-toggle {
@@ -208,95 +282,68 @@
     }
 }
 
-/* Table Search Field */
 .fi-ta-search-field {
     & .fi-input-wrp {
-        @apply rounded-full bg-[#f5f8fa] dark:bg-gray-900;
+        @apply rounded-full bg-snowstorm-600;
     }
 }
 
-/* ===========================
-   Widget Backgrounds & Styles
-   =========================== */
-
-/* Generic section-based widgets (Account, Info, and custom widgets) */
+/* Widgets */
 .fi-wi-widget:not(.fi-wi-stats-overview):not(.fi-wi-chart):not(.fi-wi-table) {
     & .fi-section {
-        @apply border border-transparent dark:bg-secondary-900 shadow-md rounded-2xl border-none ring-0 dark:ring-1 dark:ring-gray-700 dark:hover:text-white/70 dark:hover:ring-gray-500;
+        @apply border border-transparent shadow-md rounded-2xl border-none ring-0;
     }
 }
 
-/* Stats overview - individual stat cards */
 .fi-wi-stats-overview-stat {
-    @apply border border-transparent dark:bg-secondary-900 shadow-md rounded-2xl border-none ring-0 dark:ring-1 dark:ring-gray-700 dark:hover:text-white/70 dark:hover:ring-gray-500;
+    @apply border border-transparent shadow-md rounded-2xl border-none ring-0;
 }
 
-/* Chart widgets */
 .fi-wi-widget.fi-wi-chart {
     & .fi-section {
-        @apply border border-transparent dark:bg-secondary-900 shadow-md rounded-2xl border-none ring-0 dark:ring-1 dark:ring-gray-700 dark:hover:text-white/70 dark:hover:ring-gray-500;
+        @apply border border-transparent shadow-md rounded-2xl border-none ring-0;
     }
 }
 
-/* Table widget */
 .fi-wi-widget.fi-wi-table {
     & .fi-ta-ctn {
-        @apply border border-transparent dark:bg-secondary-900 shadow-md rounded-2xl border-none ring-0 dark:ring-1 dark:ring-gray-700 dark:hover:text-white/70 dark:hover:ring-gray-500;
-    }
-}
-
-/* Gradient backgrounds for dark mode */
-.dark {
-    & .fi-wi-widget:not(.fi-wi-stats-overview):not(.fi-wi-chart):not(.fi-wi-table) .fi-section,
-    & .fi-wi-stats-overview-stat,
-    & .fi-wi-widget.fi-wi-chart .fi-section,
-    & .fi-wi-widget.fi-wi-table .fi-ta-ctn,
-    & .fi-tenant-menu,
-    & .fi-dropdown-panel {
-        background:
-            linear-gradient(#2e3440, #3b4252),
-            linear-gradient(to right, rgb(82, 115, 125), rgb(59, 66, 82));
-        background-clip: padding-box, border-box;
-        background-origin: border-box;
+        @apply border border-transparent shadow-md rounded-2xl border-none ring-0;
     }
 }
 
 /* Other containers */
 .fi-tenant-menu,
 .fi-dropdown-panel {
-    @apply border border-transparent dark:bg-secondary-900;
+    @apply border border-transparent;
 }
 
 .fi-tenant-menu {
     @apply rounded-lg mt-4;
 }
 
-/* ===========================
-   Forms & Inputs
-   =========================== */
-
+/* Forms & Inputs */
 .fi-input-wrp {
-    @apply ring-1 ring-[#d8dee9] dark:ring-white/20;
+    @apply ring-1 ring-snowstorm-400;
 }
 
 .fi-input {
-    @apply disabled:!bg-gray-50 dark:disabled:!bg-gray-800;
+    @apply disabled:!bg-gray-50;
 }
 
 .fi-fo-field-wrp-label span {
-    @apply text-[#4c566a];
+    @apply text-polarnight-500;
 }
 
 .fi-fo-field-wrp-helper-text {
-    @apply text-gray-500 dark:text-gray-300;
+    @apply text-gray-500;
 }
 
 .fi-fo-field-wrp-error-message {
-    @apply text-[#bf616a] dark:text-[#d08770];
+    @apply text-aurora-danger;
 }
 
 .fi-invalid {
-    @apply ring-[#bf616a] dark:ring-[#d08770];
+    @apply ring-aurora-danger;
 }
 
 .fi-fo-toggle {
@@ -309,52 +356,219 @@
     }
 }
 
-/* ===========================
-   Global Search
-   =========================== */
-
+/* Global Search */
 .fi-global-search-field {
     & .fi-input-wrp {
-        @apply rounded-full bg-[#f5f8fa] dark:bg-gray-900 ring-4 ring-white dark:ring-gray-800;
+        @apply rounded-full bg-snowstorm-600 ring-4 ring-white;
 
         & .fi-input-wrp-prefix {
-            @apply bg-white dark:bg-gray-800 rounded-full ps-2 mr-2;
+            @apply bg-white rounded-full ps-2 mr-2;
         }
     }
 }
 
-/* ===========================
-   Tabs
-   =========================== */
-
+/* Tabs */
 .fi-tabs-item-active {
     @apply bg-primary-100;
 
     & span {
-        @apply !text-secondary-900 dark:!text-gray-100;
+        @apply !text-secondary-900;
     }
 }
 
-/* ===========================
-   Badges
-   =========================== */
-
+/* Badges */
 .fi-badge {
     @apply rounded-xl;
 }
 
-/* ===========================
-   Breadcrumbs
-   =========================== */
-
+/* Breadcrumbs */
 .fi-breadcrumbs-item-label {
-    @apply text-[var(--color-polarnight-400)];
+    @apply text-polarnight-400;
 }
 
-/* ===========================
-   Headers
-   =========================== */
-
+/* Headers */
 .fi-header-heading {
-    @apply text-[#434c5e] dark:text-[#e5e9f0];
+    @apply text-polarnight-600;
+}
+
+/* ============================================
+   DARK MODE STYLES
+   ============================================
+   These styles apply when dark mode is active (.dark class on parent).
+   Colors use: polarnight (backgrounds), snowstorm (text), adjusted primary colors.
+   All rules are wrapped in .dark selector for clear separation.
+   ============================================ */
+
+.dark {
+    /* Layout & Structure */
+    & .fi-layout {
+        @apply bg-polarnight-900;
+    }
+
+    & .fi-body {
+        @apply bg-polarnight-900;
+    }
+
+    /* Topbar & Sidebar */
+    & .fi-topbar nav {
+        @apply bg-polarnight-900;
+    }
+
+    & .fi-sidebar-header {
+        @apply bg-polarnight-900;
+    }
+
+    & .fi-sidebar-item-label,
+    & .fi-topbar-item-label {
+        @apply text-gray-400;
+    }
+
+    /* Sidebar Items */
+    & .fi-sidebar-item .fi-sidebar-item-button {
+        @apply hover:bg-white/5;
+    }
+
+    & .fi-sidebar-item-active a span {
+        @apply text-primary-400;
+    }
+
+    & .fi-sidebar-item-active .fi-sidebar-item-button {
+        @apply focus-visible:bg-white/5 bg-white/5;
+    }
+
+    /* Topbar Items */
+    & .fi-topbar-item .fi-topbar-item-button {
+        @apply hover:bg-white/5;
+    }
+
+    & .fi-topbar-item-active a span {
+        @apply text-primary-400;
+    }
+
+    & .fi-topbar-item-active .fi-topbar-item-button {
+        @apply focus-visible:bg-white/5 bg-white/5;
+    }
+
+    & .fi-topbar-item-active a,
+    & .fi-topbar-item-active button {
+        @apply bg-primary-500 text-secondary-500 hover:bg-primary-400;
+    }
+
+    & .fi-topbar-item-active svg {
+        @apply text-secondary-500;
+    }
+
+    /* Badges */
+    & .fi-sidebar-item-button .fi-badge,
+    & .fi-topbar-item-button .fi-badge,
+    & .fi-sidebar-item-badge-ctn .fi-badge {
+        @apply bg-primary-200;
+    }
+
+    /* Buttons */
+    & .fi-btn-color-gray span {
+        @apply text-polarnight-50;
+    }
+
+    /* Tables */
+    & .fi-ta-ctn {
+        @apply ring-1 divide-white/20;
+
+        &,
+        & .fi-ta-ctn-with-header {
+            @apply bg-polarnight-800;
+        }
+    }
+
+    & .fi-ta-table thead tr {
+        @apply bg-polarnight-700;
+    }
+
+    & .fi-ta-header-cell-label {
+        @apply text-polarnight-50;
+    }
+
+    & .fi-ta-search-field .fi-input-wrp {
+        @apply bg-gray-900;
+    }
+
+    /* Widgets - Background colors */
+    & .fi-wi-widget:not(.fi-wi-stats-overview):not(.fi-wi-chart):not(.fi-wi-table) .fi-section {
+        @apply bg-secondary-900 ring-1 ring-gray-700 hover:text-white/70 hover:ring-gray-500;
+    }
+
+    & .fi-wi-stats-overview-stat {
+        @apply bg-secondary-900 ring-1 ring-gray-700 hover:text-white/70 hover:ring-gray-500;
+    }
+
+    & .fi-wi-widget.fi-wi-chart .fi-section {
+        @apply bg-secondary-900 ring-1 ring-gray-700 hover:text-white/70 hover:ring-gray-500;
+    }
+
+    & .fi-wi-widget.fi-wi-table .fi-ta-ctn {
+        @apply bg-secondary-900 ring-1 ring-gray-700 hover:text-white/70 hover:ring-gray-500;
+    }
+
+    /* Gradient backgrounds for widgets - Creates sophisticated gradient border effect
+       Uses multiple background layers:
+       - First gradient (padding-box): polarnight-800 to polarnight-700
+       - Second gradient (border-box): secondary-600 to polarnight-700 */
+    & .fi-wi-widget:not(.fi-wi-stats-overview):not(.fi-wi-chart):not(.fi-wi-table) .fi-section,
+    & .fi-wi-stats-overview-stat,
+    & .fi-wi-widget.fi-wi-chart .fi-section,
+    & .fi-wi-widget.fi-wi-table .fi-ta-ctn,
+    & .fi-tenant-menu,
+    & .fi-dropdown-panel {
+        background:
+            linear-gradient(var(--color-polarnight-800), var(--color-polarnight-700)),
+            linear-gradient(to right, var(--color-secondary-600), var(--color-polarnight-700));
+        background-clip: padding-box, border-box;
+        background-origin: border-box;
+    }
+
+    /* Other containers */
+    & .fi-tenant-menu,
+    & .fi-dropdown-panel {
+        @apply bg-secondary-900;
+    }
+
+    /* Forms & Inputs */
+    & .fi-input-wrp {
+        @apply ring-white/20;
+    }
+
+    & .fi-input {
+        @apply disabled:!bg-gray-800;
+    }
+
+    & .fi-fo-field-wrp-helper-text {
+        @apply text-gray-300;
+    }
+
+    & .fi-fo-field-wrp-error-message {
+        @apply text-aurora-orange;
+    }
+
+    & .fi-invalid {
+        @apply ring-aurora-orange;
+    }
+
+    /* Global Search */
+    & .fi-global-search-field .fi-input-wrp {
+        @apply bg-gray-900 ring-gray-800;
+
+        & .fi-input-wrp-prefix {
+            @apply bg-gray-800;
+        }
+    }
+
+    /* Tabs */
+    & .fi-tabs-item-active span {
+        @apply !text-gray-100;
+    }
+
+    /* Headers */
+    & .fi-header-heading {
+        @apply text-polarnight-50;
+    }
 }
