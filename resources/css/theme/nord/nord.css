@@ -4,688 +4,357 @@
 @source '../../../../resources/views/**/*';
 
 @theme {
-    --color-primary-50: #F2F7FD;
-    --color-primary-100: #E3EFFB;
-    --color-primary-200: #C1DFF6;
-    --color-primary-300: #8FC0EE;
-    --color-primary-400: #429AE1;
-    --color-primary-500: #2684D1;
-    --color-primary-600: #1868B1;
-    --color-primary-700: #145390;
-    --color-primary-800: #154777;
-    --color-primary-900: #173C63;
-    --color-primary-950: #0F2742;
-    --color-secondary-50: #E3E9F0;
-    --color-secondary-100: #D1D7E0;
-    --color-secondary-200: #A7B1C5;
-    --color-secondary-300: #8C9AB3;
-    --color-secondary-400: #71829B;
-    --color-secondary-500: #5E81AC;
-    --color-secondary-600: #527397;
-    --color-secondary-700: #466582;
-    --color-secondary-800: #3A576D;
-    --color-secondary-900: #2E4958;
-    --color-secondary-950: #223B43;
+  --color-secondary-50: rgba(var(--secondary-50), <alpha-value>);
+  --color-secondary-100: rgba(var(--secondary-100), <alpha-value>);
+  --color-secondary-200: rgba(var(--secondary-200), <alpha-value>);
+  --color-secondary-300: rgba(var(--secondary-300), <alpha-value>);
+  --color-secondary-400: rgba(var(--secondary-400), <alpha-value>);
+  --color-secondary-500: rgba(var(--secondary-500), <alpha-value>);
+  --color-secondary-600: rgba(var(--secondary-600), <alpha-value>);
+  --color-secondary-700: rgba(var(--secondary-700), <alpha-value>);
+  --color-secondary-800: rgba(var(--secondary-800), <alpha-value>);
+  --color-secondary-900: rgba(var(--secondary-900), <alpha-value>);
+  --color-secondary-950: rgba(var(--secondary-950), <alpha-value>);
 
-    /* Polar Night: Used for dark backgrounds and text */
-    --color-polarnight-50: #e5e9f0;
-    --color-polarnight-100: #d1d7e0;
-    --color-polarnight-200: #a7b1c5;
-    --color-polarnight-300: #8c9ab3;
-    --color-polarnight-400: #71829b;
-    --color-polarnight-500: #4c566a;
-    --color-polarnight-600: #434c5e;
-    --color-polarnight-700: #3b4252;
-    --color-polarnight-800: #2e3440;
-    --color-polarnight-900: #232831;
-    --color-polarnight-950: #1b2027;
-
-    /* Snow Storm: Used for light backgrounds and text */
-    --color-snowstorm-400: #d8dee9;
-    --color-snowstorm-500: #e5e9f0;
-    --color-snowstorm-600: #eceff4;
-
-    /* Frost: Used for primary and secondary accents */
-    --color-frost-400: #8fbcbb;
-    --color-frost-500: #88c0d0;
-    --color-frost-600: #81a1c1;
-    --color-frost-700: #5e81ac;
-
-    /* Aurora: Used for success, warning, etc. */
-    --color-aurora-danger: #bf616a;
-    --color-aurora-warning: #ebcb8b;
-    --color-aurora-success: #a3be8c;
-    --color-aurora-info: #81a1c1;
-    --color-aurora-purple: #b48ead;
-    --color-aurora-orange: #d08770;
-
-    /* Semantic color mapping to Nord palette */
-    --color-danger-50: #fef2f2;
-    --color-danger-100: #fee2e2;
-    --color-danger-200: #fecaca;
-    --color-danger-300: #fca5a5;
-    --color-danger-400: #f87171;
-    --color-danger-500: #bf616a;
-    --color-danger-600: #b85860;
-    --color-danger-700: #a84f56;
-    --color-danger-800: #98464c;
-    --color-danger-900: #883d42;
-    --color-danger-950: #782f34;
-
-    --color-warning-50: #fefce8;
-    --color-warning-100: #fef9c3;
-    --color-warning-200: #fef08a;
-    --color-warning-300: #fde047;
-    --color-warning-400: #facc15;
-    --color-warning-500: #ebcb8b;
-    --color-warning-600: #d4b87a;
-    --color-warning-700: #bda569;
-    --color-warning-800: #a69258;
-    --color-warning-900: #8f7f47;
-    --color-warning-950: #786c36;
-
-    --color-success-50: #f0fdf4;
-    --color-success-100: #dcfce7;
-    --color-success-200: #bbf7d0;
-    --color-success-300: #86efac;
-    --color-success-400: #4ade80;
-    --color-success-500: #a3be8c;
-    --color-success-600: #93ae7d;
-    --color-success-700: #839e6e;
-    --color-success-800: #738e5f;
-    --color-success-900: #637e50;
-    --color-success-950: #536e41;
-
-    --color-info-50: #eff6ff;
-    --color-info-100: #dbeafe;
-    --color-info-200: #bfdbfe;
-    --color-info-300: #93c5fd;
-    --color-info-400: #60a5fa;
-    --color-info-500: #81a1c1;
-    --color-info-600: #7491ae;
-    --color-info-700: #67819b;
-    --color-info-800: #5a7188;
-    --color-info-900: #4d6175;
-    --color-info-950: #405162;
+  --color-polarnight-50: #e5e9f0;  /* Lightest (pale version of #2E3440) */
+  --color-polarnight-100: #d1d7e0; /* Light shade of #2E3440 */
+  --color-polarnight-200: #a7b1c5; /* Lighter shade of #3B4252 */
+  --color-polarnight-300: #8c9ab3; /* Lighter shade of #3B4252 */
+  --color-polarnight-400: #71829b; /* Lighter shade of #434C5E */
+  --color-polarnight-500: #4c566a; /* Base color (#4C566A) */
+  --color-polarnight-600: #434c5e; /* Darker shade of #434C5E */
+  --color-polarnight-700: #3b4252; /* Darker shade of #3B4252 */
+  --color-polarnight-800: #2e3440; /* Base color (#2E3440) */
+  --color-polarnight-900: #232831; /* Darker shade of #2E3440 */
+  --color-polarnight-950: #1b2027; /* Darkest shade, almost black */
 }
 
-/* Filament Nord Theme Utility Classes */
-.fi-header {
-    color: var(--color-primary-700);
-    background: var(--color-snowstorm-600);
+/* ===========================
+   Layout & Structure
+   =========================== */
+
+.fi-layout {
+    @apply bg-[#f5f8fa] dark:bg-[#252a35]; /*#2e3440*/
 }
 
-.fi-main {
-    background: var(--color-snowstorm-500);
-    color: var(--color-polarnight-900);
+.fi-body {
+    @apply bg-[#f5f8fa] dark:bg-polarnight-900;
 }
 
-.dark .fi-main {
-    background: var(--color-polarnight-900) !important;
-    color: var(--color-snowstorm-400) !important;
+/* ===========================
+   Topbar & Sidebar
+   =========================== */
+
+.fi-topbar {
+    & nav {
+        @apply bg-[#f5f8fa] dark:bg-[#252a35];
+    }
+
+    & .fi-tenant-menu {
+        @apply lg:!hidden;
+    }
 }
 
-.fi-main-text {
-    color: var(--color-polarnight-700);
+.fi-sidebar-header {
+    @apply bg-[#f5f8fa] dark:bg-[#252a35];
 }
+
+.fi-sidebar-item-label,
+.fi-topbar-item-label {
+    @apply dark:text-gray-400;
+}
+
+/* Sidebar Items */
+.fi-sidebar-item {
+    & .fi-sidebar-item-button {
+        @apply rounded-lg hover:bg-[#d8dee9] dark:hover:bg-white/5;
+    }
+
+    &-active {
+        & a {
+            & svg {
+                @apply text-primary-800;
+            }
+
+            & span {
+                @apply text-primary-800 dark:text-primary-400;
+            }
+        }
+
+        & .fi-sidebar-item-button {
+            @apply rounded-lg bg-[#eceff4] dark:focus-visible:bg-white/5 dark:bg-white/5;
+        }
+    }
+}
+
+/* Topbar Items */
+.fi-topbar-item {
+    & .fi-topbar-item-button {
+        @apply rounded-lg hover:bg-[#d8dee9] dark:hover:bg-white/5;
+    }
+
+    &-active {
+        & a svg {
+            @apply text-primary-800;
+        }
+
+        & a span {
+            @apply text-primary-800 dark:text-primary-400;
+        }
+
+        & .fi-topbar-item-button {
+            @apply rounded-lg bg-[#eceff4] dark:focus-visible:bg-white/5 dark:bg-white/5;
+        }
+
+        & a,
+        & button {
+            @apply bg-secondary-500 hover:bg-secondary-400 dark:bg-primary-500 dark:text-secondary-500 dark:hover:bg-primary-400;
+        }
+
+        & svg {
+            @apply dark:text-secondary-500;
+        }
+    }
+}
+
+/* Sidebar & Topbar Badges */
+.fi-sidebar-item-button,
+.fi-topbar-item-button {
+    & .fi-badge {
+        @apply bg-primary-300 dark:bg-primary-200;
+
+        & span span {
+            @apply text-gray-700;
+        }
+    }
+}
+
+.fi-sidebar-item-badge-ctn {
+    & .fi-badge {
+        @apply bg-primary-300 dark:bg-primary-200;
+
+        & span span {
+            @apply text-gray-700;
+        }
+    }
+}
+
+/* ===========================
+   Buttons
+   =========================== */
 
 .fi-btn {
-    padding: 0.5rem 1rem;
-    border-radius: 0.375rem;
-    font-weight: 500;
-    border: none;
-    cursor: pointer;
-    transition: background 0.2s, color 0.2s;
+    &:not(.fi-btn-group .fi-btn) {
+        @apply rounded-full;
+    }
+
+    &-color-primary {
+        @apply bg-[#88c0d0];
+
+        & .fi-btn-label {
+            @apply text-primary-950;
+        }
+    }
+
+    &-color-gray span {
+        @apply text-[#434c5e] dark:text-[#e5e9f0];
+    }
 }
 
-.fi-btn-primary {
-    background: var(--color-primary-500);
-    color: var(--color-snowstorm-600);
+.fi-btn-group {
+    @apply rounded-full;
+
+    & > .fi-btn {
+        &:first-of-type {
+            @apply rounded-s-full;
+        }
+
+        &:last-of-type {
+            @apply rounded-e-full;
+        }
+    }
 }
 
-.fi-btn-primary:hover {
-    background: var(--color-primary-700);
+/* ===========================
+   Tables
+   =========================== */
+
+.fi-ta-ctn {
+    @apply shadow-md rounded-2xl border-none ring-0 dark:ring-1 divide-gray-100 dark:divide-white/20;
+
+    &,
+    & .fi-ta-ctn-with-header {
+        @apply dark:bg-[var(--color-polarnight-800)];
+    }
 }
 
-.fi-btn-secondary {
-    background: var(--color-secondary-200);
-    color: var(--color-secondary-900);
+.fi-ta-table {
+    & thead tr {
+        @apply bg-[#fbfcfd] dark:bg-[#3b414e];
+    }
 }
 
-.fi-btn-secondary:hover {
-    background: var(--color-secondary-400);
+.fi-ta-header-cell-label {
+    @apply text-[#434c5e] dark:text-[#e5e9f0];
 }
 
-.fi-btn-success {
-    background: var(--color-success-700);
-    color: var(--color-snowstorm-600);
+.fi-ta-toggle {
+    & > div.fi-color-custom {
+        @apply bg-primary-500;
+    }
+
+    & > div.fi-color-gray {
+        @apply bg-gray-200;
+    }
 }
 
-.fi-btn-success:hover {
-    background: var(--color-success-900);
+/* Table Search Field */
+.fi-ta-search-field {
+    & .fi-input-wrp {
+        @apply rounded-full bg-[#f5f8fa] dark:bg-gray-900;
+    }
 }
 
-.fi-btn-danger {
-    background: var(--color-danger-500);
-    color: var(--color-snowstorm-600);
+/* ===========================
+   Widget Backgrounds & Styles
+   =========================== */
+
+/* Generic section-based widgets (Account, Info, and custom widgets) */
+.fi-wi-widget:not(.fi-wi-stats-overview):not(.fi-wi-chart):not(.fi-wi-table) {
+    & .fi-section {
+        @apply border border-transparent dark:bg-secondary-900 shadow-md rounded-2xl border-none ring-0 dark:ring-1 dark:ring-gray-700 dark:hover:text-white/70 dark:hover:ring-gray-500;
+    }
 }
 
-.fi-btn-danger:hover {
-    background: var(--color-danger-700);
+/* Stats overview - individual stat cards */
+.fi-wi-stats-overview-stat {
+    @apply border border-transparent dark:bg-secondary-900 shadow-md rounded-2xl border-none ring-0 dark:ring-1 dark:ring-gray-700 dark:hover:text-white/70 dark:hover:ring-gray-500;
 }
 
-/* Headings: Remove background, set high-contrast text color */
-.fi-header, .fi-header-bar, .fi-page-title, .fi-card .fi-header, h1.fi-header, h2.fi-header, h3.fi-header {
-    background: none !important;
-    color: var(--color-primary-900) !important;
+/* Chart widgets */
+.fi-wi-widget.fi-wi-chart {
+    & .fi-section {
+        @apply border border-transparent dark:bg-secondary-900 shadow-md rounded-2xl border-none ring-0 dark:ring-1 dark:ring-gray-700 dark:hover:text-white/70 dark:hover:ring-gray-500;
+    }
 }
 
-.dark .fi-header, .dark .fi-header-bar, .dark .fi-page-title, .dark .fi-card .fi-header, .dark h1.fi-header, .dark h2.fi-header, .dark h3.fi-header {
-    background: none !important;
-    color: var(--color-snowstorm-600) !important;
+/* Table widget */
+.fi-wi-widget.fi-wi-table {
+    & .fi-ta-ctn {
+        @apply border border-transparent dark:bg-secondary-900 shadow-md rounded-2xl border-none ring-0 dark:ring-1 dark:ring-gray-700 dark:hover:text-white/70 dark:hover:ring-gray-500;
+    }
 }
 
-/* Main text and form elements: High contrast */
-.fi-main-text, .fi-main-text p, .fi-main-text label, .fi-main-text input, .fi-main-text select {
-    color: var(--color-primary-900) !important;
+/* Gradient backgrounds for dark mode */
+.dark {
+    & .fi-wi-widget:not(.fi-wi-stats-overview):not(.fi-wi-chart):not(.fi-wi-table) .fi-section,
+    & .fi-wi-stats-overview-stat,
+    & .fi-wi-widget.fi-wi-chart .fi-section,
+    & .fi-wi-widget.fi-wi-table .fi-ta-ctn,
+    & .fi-tenant-menu,
+    & .fi-dropdown-panel {
+        background:
+            linear-gradient(#2e3440, #3b4252),
+            linear-gradient(to right, rgb(82, 115, 125), rgb(59, 66, 82));
+        background-clip: padding-box, border-box;
+        background-origin: border-box;
+    }
 }
 
-.dark .fi-main-text, .dark .fi-main-text p, .dark .fi-main-text label, .dark .fi-main-text input, .dark .fi-main-text select {
-    color: var(--color-snowstorm-500) !important;
+/* Other containers */
+.fi-tenant-menu,
+.fi-dropdown-panel {
+    @apply border border-transparent dark:bg-secondary-900;
 }
 
-/* List items: Even more contrast */
-.fi-main-text ul li {
-    color: var(--color-primary-900) !important;
-    font-weight: 600;
+.fi-tenant-menu {
+    @apply rounded-lg mt-4;
 }
 
-.dark .fi-main-text ul li {
-    color: var(--color-snowstorm-600) !important;
-    font-weight: 700;
+/* ===========================
+   Forms & Inputs
+   =========================== */
+
+.fi-input-wrp {
+    @apply ring-1 ring-[#d8dee9] dark:ring-white/20;
 }
 
-/* Table header: Ensure robust color */
-.fi-table-header {
-    background: var(--color-primary-200) !important;
-    color: var(--color-primary-900) !important;
+.fi-input {
+    @apply disabled:!bg-gray-50 dark:disabled:!bg-gray-800;
 }
 
-.dark .fi-table-header {
-    background: var(--color-primary-900) !important;
-    color: var(--color-snowstorm-400) !important;
+.fi-fo-field-wrp-label span {
+    @apply text-[#4c566a];
 }
 
-/* --- Table Header and Row Padding --- */
-.fi-table-header th, .fi-table-row td {
-    padding: 1rem 1.25rem !important;
+.fi-fo-field-wrp-helper-text {
+    @apply text-gray-500 dark:text-gray-300;
 }
 
-/* Badges: Ensure robust color and alignment */
-.fi-badges-row {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+.fi-fo-field-wrp-error-message {
+    @apply text-[#bf616a] dark:text-[#d08770];
 }
+
+.fi-invalid {
+    @apply ring-[#bf616a] dark:ring-[#d08770];
+}
+
+.fi-fo-toggle {
+    &.fi-color-custom {
+        @apply bg-primary-500;
+    }
+
+    &.fi-color-gray {
+        @apply bg-gray-200;
+    }
+}
+
+/* ===========================
+   Global Search
+   =========================== */
+
+.fi-global-search-field {
+    & .fi-input-wrp {
+        @apply rounded-full bg-[#f5f8fa] dark:bg-gray-900 ring-4 ring-white dark:ring-gray-800;
+
+        & .fi-input-wrp-prefix {
+            @apply bg-white dark:bg-gray-800 rounded-full ps-2 mr-2;
+        }
+    }
+}
+
+/* ===========================
+   Tabs
+   =========================== */
+
+.fi-tabs-item-active {
+    @apply bg-primary-100;
+
+    & span {
+        @apply !text-secondary-900 dark:!text-gray-100;
+    }
+}
+
+/* ===========================
+   Badges
+   =========================== */
 
 .fi-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.25rem 0.75rem;
-    border-radius: 9999px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    min-height: 2rem;
-    line-height: 1.5;
+    @apply rounded-xl;
 }
 
-.fi-badge-primary {
-    background: var(--color-primary-500);
-    color: var(--color-snowstorm-600);
-    border: 1px solid var(--color-primary-700);
-}
-
-.fi-badge-success, .fi-badge-active {
-    background: var(--color-success-700);
-    color: var(--color-snowstorm-600);
-    border: 1px solid var(--color-success-900);
-}
-
-.fi-badge-warning {
-    background: var(--color-warning-400);
-    color: var(--color-polarnight-900);
-    border: 1px solid var(--color-warning-900);
-}
-
-.fi-badge-danger {
-    background: var(--color-danger-500);
-    color: var(--color-snowstorm-600);
-    border: 1px solid var(--color-danger-700);
-}
-
-.fi-alert {
-    padding: 1rem;
-    border-radius: 0.5rem;
-    font-weight: 500;
-    margin-bottom: 0.5rem;
-}
-
-.fi-alert-info {
-    background: var(--color-info-100);
-    color: var(--color-info-700);
-    border-left: 4px solid var(--color-info-500);
-}
-
-.fi-alert-success {
-    background: var(--color-success-100);
-    color: var(--color-success-900);
-    border-left: 4px solid var(--color-success-700);
-}
-
-.fi-alert-warning {
-    background: var(--color-warning-100);
-    color: var(--color-warning-900);
-    border-left: 4px solid var(--color-warning-700);
-}
-
-.fi-alert-danger {
-    background: var(--color-danger-100);
-    color: var(--color-danger-900);
-    border-left: 4px solid var(--color-danger-700);
-}
-
-/* --- Input Styling --- */
-.fi-input {
-    background: var(--color-snowstorm-600) !important;
-    color: var(--color-polarnight-900) !important;
-    border: 1px solid var(--color-polarnight-100) !important;
-}
-
-.dark .fi-input {
-    background: var(--color-polarnight-800) !important;
-    color: var(--color-snowstorm-400) !important;
-    border: 1px solid var(--color-polarnight-700) !important;
-}
-
-/* --- Dropdown Panel Styling --- */
-.fi-dropdown-panel,
-.fi-dropdown-list,
-.fi-dropdown-listbox {
-    background: var(--color-snowstorm-600) !important;
-    color: var(--color-polarnight-900) !important;
-    border-radius: 0.5rem !important;
-    /* fallback shadow color for compatibility */
-    box-shadow: 0 4px 24px 0 var(--color-polarnight-800);
-}
-
-.dark .fi-dropdown-panel,
-.dark .fi-dropdown-list,
-.dark .fi-dropdown-listbox {
-    background: var(--color-polarnight-800) !important;
-    color: var(--color-snowstorm-400) !important;
-    box-shadow: 0 4px 24px 0 var(--color-polarnight-900);
-}
-
-/* --- Dropdown List Item Label --- */
-.fi-dropdown-list-item-label {
-    color: var(--color-polarnight-900) !important;
-    background: transparent !important;
-}
-
-.dark .fi-dropdown-list-item-label {
-    color: var(--color-snowstorm-400) !important;
-}
-
-/* --- Column Manager Styling --- */
-.fi-ta-col-manager,
-.fi-ta-col-manager-label {
-    background: var(--color-snowstorm-600) !important;
-    color: var(--color-polarnight-900) !important;
-    border-radius: 0.375rem !important;
-}
-
-.dark .fi-ta-col-manager,
-.dark .fi-ta-col-manager-label {
-    background: var(--color-polarnight-800) !important;
-    color: var(--color-snowstorm-400) !important;
-}
-
-/* --- Action Bar/Buttons Background --- */
-.fi-header-actions-ctn,
-.fi-modal-footer-actions,
-.fi-modal-footer,
-.fi-modal-header,
-.fi-action-group,
-.fi-action-bar,
-.fi-ta-header-toolbar {
-    background: var(--color-primary-100) !important;
-    color: var(--color-primary-900) !important;
-}
-
-.dark .fi-header-actions-ctn,
-.dark .fi-modal-footer-actions,
-.dark .fi-modal-footer,
-.dark .fi-modal-header,
-.dark .fi-action-group,
-.dark .fi-action-bar,
-.dark .fi-ta-header-toolbar {
-    background: var(--color-primary-800) !important;
-    color: var(--color-snowstorm-400) !important;
-}
-
-/* --- Fix for dark mode right bar --- */
-body.dark {
-    background: var(--color-polarnight-900) !important;
-}
-
-/* --- Dropdown Option Hover/Active --- */
-.fi-dropdown-list-item:hover,
-.fi-dropdown-list-item[aria-selected="true"] {
-    background: var(--color-primary-200) !important;
-    color: var(--color-primary-900) !important;
-}
-
-.dark .fi-dropdown-list-item:hover,
-.dark .fi-dropdown-list-item[aria-selected="true"] {
-    background: var(--color-primary-700) !important;
-    color: var(--color-snowstorm-400) !important;
-}
-
-/* --- Table Alternating Row Colors --- */
-.fi-table-row-odd {
-    background: var(--color-snowstorm-500);
-}
-
-.fi-table-row-even {
-    background: var(--color-snowstorm-400);
-}
-
-.dark .fi-table-row-odd {
-    background: var(--color-polarnight-700);
-}
-
-.dark .fi-table-row-even {
-    background: var(--color-polarnight-800);
-}
-
-/* --- Card Colors --- */
-.fi-card {
-    background: var(--color-snowstorm-600);
-    color: var(--color-polarnight-900);
-    border-radius: 0.5rem;
-    box-shadow: 0 2px 8px 0 rgba(44, 62, 80, 0.08);
-    padding: 1.5rem;
-}
-
-.dark .fi-card {
-    background: var(--color-polarnight-700);
-    color: var(--color-snowstorm-400);
-}
-
-/* --- Card Headings --- */
-.fi-card .fi-header {
-    color: var(--color-primary-700);
-}
-
-.dark .fi-card .fi-header {
-    color: var(--color-snowstorm-400);
-}
-
-/* --- List Items: Even More Contrast --- */
-.fi-main-text ul li {
-    color: var(--color-primary-900);
-    font-weight: 500;
-}
-
-.dark .fi-main-text ul li {
-    color: var(--color-snowstorm-600);
-    font-weight: 600;
-}
-
-/* --- Badges: High Contrast and Flex Alignment --- */
-.fi-badges-row {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-/* --- Topbar: Distinct Nord Color --- */
-.fi-topbar, .fi-header-bar, .fi-header nav {
-    background: var(--color-frost-700) !important;
-    color: var(--color-snowstorm-600) !important;
-    border-bottom: 1px solid var(--color-frost-600) !important;
-}
-
-.dark .fi-topbar, .dark .fi-header-bar, .dark .fi-header nav {
-    background: var(--color-polarnight-700) !important;
-    color: var(--color-snowstorm-400) !important;
-    border-bottom: 1px solid var(--color-frost-400) !important;
-}
-
-/* --- Sidebar: Force Nord Color (override Filament) --- */
-.fi-sidebar, .fi-sidebar nav, .fi-sidebar-panel, .fi-sidebar-content, .fi-sidebar-header, .fi-sidebar-footer {
-    background: var(--color-primary-800) !important;
-    color: var(--color-snowstorm-600) !important;
-    border-right: 1px solid var(--color-primary-900) !important;
-}
-
-.dark .fi-sidebar, .dark .fi-sidebar nav, .dark .fi-sidebar-panel, .dark .fi-sidebar-content, .dark .fi-sidebar-header, .dark .fi-sidebar-footer {
-    background: var(--color-polarnight-950) !important;
-    color: var(--color-snowstorm-500) !important;
-    border-right: 1px solid var(--color-polarnight-800) !important;
-}
-
-/* --- Filament/ERP Utility Classes Nord Styling --- */
-.fi-size-sm {
-    font-size: 0.875rem !important;
-}
-
-.fi-size-md {
-    font-size: 1rem !important;
-}
-
-.fi-ta-text-item, .fi-ta-text, .fi-ta-header-toolbar, .fi-ta-selection-indicator, .fi-ta-cell, .fi-ta-actions, .fi-color, .fi-color-primary, .fi-text-color-500, .fi-link, .fi-ac-link-action {
-    color: var(--color-primary-900) !important;
-}
-
-.dark .fi-ta-text-item, .dark .fi-ta-text, .dark .fi-ta-header-toolbar, .dark .fi-ta-selection-indicator, .dark .fi-ta-cell, .dark .fi-ta-actions, .dark .fi-color, .dark .fi-color-primary, .dark .fi-text-color-500, .dark .fi-link, .dark .fi-ac-link-action {
-    color: var(--color-snowstorm-500) !important;
-}
-
-.fi-header, .fi-header-has-breadcrumbs {
-    background: none !important;
-    color: var(--color-primary-900) !important;
-}
-
-.dark .fi-header, .dark .fi-header-has-breadcrumbs {
-    background: none !important;
-    color: var(--color-snowstorm-600) !important;
-}
-
-.fi-page-main, .fi-page-content {
-    background: var(--color-snowstorm-500) !important;
-    color: var(--color-primary-900) !important;
-}
-
-.dark .fi-page-main, .dark .fi-page-content {
-    background: var(--color-polarnight-900) !important;
-    color: var(--color-snowstorm-400) !important;
-}
-
-.fi-sc, .fi-sc-has-gap, .fi-grid {
-    background: none !important;
-}
-
-.fi-ta-ctn, .fi-ta-ctn-with-footer, .fi-ta-ctn-with-header, .fi-ta-main {
-    background: var(--color-snowstorm-600) !important;
-    color: var(--color-primary-900) !important;
-}
-
-.dark .fi-ta-ctn, .dark .fi-ta-ctn-with-footer, .dark .fi-ta-ctn-with-header, .dark .fi-ta-main {
-    background: var(--color-polarnight-800) !important;
-    color: var(--color-snowstorm-400) !important;
-}
-
-.fi-ta-header-toolbar {
-    background: var(--color-primary-200) !important;
-    color: var(--color-primary-900) !important;
-}
-
-.dark .fi-ta-header-toolbar {
-    background: var(--color-primary-900) !important;
-    color: var(--color-snowstorm-400) !important;
-}
-
-.fi-ta-selection-indicator {
-    background: var(--color-frost-400) !important;
-    color: var(--color-primary-900) !important;
-}
-
-.dark .fi-ta-selection-indicator {
-    background: var(--color-frost-700) !important;
-    color: var(--color-snowstorm-400) !important;
-}
-
-.fi-ta-cell {
-    border-bottom: 1px solid var(--color-primary-100) !important;
-}
-
-.dark .fi-ta-cell {
-    border-bottom: 1px solid var(--color-polarnight-700) !important;
-}
-
-.fi-ta-actions {
-    background: none !important;
-}
-
-.fi-color-primary {
-    color: var(--color-primary-500) !important;
-}
-
-.fi-text-color-500 {
-    color: var(--color-primary-500) !important;
-}
-
-.dark .fi-text-color-500, .dark .fi-color-primary {
-    color: var(--color-primary-300) !important;
-}
-
-.fi-link, .fi-ac-link-action {
-    color: var(--color-frost-700) !important;
-    text-decoration: underline;
-}
+/* ===========================
+   Breadcrumbs
+   =========================== */
 
-.dark .fi-link, .dark .fi-ac-link-action {
-    color: var(--color-frost-400) !important;
+.fi-breadcrumbs-item-label {
+    @apply text-[var(--color-polarnight-400)];
 }
 
-.fi-pagination, .fi-pagination-overview, .fi-pagination-records-per-page-select-ctn, .fi-pagination-records-per-page-select {
-    background: none !important;
-    color: var(--color-primary-900) !important;
-}
-
-.dark .fi-pagination, .dark .fi-pagination-overview, .dark .fi-pagination-records-per-page-select-ctn, .dark .fi-pagination-records-per-page-select {
-    color: var(--color-snowstorm-500) !important;
-}
-
-.fi-modal-header, .fi-modal-footer-actions {
-    background: var(--color-primary-200) !important;
-    color: var(--color-primary-900) !important;
-}
-
-.dark .fi-modal-header, .dark .fi-modal-footer-actions {
-    background: var(--color-primary-900) !important;
-    color: var(--color-snowstorm-400) !important;
-}
-
-.fi-modal-content {
-    background: var(--color-snowstorm-600) !important;
-    color: var(--color-primary-900) !important;
-}
-
-.dark .fi-modal-content {
-    background: var(--color-polarnight-800) !important;
-    color: var(--color-snowstorm-400) !important;
-}
-
-/* --- Icon Button Backgrounds: Subtle Nord Style --- */
-.fi-icon-btn, .fi-modal-close-btn {
-    background-color: var(--color-polarnight-100) !important;
-    color: var(--color-polarnight-500) !important;
-    border-radius: 0.5rem !important;
-    box-shadow: 0 1px 4px 0 rgba(44, 62, 80, 0.10);
-    transition: background 0.2s, color 0.2s;
-}
-
-.fi-icon-btn:hover, .fi-modal-close-btn:hover {
-    background-color: var(--color-polarnight-200) !important;
-    color: var(--color-polarnight-700) !important;
-}
-
-.dark .fi-icon-btn, .dark .fi-modal-close-btn {
-    background-color: var(--color-polarnight-800) !important;
-    color: var(--color-snowstorm-400) !important;
-}
-
-.dark .fi-icon-btn:hover, .dark .fi-modal-close-btn:hover {
-    background-color: var(--color-polarnight-700) !important;
-    color: var(--color-snowstorm-600) !important;
-}
-
-.fi-icon-btn svg, .fi-modal-close-btn svg {
-    fill: currentColor !important;
-}
-
-.fi-absolute-positioning-context {
-    position: relative !important;
-}
-
-.fi-modal-open {
-    display: block !important;
-}
-
-.fi-modal-close-overlay {
-    background: rgba(0, 0, 0, 0.5) !important;
-}
-
-/* --- Alternating Row Colors for Table/Grid --- */
-.fi-ta-row-odd {
-    background: var(--color-snowstorm-500) !important;
-}
-
-.fi-ta-row-even {
-    background: var(--color-snowstorm-400) !important;
-}
-
-.dark .fi-ta-row-odd {
-    background: var(--color-polarnight-700) !important;
-}
-
-.dark .fi-ta-row-even {
-    background: var(--color-polarnight-800) !important;
-}
-
-/* Toolbar/Header/Footer/Align classes for Nord gray look */
-.fi-ta-header-toolbar,
-.fi-modal-header,
-.fi-modal-footer-actions,
-.fi-modal-footer,
-.fi-align-start {
-    background: var(--color-polarnight-100) !important;
-    color: var(--color-polarnight-900) !important;
-}
-
-.dark .fi-ta-header-toolbar,
-.dark .fi-modal-header,
-.dark .fi-modal-footer-actions,
-.dark .fi-modal-footer,
-.dark .fi-align-start {
-    background: var(--color-polarnight-800) !important;
-    color: var(--color-snowstorm-500) !important;
-}
+/* ===========================
+   Headers
+   =========================== */
 
-/* --- Form Elements: Rounded Corners --- */
-.fi-input, .fi-select-input, .fi-textarea {
-    border-radius: 0.5rem !important;
+.fi-header-heading {
+    @apply text-[#434c5e] dark:text-[#e5e9f0];
 }

@@ -1,30 +1,30 @@
 <x-filament-panels::page>
-    <div class="fi-main container mx-auto py-8">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div class="fi-main container mx-auto py-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
             <!-- Column 1 -->
-            <div class="space-y-6">
+            <div class="space-y-10">
                 <h1 class="fi-header text-3xl font-bold">TailwindCSS Debug Page (Nord Theme)</h1>
                 <p class="fi-main-text">This page is for visually testing the Nord color palette and utility
                     classes.</p>
 
-                <div class="space-y-2">
-                    <h2 class="fi-header text-xl font-semibold">Buttons</h2>
+                <div class="space-y-4">
+                    <h2 class="fi-header text-xl font-semibold mb-2">Buttons</h2>
                     <button class="fi-btn fi-btn-primary">Primary</button>
                     <button class="fi-btn fi-btn-secondary">Secondary</button>
                     <button class="fi-btn fi-btn-success">Success</button>
                     <button class="fi-btn fi-btn-danger">Danger</button>
                 </div>
 
-                <div class="space-y-2">
-                    <h2 class="fi-header text-xl font-semibold">Alerts</h2>
+                <div class="space-y-4">
+                    <h2 class="fi-header text-xl font-semibold mb-2">Alerts</h2>
                     <div class="fi-alert fi-alert-info">Info alert</div>
                     <div class="fi-alert fi-alert-success">Success alert</div>
                     <div class="fi-alert fi-alert-warning">Warning alert</div>
                     <div class="fi-alert fi-alert-danger">Error alert</div>
                 </div>
 
-                <div class="space-y-2">
-                    <h2 class="fi-header text-xl font-semibold">Badges</h2>
+                <div class="space-y-4">
+                    <h2 class="fi-header text-xl font-semibold mb-2">Badges</h2>
                     <div class="fi-badges-row">
                         <span class="fi-badge fi-badge-primary">Primary</span>
                         <span class="fi-badge fi-badge-success">Success</span>
@@ -33,8 +33,8 @@
                     </div>
                 </div>
 
-                <div class="space-y-2">
-                    <h2 class="fi-header text-xl font-semibold">Typography</h2>
+                <div class="space-y-4">
+                    <h2 class="fi-header text-xl font-semibold mb-2">Typography</h2>
                     <h3 class="fi-header text-lg font-bold">Heading 3</h3>
                     <p class="text-base fi-main-text">This is a normal paragraph. <span
                             class="font-semibold">Bold text</span> and
@@ -47,10 +47,10 @@
             </div>
 
             <!-- Column 2 -->
-            <div class="space-y-6">
-                <div class="space-y-2">
-                    <h2 class="fi-header text-xl font-semibold">Form Elements</h2>
-                    <form class="space-y-4">
+            <div class="space-y-10">
+                <div class="space-y-4">
+                    <h2 class="fi-header text-xl font-semibold mb-2">Form Elements</h2>
+                    <form class="space-y-5">
                         <div>
                             <label class="block text-sm font-medium fi-main-text">Text Input</label>
                             <input type="text" class="fi-input" placeholder="Type here...">
@@ -80,8 +80,8 @@
                     </form>
                 </div>
 
-                <div class="space-y-2">
-                    <h2 class="fi-header text-xl font-semibold">Table</h2>
+                <div class="space-y-4">
+                    <h2 class="fi-header text-xl font-semibold mb-2">Table</h2>
                     <div class="overflow-x-auto">
                         <table class="fi-table min-w-full text-sm">
                             <thead>
@@ -107,8 +107,8 @@
                     </div>
                 </div>
 
-                <div class="space-y-2">
-                    <h2 class="fi-header text-xl font-semibold">Card Example</h2>
+                <div class="space-y-4">
+                    <h2 class="fi-header text-xl font-semibold mb-2">Card Example</h2>
                     <div class="fi-card">
                         <h3 class="fi-header font-bold text-lg mb-2">Card Title</h3>
                         <p class="fi-main-text">This is a card with some content. Use this to test box shadows, padding,
@@ -118,8 +118,8 @@
                 </div>
 
                 <!-- Common Heroicons Section -->
-                <div class="space-y-2">
-                    <h2 class="fi-header text-xl font-semibold">Common Heroicons</h2>
+                <div class="space-y-4">
+                    <h2 class="fi-header text-xl font-semibold mb-2">Common Heroicons</h2>
                     <div class="flex flex-wrap gap-6 items-center">
                         <div class="flex flex-col items-center">
                             <x-filament::icon name="heroicon-o-x-mark" class="w-8 h-8 fi-icon-danger" />
@@ -142,8 +142,8 @@
                 <!-- End Common Heroicons Section -->
 
                 <!-- Direct Blade Heroicons Test Section -->
-                <div class="space-y-2">
-                    <h2 class="fi-header text-xl font-semibold">Direct Blade Heroicons Test</h2>
+                <div class="space-y-4">
+                    <h2 class="fi-header text-xl font-semibold mb-2">Direct Blade Heroicons Test</h2>
                     <div class="flex flex-wrap gap-6 items-center">
                         <div class="flex flex-col items-center">
                             <x-heroicon-o-x-mark class="w-8 h-8 fi-icon-danger" />
