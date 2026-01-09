@@ -1,0 +1,38 @@
+{
+    "name": "letspeppol/letspeppol-sdk-php",
+    "description": "Official LetsPeppol PHP SDK for e-invoicing API integration",
+    "type": "library",
+    "license": "MIT",
+    "keywords": ["letspeppol", "peppol", "e-invoicing", "api", "sdk", "ubl"],
+    "authors": [
+        {
+            "name": "LetsPeppol Contributors",
+            "homepage": "https://github.com/letspeppol/letspeppol"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "guzzlehttp/guzzle": "^7.4.5"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.0|^11.0",
+        "friendsofphp/php-cs-fixer": "^3.64"
+    },
+    "autoload": {
+        "psr-4": {
+            "LetsPeppolSdk\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "LetsPeppolSdk\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "cs-fix": "php-cs-fixer fix --config=.php-cs-fixer.dist.php",
+        "cs-check": "php-cs-fixer fix --dry-run --diff --config=.php-cs-fixer.dist.php"
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
