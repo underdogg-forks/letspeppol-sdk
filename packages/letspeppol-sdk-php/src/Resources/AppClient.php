@@ -4,13 +4,64 @@ namespace LetsPeppolSdk\Resources;
 
 /**
  * App API Client for LetsPeppol application management
+ *
+ * Provides document management, partner management, and business logic.
+ * All methods require JWT authentication.
  */
 class AppClient extends BaseResource
 {
     // ==================== Documents ====================
 
     /**
-     * Validate UBL XML
+     * Validate UBL XML document
+     *
+     * Validates UBL XML against Peppol BIS 3.0 rules before sending.
+     *
+     * **Request:**
+     * - POST /sapi/document/validate
+     * - Content-Type: text/xml
+     * - Body: UBL XML string
+     *
+     * **Response JSON:**
+     * ```json
+     * {
+     *   "valid": true,
+     *   "errors": [],
+     *   "warnings": [
+     *     "Optional field 'PaymentTerms' is missing"
+     *   ]
+     * }
+     * ```
+     *
+     * Or when invalid:
+     * ```json
+     * {
+     *   "valid": false,
+     *   "errors": [
+     *     "Invoice number is required",
+     *     "Invalid VAT number format"
+     *   ],
+     *   "warnings": []
+     * }
+     * ```
+     *
+     * **Example:**
+     * ```php
+     * $validation = $client->app()->validateDocument($ublXml);
+     * if ($validation['valid']) {
+     *     echo "Document is valid!";
+     *     $doc = $client->app()->createDocument($ublXml);
+     * } else {
+     *     echo "Validation errors:\n";
+     *     foreach ($validation['errors'] as $error) {
+     *         echo "- $error\n";
+     *     }
+     * }
+     * ```
+     *
+     * @param string $ublXml UBL XML content to validate
+     * @return array Validation result with valid flag, errors, and warnings
+     * @throws ApiException When XML is malformed (400)
      */
     public function validateDocument(string $ublXml): array
     {
@@ -22,6 +73,66 @@ class AppClient extends BaseResource
 
     /**
      * List documents with filtering and pagination
+     *
+     * Retrieves documents with optional filters.
+     *
+     * **Request:**
+     * - GET /sapi/document?type=INVOICE&direction=INCOMING&page=0&size=20
+     *
+     * **Filters:**
+     * - type: INVOICE, CREDIT_NOTE
+     * - direction: INCOMING, OUTGOING
+     * - draft: true, false
+     * - read: true, false
+     * - paid: true, false
+     *
+     * **Response JSON:**
+     * ```json
+     * {
+     *   "content": [
+     *     {
+     *       "id": "doc123",
+     *       "documentType": "INVOICE",
+     *       "direction": "INCOMING",
+     *       "invoiceNumber": "INV-2024-001",
+     *       "issueDate": "2024-01-09",
+     *       "dueDate": "2024-02-09",
+     *       "total": 1000.00,
+     *       "currency": "EUR",
+     *       "partnerName": "Supplier Company",
+     *       "partnerPeppolId": "0208:BE0987654321",
+     *       "read": false,
+     *       "paid": false
+     *     }
+     *   ],
+     *   "page": 0,
+     *   "size": 20,
+     *   "totalElements": 150,
+     *   "totalPages": 8
+     * }
+     * ```
+     *
+     * **Example:**
+     * ```php
+     * // Get unread incoming invoices
+     * $result = $client->app()->listDocuments([
+     *     'type' => 'INVOICE',
+     *     'direction' => 'INCOMING',
+     *     'read' => false
+     * ], 0, 20);
+     *
+     * echo "Found {$result['totalElements']} invoices\n";
+     * foreach ($result['content'] as $doc) {
+     *     echo "- {$doc['invoiceNumber']}: {$doc['total']} {$doc['currency']}\n";
+     * }
+     * ```
+     *
+     * @param array $filters Filter criteria (type, direction, draft, read, paid)
+     * @param int $page Page number (default: 0)
+     * @param int $size Page size (default: 20)
+     * @param string|null $sort Sort field with direction (e.g., "issueDate,desc")
+     * @return array Paginated document list with metadata
+     * @throws ApiException When invalid filter values (400)
      */
     public function listDocuments(array $filters = [], int $page = 0, int $size = 20, ?string $sort = null): array
     {
@@ -39,6 +150,41 @@ class AppClient extends BaseResource
 
     /**
      * Get document by ID
+     *
+     * Retrieves full document details including UBL XML.
+     *
+     * **Response JSON:**
+     * ```json
+     * {
+     *   "id": "doc123",
+     *   "documentType": "INVOICE",
+     *   "direction": "INCOMING",
+     *   "invoiceNumber": "INV-2024-001",
+     *   "issueDate": "2024-01-09",
+     *   "dueDate": "2024-02-09",
+     *   "total": 1000.00,
+     *   "currency": "EUR",
+     *   "partnerName": "Supplier Company",
+     *   "partnerPeppolId": "0208:BE0987654321",
+     *   "ubl": "<Invoice>...</Invoice>",
+     *   "read": false,
+     *   "paid": false,
+     *   "lineItems": [...]
+     * }
+     * ```
+     *
+     * **Example:**
+     * ```php
+     * $doc = $client->app()->getDocument('doc123');
+     * echo "Invoice: {$doc['invoiceNumber']}\n";
+     * echo "From: {$doc['partnerName']}\n";
+     * echo "Total: {$doc['total']} {$doc['currency']}\n";
+     * file_put_contents('invoice.xml', $doc['ubl']);
+     * ```
+     *
+     * @param string $id Document ID
+     * @return array Complete document details with UBL content
+     * @throws ApiException When document not found (404)
      */
     public function getDocument(string $id): array
     {
@@ -47,6 +193,41 @@ class AppClient extends BaseResource
 
     /**
      * Create document from UBL XML
+     *
+     * Creates a new document in the system.
+     *
+     * **Request:**
+     * - POST /sapi/document?draft=false&schedule=2024-01-10T09:00:00Z
+     * - Content-Type: text/xml
+     * - Body: UBL XML string
+     *
+     * **Response JSON:**
+     * ```json
+     * {
+     *   "id": "doc123",
+     *   "documentType": "INVOICE",
+     *   "invoiceNumber": "INV-2024-001",
+     *   "status": "DRAFT",
+     *   "createdAt": "2024-01-09T10:00:00Z"
+     * }
+     * ```
+     *
+     * **Example:**
+     * ```php
+     * // Create as draft
+     * $doc = $client->app()->createDocument($ublXml, true);
+     * echo "Draft created: {$doc['id']}\n";
+     *
+     * // Create and schedule send
+     * $doc = $client->app()->createDocument($ublXml, false, '2024-01-10T09:00:00Z');
+     * echo "Scheduled for: {$doc['scheduledAt']}\n";
+     * ```
+     *
+     * @param string $ublXml UBL XML content
+     * @param bool $draft If true, save as draft without sending (default: false)
+     * @param string|null $schedule ISO 8601 datetime to schedule sending
+     * @return array Created document with ID and status
+     * @throws ApiException When validation fails (422) or UBL invalid (400)
      */
     public function createDocument(string $ublXml, bool $draft = false, ?string $schedule = null): array
     {
@@ -64,6 +245,21 @@ class AppClient extends BaseResource
 
     /**
      * Update document
+     *
+     * Updates an existing draft document with new UBL content.
+     *
+     * **Example:**
+     * ```php
+     * $updated = $client->app()->updateDocument('doc123', $newUblXml, true);
+     * echo "Document updated: {$updated['id']}\n";
+     * ```
+     *
+     * @param string $id Document ID
+     * @param string $ublXml Updated UBL XML content
+     * @param bool $draft Keep as draft (default: false)
+     * @param string|null $schedule New scheduled send time
+     * @return array Updated document details
+     * @throws ApiException When document not found (404) or already sent (409)
      */
     public function updateDocument(string $id, string $ublXml, bool $draft = false, ?string $schedule = null): array
     {

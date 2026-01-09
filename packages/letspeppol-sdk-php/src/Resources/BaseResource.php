@@ -83,13 +83,13 @@ abstract class BaseResource
     }
 
     /**
-     * Make an API request
+     * Make an API request with robust error handling
      *
      * @param string $method HTTP method
      * @param string $endpoint API endpoint
      * @param array $options Guzzle request options
      * @return array Response data
-     * @throws ApiException
+     * @throws ApiException When API request fails, network error occurs, or invalid response
      */
     protected function request(string $method, string $endpoint, array $options = []): array
     {
@@ -102,24 +102,116 @@ abstract class BaseResource
             if ($statusCode >= 200 && $statusCode < 300) {
                 // Try to decode JSON, return as array if successful
                 $decoded = json_decode($body, true);
+                
+                // Check for JSON decode errors
+                if (json_last_error() !== JSON_ERROR_NONE && !empty($body)) {
+                    throw new ApiException(
+                        "Invalid JSON response: " . json_last_error_msg(),
+                        $statusCode,
+                        ['body' => $body, 'json_error' => json_last_error_msg()]
+                    );
+                }
+                
                 return $decoded ?? [];
             }
 
-            // Error status codes
-            $errorData = json_decode($body, true) ?? [];
+            // Error status codes - attempt to parse error response
+            $errorData = [];
+            $errorMessage = $body;
+            
+            // Try to parse JSON error response
+            if (!empty($body)) {
+                $decoded = json_decode($body, true);
+                if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                    $errorData = $decoded;
+                    // Extract error message from common response formats
+                    $errorMessage = $this->extractErrorMessage($decoded) ?? $body;
+                }
+            }
+
+            // Create detailed error message based on status code
+            $errorPrefix = $this->getErrorPrefix($statusCode);
             throw new ApiException(
-                "API request failed: {$statusCode} - {$body}",
+                "{$errorPrefix}: {$statusCode} - {$errorMessage}",
                 $statusCode,
                 $errorData
             );
         } catch (GuzzleException $e) {
+            // Categorize network errors
+            $errorType = $this->categorizeGuzzleException($e);
             throw new ApiException(
-                "Network error: {$e->getMessage()}",
-                0,
-                [],
+                "{$errorType}: {$e->getMessage()}",
+                $e->getCode(),
+                ['exception_class' => get_class($e), 'error_type' => $errorType],
                 $e
             );
         }
+    }
+
+    /**
+     * Extract error message from API response
+     *
+     * @param array $data Response data
+     * @return string|null Error message
+     */
+    private function extractErrorMessage(array $data): ?string
+    {
+        // Common error message fields
+        $fields = ['message', 'error', 'error_description', 'detail', 'title'];
+        
+        foreach ($fields as $field) {
+            if (isset($data[$field]) && is_string($data[$field])) {
+                return $data[$field];
+            }
+        }
+        
+        // Check nested error objects
+        if (isset($data['error']) && is_array($data['error'])) {
+            return $this->extractErrorMessage($data['error']);
+        }
+        
+        return null;
+    }
+
+    /**
+     * Get error prefix based on HTTP status code
+     *
+     * @param int $statusCode HTTP status code
+     * @return string Error prefix
+     */
+    private function getErrorPrefix(int $statusCode): string
+    {
+        return match (true) {
+            $statusCode === 400 => 'Bad Request',
+            $statusCode === 401 => 'Unauthorized',
+            $statusCode === 403 => 'Forbidden',
+            $statusCode === 404 => 'Not Found',
+            $statusCode === 409 => 'Conflict',
+            $statusCode === 422 => 'Validation Error',
+            $statusCode === 429 => 'Rate Limit Exceeded',
+            $statusCode >= 500 => 'Server Error',
+            default => 'API Error',
+        };
+    }
+
+    /**
+     * Categorize Guzzle exceptions for better error messages
+     *
+     * @param GuzzleException $e Guzzle exception
+     * @return string Error type
+     */
+    private function categorizeGuzzleException(GuzzleException $e): string
+    {
+        $class = get_class($e);
+        
+        return match (true) {
+            str_contains($class, 'ConnectException') => 'Connection Error',
+            str_contains($class, 'RequestException') => 'Request Error',
+            str_contains($class, 'ServerException') => 'Server Error',
+            str_contains($class, 'ClientException') => 'Client Error',
+            str_contains($class, 'TooManyRedirectsException') => 'Too Many Redirects',
+            default => 'Network Error',
+        };
     }
 
     /**
@@ -129,7 +221,7 @@ abstract class BaseResource
      * @param string $endpoint API endpoint
      * @param array $options Guzzle request options
      * @return string Response body
-     * @throws ApiException
+     * @throws ApiException When API request fails or network error occurs
      */
     protected function requestRaw(string $method, string $endpoint, array $options = []): string
     {
@@ -144,15 +236,18 @@ abstract class BaseResource
             }
 
             // Error status codes
+            $errorPrefix = $this->getErrorPrefix($statusCode);
             throw new ApiException(
-                "API request failed: {$statusCode} - {$body}",
-                $statusCode
+                "{$errorPrefix}: {$statusCode} - " . substr($body, 0, 200),
+                $statusCode,
+                ['body_preview' => substr($body, 0, 500)]
             );
         } catch (GuzzleException $e) {
+            $errorType = $this->categorizeGuzzleException($e);
             throw new ApiException(
-                "Network error: {$e->getMessage()}",
-                0,
-                [],
+                "{$errorType}: {$e->getMessage()}",
+                $e->getCode(),
+                ['exception_class' => get_class($e)],
                 $e
             );
         }
@@ -165,7 +260,7 @@ abstract class BaseResource
      * @param string $endpoint API endpoint
      * @param array $options Guzzle request options
      * @return array ['body' => string, 'headers' => array]
-     * @throws ApiException
+     * @throws ApiException When API request fails or network error occurs
      */
     protected function requestWithHeaders(string $method, string $endpoint, array $options = []): array
     {
@@ -187,15 +282,18 @@ abstract class BaseResource
             }
 
             // Error status codes
+            $errorPrefix = $this->getErrorPrefix($statusCode);
             throw new ApiException(
-                "API request failed: {$statusCode} - {$body}",
-                $statusCode
+                "{$errorPrefix}: {$statusCode} - {$body}",
+                $statusCode,
+                ['body' => $body]
             );
         } catch (GuzzleException $e) {
+            $errorType = $this->categorizeGuzzleException($e);
             throw new ApiException(
-                "Network error: {$e->getMessage()}",
-                0,
-                [],
+                "{$errorType}: {$e->getMessage()}",
+                $e->getCode(),
+                ['exception_class' => get_class($e)],
                 $e
             );
         }
