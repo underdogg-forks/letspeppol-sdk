@@ -239,7 +239,7 @@ $result = $client->kyc()->finalizeSigning([
 
 ## Error Handling
 
-All API methods throw exceptions on failure:
+The SDK provides robust error handling with detailed exception information:
 
 ```php
 use LetsPeppolSdk\Exceptions\ApiException;
@@ -251,15 +251,73 @@ try {
     // Handle authentication errors
     echo "Authentication failed: " . $e->getMessage();
 } catch (ApiException $e) {
-    $statusCode = $e->getCode();
-    $message = $e->getMessage();
-    $responseData = $e->getResponseData();
+    // Check error type
+    if ($e->isNetworkError()) {
+        echo "Network connectivity issue";
+    } elseif ($e->isClientError()) {
+        echo "Invalid request: " . $e->getMessage();
+    } elseif ($e->isServerError()) {
+        echo "Server error, please retry";
+    }
     
-    // Handle API errors
+    // Get detailed error information
+    $statusCode = $e->getStatusCode(); // HTTP status code
+    $responseData = $e->getResponseData(); // API response data
+    $errorReport = $e->getErrorReport(); // Comprehensive error details
+    
+    // Handle specific errors
     if ($statusCode === 404) {
         echo "Resource not found";
-    } elseif ($statusCode === 401) {
-        echo "Token expired - re-authenticate";
+    } elseif ($statusCode === 422) {
+        echo "Validation failed";
+        print_r($responseData['errors']);
+    } elseif ($statusCode === 429) {
+        echo "Rate limit exceeded";
+    }
+}
+```
+
+### Error Handling Features
+
+- **Intelligent error parsing**: Automatically extracts error messages from API responses
+- **HTTP status categorization**: Bad Request (400), Unauthorized (401), Forbidden (403), Not Found (404), Validation Error (422), Rate Limit (429), Server Error (5xx)
+- **Network error detection**: Categorizes connection issues, timeouts, and other network problems
+- **Detailed error reports**: Get comprehensive debugging information with `getErrorReport()`
+- **Helper methods**: `isNetworkError()`, `isClientError()`, `isServerError()` for easy error type checking
+
+See [ERROR_HANDLING_GUIDE.md](ERROR_HANDLING_GUIDE.md) for comprehensive error handling patterns and examples.
+
+## API Documentation
+
+All methods are fully documented with:
+- Complete request/response JSON schemas
+- Usage examples with code snippets
+- Parameter descriptions and types
+- Error scenarios and HTTP status codes
+
+Example documentation from KycClient:
+
+```php
+/**
+ * Get company information by Peppol ID
+ *
+ * **Response JSON:**
+ * {
+ *   "peppolId": "0208:BE0123456789",
+ *   "name": "Company Name BVBA",
+ *   "address": {...}
+ * }
+ *
+ * **Example:**
+ * $company = $client->kyc()->getCompany('0208:BE0123456789');
+ *
+ * @throws ApiException When company not found (404)
+ */
+```
+
+View the source code for complete API documentation on every method.
+
+## Custom Base URLs
     }
 }
 ```
