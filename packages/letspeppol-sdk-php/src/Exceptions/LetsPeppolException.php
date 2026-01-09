@@ -14,6 +14,16 @@ class LetsPeppolException extends Exception
     protected ?string $endpoint = null;
     protected ?string $method = null;
 
+    /**
+     * Constructor maintains backward compatibility while adding optional parameters
+     *
+     * @param string $message Error message
+     * @param int $code HTTP status code (0 for network errors)
+     * @param array $responseData Response data from API
+     * @param Throwable|null $previous Previous exception in chain
+     * @param string|null $endpoint API endpoint that caused the error
+     * @param string|null $method HTTP method used (GET, POST, etc.)
+     */
     public function __construct(
         string $message,
         int $code = 0,

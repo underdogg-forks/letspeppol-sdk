@@ -104,7 +104,7 @@ abstract class BaseResource
                 $decoded = json_decode($body, true);
                 
                 // Check for JSON decode errors
-                if (json_last_error() !== JSON_ERROR_NONE && !empty($body)) {
+                if (json_last_error() !== JSON_ERROR_NONE && $body !== '') {
                     throw new ApiException(
                         "Invalid JSON response: " . json_last_error_msg(),
                         $statusCode,
@@ -120,7 +120,7 @@ abstract class BaseResource
             $errorMessage = $body;
             
             // Try to parse JSON error response
-            if (!empty($body)) {
+            if ($body !== '') {
                 $decoded = json_decode($body, true);
                 if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
                     $errorData = $decoded;
@@ -202,16 +202,24 @@ abstract class BaseResource
      */
     private function categorizeGuzzleException(GuzzleException $e): string
     {
-        $class = get_class($e);
+        // Use instanceof for more reliable type checking
+        if ($e instanceof \GuzzleHttp\Exception\ConnectException) {
+            return 'Connection Error';
+        }
+        if ($e instanceof \GuzzleHttp\Exception\ServerException) {
+            return 'Server Error';
+        }
+        if ($e instanceof \GuzzleHttp\Exception\ClientException) {
+            return 'Client Error';
+        }
+        if ($e instanceof \GuzzleHttp\Exception\TooManyRedirectsException) {
+            return 'Too Many Redirects';
+        }
+        if ($e instanceof \GuzzleHttp\Exception\RequestException) {
+            return 'Request Error';
+        }
         
-        return match (true) {
-            str_contains($class, 'ConnectException') => 'Connection Error',
-            str_contains($class, 'RequestException') => 'Request Error',
-            str_contains($class, 'ServerException') => 'Server Error',
-            str_contains($class, 'ClientException') => 'Client Error',
-            str_contains($class, 'TooManyRedirectsException') => 'Too Many Redirects',
-            default => 'Network Error',
-        };
+        return 'Network Error';
     }
 
     /**
