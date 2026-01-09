@@ -290,7 +290,9 @@ class AppClient extends BaseResource
         $params = array_filter([
             'name' => $name,
             'participant' => $participant,
-        ], fn($value) => $value !== null);
+        ], function ($value) {
+            return $value !== null;
+        });
 
         return $this->get('/api/peppol-directory', $params);
     }

@@ -85,7 +85,7 @@ class Session
     public function setToken(string $token): void
     {
         $this->token = $token;
-        
+
         // Recreate client with new token
         $options = $this->client->getConfig();
         $options['headers']['Authorization'] = "Bearer {$token}";

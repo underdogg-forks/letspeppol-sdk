@@ -131,7 +131,9 @@ class KycClient extends BaseResource
             'vatNumber' => $vatNumber,
             'peppolId' => $peppolId,
             'companyName' => $companyName,
-        ], fn($value) => $value !== null);
+        ], function ($value) {
+            return $value !== null;
+        });
 
         return $this->get('/sapi/company/search', $params);
     }
