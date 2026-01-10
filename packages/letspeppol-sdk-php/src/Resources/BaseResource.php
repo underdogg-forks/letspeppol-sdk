@@ -136,6 +136,8 @@ abstract class BaseResource
                 $statusCode,
                 $errorData
             );
+        } catch (ApiException $e) {
+            throw $e;
         } catch (GuzzleException $e) {
             // Categorize network errors
             $errorType = $this->categorizeGuzzleException($e);

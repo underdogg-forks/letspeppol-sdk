@@ -62,9 +62,10 @@ function partnerSearchExample(LetsPeppolClient $client)
         if (!empty($partners)) {
             $partner = $partners[0];
             echo "Found partner: {$partner['name']}\n";
-        } else {
-            echo "Partner not found\n";
+            return;
         }
+
+        echo "Partner not found\n";
         
     } catch (ApiException $e) {
         echo "Error searching partners: {$e->getMessage()}\n";
@@ -103,8 +104,8 @@ function sendInvoiceExample(LetsPeppolClient $client, string $ublXml)
         // First validate the UBL XML
         $validation = $client->app()->validateDocument($ublXml);
         
-        if (!$validation['valid']) {
-            echo "Validation failed: " . json_encode($validation['errors']) . "\n";
+        if (!($validation['valid'] ?? false)) {
+            echo "Validation failed: " . json_encode($validation['errors'] ?? []) . "\n";
             return;
         }
         
@@ -112,11 +113,16 @@ function sendInvoiceExample(LetsPeppolClient $client, string $ublXml)
         
         // Create as draft first
         $document = $client->app()->createDocument($ublXml, true);
-        echo "Draft created with ID: {$document['id']}\n";
+        echo "Draft created with ID: " . ($document['id'] ?? 'unknown') . "\n";
         
         // Send the document
-        $sent = $client->app()->sendDocument($document['id']);
-        echo "Document sent successfully! Status: {$sent['status']}\n";
+        $documentId = $document['id'] ?? null;
+        if (!$documentId) {
+            echo "Failed to get document ID\n";
+            return;
+        }
+        $sent = $client->app()->sendDocument($documentId);
+        echo "Document sent successfully! Status: " . ($sent['status'] ?? 'unknown') . "\n";
         
     } catch (ApiException $e) {
         echo "Error sending invoice: {$e->getMessage()}\n";
