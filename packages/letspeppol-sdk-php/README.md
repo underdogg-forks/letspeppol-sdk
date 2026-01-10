@@ -320,27 +320,6 @@ View the source code for complete API documentation on every method.
 ## Custom Base URLs
     }
 }
-```
-
-## Custom Base URLs
-
-You can specify custom base URLs for each API module:
-
-```php
-$client = new LetsPeppolClient(
-    'https://custom-kyc.example.com',
-    'https://custom-proxy.example.com',
-    'https://custom-app.example.com'
-);
-```
-
-## API Documentation
-
-For complete API documentation and all available methods, see:
-- [Full API Documentation](../../docs/api/LETSPEPPOL.md)
-- [Quick Start Guide](../../docs/api/LETSPEPPOL-QUICKSTART.md)
-- [OpenAPI Specifications](../../storage/api-specs/)
-
 ## Features
 
 - ✅ Complete coverage of all LetsPeppol API endpoints

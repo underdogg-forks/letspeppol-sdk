@@ -12,7 +12,9 @@ $finder = Finder::create()
     ->ignoreVCS(true);
 
 return (new Config())
-    ->setRiskyAllowed(true)
+return (new Config())
+    ->setFinder($finder)
+    ->setRules([
     ->setFinder($finder)
     ->setRules([
         '@PSR12' => true,
@@ -22,5 +24,5 @@ return (new Config())
         'ordered_imports' => ['sort_algorithm' => 'alpha'],
         'no_trailing_whitespace' => true,
         'trim_array_spaces' => true,
-        'binary_operator_spaces' => ['default' => 'align_single_space_minimal'],
+        'binary_operator_spaces' => ['default' => 'single_space'],
     ]);

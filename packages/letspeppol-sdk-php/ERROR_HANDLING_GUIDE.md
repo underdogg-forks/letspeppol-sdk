@@ -238,13 +238,15 @@ while ($retryCount < $maxRetries) {
     } catch (ApiException $e) {
         if ($e->isNetworkError()) {
             $retryCount++;
+            if ($retryCount >= $maxRetries) {
+                throw $e; // All retries exhausted
+            }
             sleep(pow(2, $retryCount)); // Exponential backoff
         } else {
             throw $e; // Not a network error, rethrow
         }
     }
 }
-```
 
 ## Comprehensive Error Report
 
