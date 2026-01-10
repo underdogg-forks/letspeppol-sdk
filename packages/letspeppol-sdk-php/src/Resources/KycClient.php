@@ -62,11 +62,12 @@ class KycClient extends BaseResource
                 "Authentication failed: {$statusCode} - {$body}",
                 $statusCode
             );
-        } catch (\Exception $e) {
-            if ($e instanceof AuthenticationException) {
-                throw $e;
-            }
+        } catch (AuthenticationException $e) {
+            throw $e;
+        } catch (\GuzzleHttp\Exception\GuzzleException $e) {
             throw new AuthenticationException("Authentication error: {$e->getMessage()}", 0, [], $e);
+        } catch (\Throwable $e) {
+            throw new AuthenticationException("Unexpected authentication error: {$e->getMessage()}", 0, [], $e);
         }
     }
 
@@ -461,7 +462,32 @@ class KycClient extends BaseResource
     }
 
     /**
-     * Request password reset
+     * Request password reset email
+     *
+     * Sends a password reset email to the specified user. The email contains a token
+     * that must be used with resetPassword() to complete the password reset process.
+     * The token typically expires after a certain period (e.g., 24 hours).
+     *
+     * **Side effects:**
+     * - Sends email to the user with reset instructions and token
+     * - Token is valid for limited time period
+     *
+     * **Request JSON:**
+     * ```json
+     * {
+     *   "email": "user@example.com"
+     * }
+     * ```
+     *
+     * **Example:**
+     * ```php
+     * $client->kyc()->forgotPassword('user@example.com', 'en');
+     * ```
+     *
+     * @param string $email User email address to send reset link
+     * @param string|null $language Optional language code for email (e.g., 'en', 'nl', 'fr')
+     * @return void
+     * @throws ApiException When email not found (404), invalid format (400), or server error (5xx)
      */
     public function forgotPassword(string $email, ?string $language = null): void
     {
@@ -475,7 +501,33 @@ class KycClient extends BaseResource
     }
 
     /**
-     * Reset password with token
+     * Reset password using token from forgot password email
+     *
+     * Completes the password reset process using the token received via email.
+     * The token must be valid and not expired. Password must meet security requirements.
+     *
+     * **Password requirements:**
+     * - Minimum length: 8 characters
+     * - Must contain uppercase, lowercase, number, and special character
+     * - Cannot be same as previous passwords
+     *
+     * **Request JSON:**
+     * ```json
+     * {
+     *   "token": "abc123def456...",
+     *   "newPassword": "NewSecurePass123!"
+     * }
+     * ```
+     *
+     * **Example:**
+     * ```php
+     * $client->kyc()->resetPassword($tokenFromEmail, 'NewSecurePass123!');
+     * ```
+     *
+     * @param string $token Reset token from forgot password email
+     * @param string $newPassword New password meeting security requirements
+     * @return void
+     * @throws ApiException When token invalid/expired (400), password weak (422), or server error (5xx)
      */
     public function resetPassword(string $token, string $newPassword): void
     {
@@ -486,7 +538,36 @@ class KycClient extends BaseResource
     }
 
     /**
-     * Change password (requires authentication)
+     * Change password for authenticated user
+     *
+     * Updates the password for the currently authenticated user. Requires valid JWT token.
+     * Old password must match current password. New password must meet security requirements.
+     *
+     * **Authentication required:** Yes (JWT token)
+     *
+     * **Password requirements:**
+     * - Minimum length: 8 characters
+     * - Must contain uppercase, lowercase, number, and special character
+     * - Cannot be same as current or recent passwords
+     *
+     * **Request JSON:**
+     * ```json
+     * {
+     *   "oldPassword": "CurrentPass123!",
+     *   "newPassword": "NewSecurePass123!"
+     * }
+     * ```
+     *
+     * **Example:**
+     * ```php
+     * $client->kyc()->changePassword('CurrentPass123!', 'NewSecurePass123!');
+     * ```
+     *
+     * @param string $oldPassword Current password for verification
+     * @param string $newPassword New password meeting security requirements
+     * @return void
+     * @throws AuthenticationException When not authenticated (401)
+     * @throws ApiException When old password wrong (403), password weak (422), or server error (5xx)
      */
     public function changePassword(string $oldPassword, string $newPassword): void
     {

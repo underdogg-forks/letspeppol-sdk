@@ -411,11 +411,11 @@ $client = new LetsPeppolClient(
 ## Summary
 
 The standalone package maintains **100% feature parity** with the Laravel version while being:
-- ✅ Framework-agnostic
-- ✅ More portable
-- ✅ Better documented
-- ✅ Easier to maintain
-- ✅ Follows industry standards
-- ✅ Ready for distribution
+- * Framework-agnostic
+- * More portable
+- * Better documented
+- * Easier to maintain
+- * Follows industry standards
+- * Ready for distribution
 
 This matches the structure and approach of the reference `freelancer-sdk-php` package, making it a proper SDK that can be used anywhere PHP runs.

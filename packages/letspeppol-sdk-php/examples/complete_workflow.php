@@ -37,19 +37,19 @@ try {
     echo "Step 1: Authenticating...\n";
     $client = new LetsPeppolClient();
     $token = $client->authenticate($email, $password);
-    echo "✓ Authenticated successfully\n";
+    echo "* Authenticated successfully\n";
     echo "  Token (first 20 chars): " . substr($token, 0, 20) . "...\n\n";
 
     // Step 2: Get company information
     echo "Step 2: Retrieving company information...\n";
     $company = $client->app()->getCompany();
-    echo "✓ Company: {$company['name']}\n";
+    echo "* Company: {$company['name']}\n";
     echo "  Peppol ID: {$company['peppolId']}\n\n";
 
     // Step 3: List existing partners
     echo "Step 3: Listing partners...\n";
     $partners = $client->app()->listPartners();
-    echo "✓ Found " . count($partners) . " partner(s)\n";
+    echo "* Found " . count($partners) . " partner(s)\n";
     foreach ($partners as $partner) {
         echo "  - {$partner['name']} ({$partner['peppolId']})\n";
     }
@@ -68,9 +68,9 @@ try {
             'vatNumber' => 'BE0987654321',
             'email' => 'partner@example.com'
         ]);
-        echo "✓ Partner created: {$partner['name']}\n\n";
+        echo "* Partner created: {$partner['name']}\n\n";
     } else {
-        echo "✓ Partner found: {$searchResults[0]['name']}\n\n";
+        echo "* Partner found: {$searchResults[0]['name']}\n\n";
     }
 
     // Step 5: Validate UBL XML
@@ -78,9 +78,9 @@ try {
     $validation = $client->app()->validateDocument($sampleUblXml);
     
     if (isset($validation['valid']) && $validation['valid']) {
-        echo "✓ UBL validation passed\n\n";
+        echo "* UBL validation passed\n\n";
     } else {
-        echo "✗ UBL validation failed:\n";
+        echo "* UBL validation failed:\n";
         if (isset($validation['errors'])) {
             foreach ($validation['errors'] as $error) {
                 echo "  - $error\n";
@@ -93,20 +93,20 @@ try {
     // Step 6: Create document as draft
     echo "Step 6: Creating document as draft...\n";
     $document = $client->app()->createDocument($sampleUblXml, true);
-    echo "✓ Draft created\n";
+    echo "* Draft created\n";
     echo "  Document ID: {$document['id']}\n";
     echo "  Status: {$document['status']}\n\n";
 
     // Step 7: Review and send document
     echo "Step 7: Sending document...\n";
     $sent = $client->app()->sendDocument($document['id']);
-    echo "✓ Document sent\n";
+    echo "* Document sent\n";
     echo "  New status: {$sent['status']}\n\n";
 
     // Step 8: Check for incoming documents
     echo "Step 8: Checking for incoming documents...\n";
     $newDocs = $client->proxy()->getAllNewDocuments(10);
-    echo "✓ Found " . count($newDocs) . " new document(s)\n";
+    echo "* Found " . count($newDocs) . " new document(s)\n";
     
     if (!empty($newDocs)) {
         echo "  Processing new documents:\n";
@@ -115,7 +115,7 @@ try {
             
             // Mark as downloaded after processing
             $client->proxy()->markDownloaded($doc['id']);
-            echo "    ✓ Marked as downloaded\n";
+            echo "    * Marked as downloaded\n";
         }
     }
     echo "\n";
@@ -123,7 +123,7 @@ try {
     // Step 9: Get statistics
     echo "Step 9: Retrieving account statistics...\n";
     $stats = $client->app()->getAccountTotals();
-    echo "✓ Account totals:\n";
+    echo "* Account totals:\n";
     if (isset($stats['incoming'])) {
         echo "  Incoming documents: {$stats['incoming']}\n";
     }
@@ -136,11 +136,11 @@ try {
     echo "\n";
 
     echo "===========================================\n";
-    echo "✓ Workflow completed successfully!\n";
+    echo "* Workflow completed successfully!\n";
     echo "===========================================\n";
 
 } catch (ApiException $e) {
-    echo "\n✗ Error occurred:\n";
+    echo "\n* Error occurred:\n";
     echo "  Code: {$e->getCode()}\n";
     echo "  Message: {$e->getMessage()}\n";
     
@@ -151,7 +151,7 @@ try {
     
     exit(1);
 } catch (Exception $e) {
-    echo "\n✗ Unexpected error:\n";
+    echo "\n* Unexpected error:\n";
     echo "  " . $e->getMessage() . "\n";
     exit(1);
 }

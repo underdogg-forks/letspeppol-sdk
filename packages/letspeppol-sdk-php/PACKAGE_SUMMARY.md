@@ -46,10 +46,10 @@ letspeppol-sdk-php/
 ### 1. Framework-Agnostic
 
 Unlike the original Laravel-embedded code, this package:
-- ✅ Uses **Guzzle HTTP client** instead of Laravel's HTTP facade
-- ✅ No Laravel dependencies
-- ✅ Can be used in any PHP project (Symfony, Slim, standalone scripts, etc.)
-- ✅ Pure PHP 8.1+ code
+- * Uses **Guzzle HTTP client** instead of Laravel's HTTP facade
+- * No Laravel dependencies
+- * Can be used in any PHP project (Symfony, Slim, standalone scripts, etc.)
+- * Pure PHP 8.1+ code
 
 ### 2. Complete API Coverage
 
@@ -283,25 +283,25 @@ class BaseResource {
 
 All PHP files have been syntax-checked:
 ```bash
-✓ No syntax errors in Session.php
-✓ No syntax errors in LetsPeppolClient.php
-✓ No syntax errors in BaseResource.php
-✓ No syntax errors in KycClient.php
-✓ No syntax errors in ProxyClient.php
-✓ No syntax errors in AppClient.php
-✓ No syntax errors in all Exception classes
-✓ No syntax errors in example files
+* No syntax errors in Session.php
+* No syntax errors in LetsPeppolClient.php
+* No syntax errors in BaseResource.php
+* No syntax errors in KycClient.php
+* No syntax errors in ProxyClient.php
+* No syntax errors in AppClient.php
+* No syntax errors in all Exception classes
+* No syntax errors in example files
 ```
 
 All classes load successfully:
 ```bash
-✓ LetsPeppolSdk\Session loaded
-✓ LetsPeppolSdk\LetsPeppolClient loaded
-✓ LetsPeppolSdk\Resources\BaseResource loaded
-✓ LetsPeppolSdk\Resources\KycClient loaded
-✓ LetsPeppolSdk\Resources\ProxyClient loaded
-✓ LetsPeppolSdk\Resources\AppClient loaded
-✓ All exception classes loaded
+* LetsPeppolSdk\Session loaded
+* LetsPeppolSdk\LetsPeppolClient loaded
+* LetsPeppolSdk\Resources\BaseResource loaded
+* LetsPeppolSdk\Resources\KycClient loaded
+* LetsPeppolSdk\Resources\ProxyClient loaded
+* LetsPeppolSdk\Resources\AppClient loaded
+* All exception classes loaded
 ```
 
 ## Integration with Main Repository
@@ -325,26 +325,26 @@ The main repository's `composer.json` has been updated to include the package as
 ## Benefits
 
 ### For Users
-- ✅ Can be used in any PHP project
-- ✅ Simple, intuitive API
-- ✅ Complete API coverage
-- ✅ Type-safe methods
-- ✅ Comprehensive error handling
-- ✅ Well-documented with examples
+- * Can be used in any PHP project
+- * Simple, intuitive API
+- * Complete API coverage
+- * Type-safe methods
+- * Comprehensive error handling
+- * Well-documented with examples
 
 ### For Developers
-- ✅ Clean, maintainable code
-- ✅ PSR-4 autoloading
-- ✅ PHPUnit ready
-- ✅ PHP-CS-Fixer configured
-- ✅ Follows best practices
-- ✅ Easy to extend
+- * Clean, maintainable code
+- * PSR-4 autoloading
+- * PHPUnit ready
+- * PHP-CS-Fixer configured
+- * Follows best practices
+- * Easy to extend
 
 ### For the Ecosystem
-- ✅ Follows Composer package standards
-- ✅ Compatible with Packagist
-- ✅ Similar structure to other SDK packages
-- ✅ Can be version-tagged and released
+- * Follows Composer package standards
+- * Compatible with Packagist
+- * Similar structure to other SDK packages
+- * Can be version-tagged and released
 
 ## Future Enhancements
 
@@ -379,6 +379,6 @@ For issues or questions:
 
 ---
 
-**Status**: ✅ Complete and ready for use
+**Status**: * Complete and ready for use
 
 **Last Updated**: January 9, 2026

@@ -322,16 +322,16 @@ View the source code for complete API documentation on every method.
 }
 ## Features
 
-- ✅ Complete coverage of all LetsPeppol API endpoints
-- ✅ Authentication and registration flow
-- ✅ Document management (create, read, update, delete)
-- ✅ Document validation and transmission
-- ✅ Partner and product management
-- ✅ Peppol Directory integration
-- ✅ Registry management
-- ✅ Type-safe method signatures
-- ✅ Comprehensive error handling
-- ✅ Framework-agnostic (works with any PHP application)
+- * Complete coverage of all LetsPeppol API endpoints
+- * Authentication and registration flow
+- * Document management (create, read, update, delete)
+- * Document validation and transmission
+- * Partner and product management
+- * Peppol Directory integration
+- * Registry management
+- * Type-safe method signatures
+- * Comprehensive error handling
+- * Framework-agnostic (works with any PHP application)
 
 ## Testing
 
