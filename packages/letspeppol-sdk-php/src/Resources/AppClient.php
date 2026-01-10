@@ -188,7 +188,7 @@ class AppClient extends BaseResource
      */
     public function getDocument(string $id): array
     {
-        return $this->get("/sapi/document/{$id}");
+        return $this->get("/sapi/document/" . rawurlencode($id));
     }
 
     /**
@@ -268,7 +268,7 @@ class AppClient extends BaseResource
             $params['schedule'] = $schedule;
         }
 
-        return $this->request('PUT', "/sapi/document/{$id}", [
+        return $this->request('PUT', "/sapi/document/" . rawurlencode($id), [
             'body' => $ublXml,
             'headers' => ['Content-Type' => 'text/xml'],
             'query' => $params,
@@ -277,6 +277,22 @@ class AppClient extends BaseResource
 
     /**
      * Send document
+     *
+     * Triggers sending of a document via Peppol network.
+     *
+     * **Example:**
+     * ```php
+     * // Send immediately
+     * $result = $client->app()->sendDocument('doc123');
+     *
+     * // Schedule send
+     * $result = $client->app()->sendDocument('doc123', '2024-01-10T09:00:00Z');
+     * ```
+     *
+     * @param string $id Document ID
+     * @param string|null $schedule Optional ISO 8601 datetime to schedule sending
+     * @return array Document status after send trigger
+     * @throws ApiException When document not found (404), not ready (422), or already sent (409)
      */
     public function sendDocument(string $id, ?string $schedule = null): array
     {
@@ -285,33 +301,66 @@ class AppClient extends BaseResource
             $params['schedule'] = $schedule;
         }
 
-        return $this->request('PUT', "/sapi/document/{$id}/send", [
+        return $this->request('PUT', "/sapi/document/" . rawurlencode($id) . "/send", [
             'query' => $params
         ]);
     }
 
     /**
      * Mark document as read
+     *
+     * Updates document status to indicate it has been read by the user.
+     *
+     * **Example:**
+     * ```php
+     * $result = $client->app()->markDocumentRead('doc123');
+     * ```
+     *
+     * @param string $id Document ID
+     * @return array Updated document status
+     * @throws ApiException When document not found (404)
      */
     public function markDocumentRead(string $id): array
     {
-        return $this->request('PUT', "/sapi/document/{$id}/read");
+        return $this->request('PUT', "/sapi/document/" . rawurlencode($id) . "/read");
     }
 
     /**
      * Mark document as paid
+     *
+     * Updates document status to indicate payment has been received/made.
+     *
+     * **Example:**
+     * ```php
+     * $result = $client->app()->markDocumentPaid('doc123');
+     * ```
+     *
+     * @param string $id Document ID
+     * @return array Updated document status
+     * @throws ApiException When document not found (404)
      */
     public function markDocumentPaid(string $id): array
     {
-        return $this->request('PUT', "/sapi/document/{$id}/paid");
+        return $this->request('PUT', "/sapi/document/" . rawurlencode($id) . "/paid");
     }
 
     /**
      * Delete document
+     *
+     * Permanently deletes a document from the system.
+     *
+     * **Example:**
+     * ```php
+     * $client->app()->deleteDocument('doc123');
+     * ```
+     *
+     * @param string $id Document ID
+     * @return void
+     * @throws ApiException When document not found (404) or cannot be deleted (409)
      */
     public function deleteDocument(string $id): void
     {
-        $this->delete("/sapi/document/{$id}");
+        $this->delete("/sapi/document/" . rawurlencode($id));
     }
 
     // ==================== Company ====================
@@ -363,7 +412,7 @@ class AppClient extends BaseResource
      */
     public function updatePartner(int $id, array $partnerData): array
     {
-        return $this->put("/sapi/partner/{$id}", $partnerData);
+        return $this->put("/sapi/partner/" . rawurlencode((string)$id), $partnerData);
     }
 
     /**
@@ -371,7 +420,7 @@ class AppClient extends BaseResource
      */
     public function deletePartner(int $id): void
     {
-        $this->delete("/sapi/partner/{$id}");
+        $this->delete("/sapi/partner/" . rawurlencode((string)$id));
     }
 
     // ==================== Products ====================
@@ -397,7 +446,7 @@ class AppClient extends BaseResource
      */
     public function updateProduct(int $id, array $productData): array
     {
-        return $this->put("/sapi/product/{$id}", $productData);
+        return $this->put("/sapi/product/" . rawurlencode((string)$id), $productData);
     }
 
     /**
@@ -405,7 +454,7 @@ class AppClient extends BaseResource
      */
     public function deleteProduct(int $id): void
     {
-        $this->delete("/sapi/product/{$id}");
+        $this->delete("/sapi/product/" . rawurlencode((string)$id));
     }
 
     // ==================== Product Categories ====================
@@ -431,7 +480,7 @@ class AppClient extends BaseResource
      */
     public function getCategory(int $id, bool $deep = false): array
     {
-        return $this->get("/sapi/product-category/{$id}", ['deep' => $deep ? 'true' : 'false']);
+        return $this->get("/sapi/product-category/" . rawurlencode((string)$id), ['deep' => $deep ? 'true' : 'false']);
     }
 
     /**
@@ -447,7 +496,7 @@ class AppClient extends BaseResource
      */
     public function updateCategory(int $id, array $categoryData): array
     {
-        return $this->put("/sapi/product-category/{$id}", $categoryData);
+        return $this->put("/sapi/product-category/" . rawurlencode((string)$id), $categoryData);
     }
 
     /**
@@ -455,7 +504,7 @@ class AppClient extends BaseResource
      */
     public function deleteCategory(int $id): void
     {
-        $this->delete("/sapi/product-category/{$id}");
+        $this->delete("/sapi/product-category/" . rawurlencode((string)$id));
     }
 
     // ==================== Statistics ====================

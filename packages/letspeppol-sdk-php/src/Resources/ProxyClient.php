@@ -133,7 +133,7 @@ class ProxyClient extends BaseResource
      */
     public function getDocument(string $id): array
     {
-        return $this->get("/sapi/document/{$id}");
+        return $this->get("/sapi/document/" . rawurlencode($id));
     }
 
     /**
@@ -212,7 +212,7 @@ class ProxyClient extends BaseResource
      */
     public function updateDocument(string $id, array $documentData, bool $noArchive = false): array
     {
-        return $this->request('PUT', "/sapi/document/{$id}", [
+        return $this->request('PUT', "/sapi/document/" . rawurlencode($id), [
             'json' => $documentData,
             'query' => ['noArchive' => $noArchive ? 'true' : 'false']
         ]);
@@ -244,21 +244,45 @@ class ProxyClient extends BaseResource
      */
     public function rescheduleDocument(string $id, array $documentData): array
     {
-        return $this->put("/sapi/document/{$id}/send", $documentData);
+        return $this->put("/sapi/document/" . rawurlencode($id) . "/send", $documentData);
     }
 
     /**
      * Mark document as downloaded
+     *
+     * Marks a received document as downloaded so it won't appear in new documents list.
+     *
+     * **Example:**
+     * ```php
+     * $client->proxy()->markDownloaded('doc123');
+     * ```
+     *
+     * @param string $id Document ID
+     * @param bool $noArchive If true, document won't be archived (default: false)
+     * @return void
+     * @throws ApiException When document not found (404)
      */
     public function markDownloaded(string $id, bool $noArchive = false): void
     {
-        $this->request('PUT', "/sapi/document/{$id}/downloaded", [
+        $this->request('PUT', "/sapi/document/" . rawurlencode($id) . "/downloaded", [
             'query' => ['noArchive' => $noArchive ? 'true' : 'false']
         ]);
     }
 
     /**
      * Mark multiple documents as downloaded
+     *
+     * Batch operation to mark multiple received documents as downloaded.
+     *
+     * **Example:**
+     * ```php
+     * $client->proxy()->markDownloadedBatch(['doc123', 'doc456', 'doc789']);
+     * ```
+     *
+     * @param array $documentIds Array of document IDs to mark as downloaded
+     * @param bool $noArchive If true, documents won't be archived (default: false)
+     * @return void
+     * @throws ApiException When request fails
      */
     public function markDownloadedBatch(array $documentIds, bool $noArchive = false): void
     {
@@ -270,16 +294,38 @@ class ProxyClient extends BaseResource
 
     /**
      * Cancel/delete document
+     *
+     * Deletes a document from the system.
+     *
+     * **Example:**
+     * ```php
+     * $client->proxy()->deleteDocument('doc123');
+     * ```
+     *
+     * @param string $id Document ID
+     * @param bool $noArchive If true, document won't be archived (default: false)
+     * @return void
+     * @throws ApiException When document not found (404) or cannot be deleted (409)
      */
     public function deleteDocument(string $id, bool $noArchive = false): void
     {
-        $this->request('DELETE', "/sapi/document/{$id}", [
+        $this->request('DELETE', "/sapi/document/" . rawurlencode($id), [
             'query' => ['noArchive' => $noArchive ? 'true' : 'false']
         ]);
     }
 
     /**
      * Get registry information
+     *
+     * Retrieves current Peppol Access Point registry information.
+     *
+     * **Example:**
+     * ```php
+     * $registry = $client->proxy()->getRegistry();
+     * ```
+     *
+     * @return array Registry information including registration status
+     * @throws ApiException When not authenticated (401)
      */
     public function getRegistry(): array
     {
@@ -288,6 +334,20 @@ class ProxyClient extends BaseResource
 
     /**
      * Register on Access Point
+     *
+     * Registers company on Peppol Access Point.
+     *
+     * **Example:**
+     * ```php
+     * $result = $client->proxy()->registerOnAccessPoint([
+     *     'peppolId' => '0208:BE0123456789',
+     *     'capabilities' => ['SEND', 'RECEIVE']
+     * ]);
+     * ```
+     *
+     * @param array $registrationData Registration details
+     * @return array Registration result
+     * @throws ApiException When registration fails (400, 409)
      */
     public function registerOnAccessPoint(array $registrationData): array
     {
@@ -296,6 +356,16 @@ class ProxyClient extends BaseResource
 
     /**
      * Unregister from Access Point
+     *
+     * Removes company registration from Peppol Access Point.
+     *
+     * **Example:**
+     * ```php
+     * $result = $client->proxy()->unregisterFromAccessPoint();
+     * ```
+     *
+     * @return array Unregistration result
+     * @throws ApiException When not registered (404) or unregistration fails
      */
     public function unregisterFromAccessPoint(): array
     {
@@ -304,6 +374,16 @@ class ProxyClient extends BaseResource
 
     /**
      * Remove from registry
+     *
+     * Completely removes registry entry from the system.
+     *
+     * **Example:**
+     * ```php
+     * $client->proxy()->deleteRegistry();
+     * ```
+     *
+     * @return void
+     * @throws ApiException When not found (404) or deletion fails
      */
     public function deleteRegistry(): void
     {
@@ -312,6 +392,17 @@ class ProxyClient extends BaseResource
 
     /**
      * Health check
+     *
+     * Performs a health check on the proxy service.
+     *
+     * **Example:**
+     * ```php
+     * $status = $client->proxy()->healthCheck();
+     * echo "Status: $status";
+     * ```
+     *
+     * @return string Health status response
+     * @throws ApiException When service is unavailable
      */
     public function healthCheck(): string
     {
@@ -320,9 +411,20 @@ class ProxyClient extends BaseResource
 
     /**
      * Top up balance (for testing/monitoring)
+     *
+     * Adds balance to account for testing purposes.
+     *
+     * **Example:**
+     * ```php
+     * $result = $client->proxy()->topUpBalance(100);
+     * ```
+     *
+     * @param int $amount Amount to add to balance
+     * @return string Top-up result
+     * @throws ApiException When request fails
      */
     public function topUpBalance(int $amount): string
     {
-        return $this->requestRaw('GET', "/api/monitor/{$amount}");
+        return $this->requestRaw('GET', "/api/monitor/" . rawurlencode((string)$amount));
     }
 }

@@ -89,6 +89,16 @@ class LetsPeppolException extends Exception
     }
 
     /**
+     * Check if this is a successful response (2xx)
+     *
+     * @return bool True if status code indicates success
+     */
+    public function isSuccess(): bool
+    {
+        return $this->getCode() >= 200 && $this->getCode() < 300;
+    }
+
+    /**
      * Check if this is a client error (4xx)
      *
      * @return bool True if client error

@@ -73,6 +73,9 @@ class LetsPeppolClient
 
     /**
      * Set JWT token for all clients
+     *
+     * @param string $token JWT token
+     * @return self
      */
     public function setToken(string $token): self
     {
@@ -83,7 +86,26 @@ class LetsPeppolClient
     }
 
     /**
+     * Get the current JWT token
+     *
+     * @return string|null Current JWT token or null if not set
+     */
+    public function getToken(): ?string
+    {
+        return $this->kycSession->getToken();
+    }
+
+    /**
      * Authenticate and set token for all clients
+     *
+     * Note: This method calls kycClient->authenticate() which internally sets
+     * the token on kycSession, then calls setToken() to ensure all sessions
+     * (kyc, proxy, app) have the same token for consistency.
+     *
+     * @param string $email User email
+     * @param string $password User password
+     * @return string JWT token
+     * @throws \LetsPeppolSdk\Exceptions\AuthenticationException
      */
     public function authenticate(string $email, string $password): string
     {

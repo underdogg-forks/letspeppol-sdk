@@ -10,6 +10,10 @@ use LetsPeppolSdk\Exceptions\ApiException;
  */
 
 // Configuration
+// WARNING: Do NOT hardcode credentials in production code!
+// Use environment variables or a secure secrets manager instead:
+// $email = getenv('LETSPEPPOL_EMAIL') ?: $_ENV['LETSPEPPOL_EMAIL'];
+// $password = getenv('LETSPEPPOL_PASSWORD') ?: $_ENV['LETSPEPPOL_PASSWORD'];
 $email = 'your-email@example.com';
 $password = 'your-password';
 

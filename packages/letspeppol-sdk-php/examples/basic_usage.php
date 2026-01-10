@@ -32,15 +32,15 @@ function documentManagementExample(LetsPeppolClient $client)
 {
     try {
         // List incoming invoices
-        $documents = $client->app()->listDocuments([
+        $response = $client->app()->listDocuments([
             'type' => 'INVOICE',
             'direction' => 'INCOMING',
             'read' => false
         ], 0, 10);
         
-        echo "Found " . count($documents) . " unread invoices\n";
+        echo "Found " . $response['totalElements'] . " unread invoices\n";
         
-        foreach ($documents as $doc) {
+        foreach ($response['content'] as $doc) {
             echo "- Invoice {$doc['id']}: {$doc['total']} {$doc['currency']}\n";
             
             // Mark as read

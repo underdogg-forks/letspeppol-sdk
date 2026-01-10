@@ -12,6 +12,7 @@ class Session
     private Client $client;
     private string $baseUrl;
     private ?string $token;
+    private array $clientOptions;
 
     /**
      * Create a new Session instance configured with optional JWT token and API base URL.
@@ -24,7 +25,18 @@ class Session
     {
         $this->baseUrl = rtrim($baseUrl, '/');
         $this->token = $token;
+        $this->clientOptions = $clientOptions;
 
+        $this->client = $this->createClient();
+    }
+
+    /**
+     * Create a new Guzzle client with current configuration
+     *
+     * @return Client Configured Guzzle HTTP client
+     */
+    private function createClient(): Client
+    {
         // Set default headers
         $defaults = [
             'base_uri' => $this->baseUrl,
@@ -42,8 +54,7 @@ class Session
             $defaults['headers']['Authorization'] = "Bearer {$this->token}";
         }
 
-        $options = array_replace_recursive($defaults, $clientOptions);
-        $this->client = new Client($options);
+        return new Client(array_replace_recursive($defaults, $this->clientOptions));
     }
 
     /**
@@ -86,9 +97,7 @@ class Session
     {
         $this->token = $token;
 
-        // Recreate client with new token
-        $options = $this->client->getConfig();
-        $options['headers']['Authorization'] = "Bearer {$token}";
-        $this->client = new Client($options);
+        // Recreate client with new token preserving original options
+        $this->client = $this->createClient();
     }
 }
