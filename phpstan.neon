@@ -3,9 +3,9 @@ includes:
 
 parameters:
     tmpDir: null
-    level: 5
+    level: 0
     paths:
-        - app/
+        - src/
 
     excludePaths:
         analyse:

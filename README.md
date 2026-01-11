@@ -1,79 +1,374 @@
-# Laravel + Blade Starter Kit
+# LetsPeppol PHP SDK
 
----
+Official PHP SDK for the LetsPeppol e-invoicing API, providing a simple and intuitive interface for integrating Peppol e-invoicing into your PHP applications.
 
-## Introduction
+## About LetsPeppol
 
-Our Laravel 12 + Blade starter kit provides the typical functionality found in the Laravel Starter kits, but with a few key differences:
+[LetsPeppol](https://letspeppol.org) is a free, open-source platform for Peppol e-invoicing. The platform provides three main API modules:
 
-- A CoreUI/AdminLTE inspired design layout
-- Blade + AlpineJS code
+- **KYC API** - Authentication, registration, and identity verification
+- **Proxy API** - Document transmission and registry management
+- **App API** - Document management, partners, products, and business logic
 
-This kit aims to fill the gap where there is no simple **Blade only** starter kit available.
+## Installation
 
-Our internal goal at Laravel Daily is to start using this starter kit for our Demo applications, to avoid overwhelming our audience with Vue/Livewire/React if we had used one of the official Laravel 12 starter kits.
+### For Local Development (Path Repository)
 
-**Note:** This is Work in Progress kit, so it will get updates and fixes/features as we go.
+Add the following to your project's `composer.json`:
 
----
-
-## Screenshots
-
-![](https://laraveldaily.com/uploads/2025/05/LoginPage.png)
-
-![](https://laraveldaily.com/uploads/2025/05/RegisterPage.png)
-
-![](https://laraveldaily.com/uploads/2025/05/DashboardPage.png)
-
-![](https://laraveldaily.com/uploads/2025/05/ProfilePage.png)
-
----
-
-## What is Inside?
-
-Inside you will find all the functions that you would expect:
-
-- Authentication
-    - Login
-    - Registration
-    - Password Reset Flow
-    - Email Confirmation Flow
-- Dashboard Page
-- Profile Settings
-    - Profile Information Page
-    - Password Update Page
-    - Appearance Preferences
-
-### LetsPeppol API Integration
-
-This starter kit includes a complete API client for [LetsPeppol](https://letspeppol.org) - a free, open-source Peppol e-invoicing platform:
-
-- **OpenAPI 3.0 Specifications** (Postman-ready) for all three API modules
-- **PHP API Client** with complete coverage of KYC, Proxy, and App APIs
-- Full documentation with examples
-
-See [docs/api/LETSPEPPOL-QUICKSTART.md](docs/api/LETSPEPPOL-QUICKSTART.md) for quick start guide.
-
----
-
-## How to use it?
-
-To use this kit, you can install it using:
-
-```bash
-laravel new --using=laraveldaily/starter-kit
+```json
+{
+  "repositories": [
+    {
+      "type": "path",
+      "url": "./packages/letspeppol-sdk-php"
+    }
+  ],
+  "require": {
+    "letspeppol/letspeppol-sdk-php": "*"
+  }
+}
 ```
 
-From there, you can modify the kit to your needs.
+Then run:
 
----
+```bash
+composer install
+```
 
-## Design Elements
+### For Production (Packagist)
 
-If you want to see examples of what design elements we have, you can [visit the Wiki](<https://github.com/LaravelDaily/starter-kit/wiki/Design-Examples-(Raw-Files)>) and see the raw HTML files.
+Once published to Packagist, you can install directly:
 
----
+```bash
+composer require letspeppol/letspeppol-sdk-php
+```
 
-## Licence
+## Requirements
 
-Starter kit is open-sourced software licensed under the MIT license.
+- PHP 8.1 or higher
+- Guzzle HTTP client 7.4.5 or higher
+
+## Quick Start
+
+```php
+use LetsPeppolSdk\LetsPeppolClient;
+
+// Create a new client instance
+$client = new LetsPeppolClient();
+
+// Authenticate and get JWT token
+$token = $client->authenticate('user@example.com', 'password123');
+
+// Get company information
+$company = $client->app()->getCompany();
+
+// List documents
+$documents = $client->app()->listDocuments([
+    'type' => 'INVOICE',
+    'direction' => 'INCOMING'
+]);
+
+// Get new documents from proxy
+$newDocs = $client->proxy()->getAllNewDocuments();
+```
+
+## Usage Examples
+
+### Authentication
+
+```php
+$client = new LetsPeppolClient();
+
+// Authenticate
+$token = $client->authenticate('user@example.com', 'password');
+
+// Or create client with existing token
+$client = LetsPeppolClient::withToken($existingToken);
+
+// Get account information
+$account = $client->kyc()->getAccountInfo();
+```
+
+### Document Management
+
+```php
+// Validate UBL XML
+$validation = $client->app()->validateDocument($ublXmlString);
+
+if ($validation['valid']) {
+    // Create document as draft
+    $document = $client->app()->createDocument($ublXmlString, true);
+    
+    // Send when ready
+    $sent = $client->app()->sendDocument($document['id']);
+}
+
+// List documents with filters
+$documents = $client->app()->listDocuments([
+    'type' => 'INVOICE',
+    'direction' => 'OUTGOING',
+    'draft' => false
+], 0, 20);
+
+// Get specific document
+$document = $client->app()->getDocument($documentId);
+
+// Mark as read
+$client->app()->markDocumentRead($documentId);
+
+// Mark as paid
+$client->app()->markDocumentPaid($documentId);
+```
+
+### Document Transmission (Proxy)
+
+```php
+// Get new received documents
+$newDocs = $client->proxy()->getAllNewDocuments(100);
+
+foreach ($newDocs as $doc) {
+    // Process document
+    processDocument($doc);
+    
+    // Mark as downloaded
+    $client->proxy()->markDownloaded($doc['id']);
+}
+
+// Create document to send
+$document = $client->proxy()->createDocument([
+    'ownerPeppolId' => '0208:BE0123456789',
+    'counterPartyPeppolId' => '0208:BE0987654321',
+    'ubl' => $ublXmlString,
+    'direction' => 'OUTGOING',
+    'documentType' => 'INVOICE'
+]);
+
+// Get status updates
+$updates = $client->proxy()->getStatusUpdates([
+    $docId1,
+    $docId2,
+    $docId3
+]);
+```
+
+### Partner Management
+
+```php
+// List partners
+$partners = $client->app()->listPartners();
+
+// Search for a partner
+$results = $client->app()->searchPartners('0208:BE0987654321');
+
+// Add new partner
+$partner = $client->app()->createPartner([
+    'peppolId' => '0208:BE0987654321',
+    'name' => 'Partner Company',
+    'vatNumber' => 'BE0987654321',
+    'email' => 'contact@partner.com'
+]);
+
+// Update partner
+$updated = $client->app()->updatePartner($partnerId, [
+    'name' => 'Updated Partner Name'
+]);
+
+// Delete partner
+$client->app()->deletePartner($partnerId);
+```
+
+### Product Management
+
+```php
+// List products
+$products = $client->app()->listProducts();
+
+// Create product
+$product = $client->app()->createProduct([
+    'name' => 'Product Name',
+    'description' => 'Product Description',
+    'price' => 99.99,
+    'unit' => 'piece',
+    'sku' => 'PROD-001'
+]);
+
+// Update product
+$updated = $client->app()->updateProduct($productId, [
+    'price' => 89.99
+]);
+
+// Delete product
+$client->app()->deleteProduct($productId);
+```
+
+### Registration Flow
+
+```php
+// Step 1: Get company information
+$company = $client->kyc()->getCompany('0208:BE0123456789');
+
+// Step 2: Confirm company and send verification email
+$result = $client->kyc()->confirmCompany([
+    'peppolId' => '0208:BE0123456789',
+    'email' => 'admin@company.com',
+    'name' => 'John Doe',
+    'password' => 'securePassword123'
+], 'en');
+
+// Step 3: Verify email token
+$verification = $client->kyc()->verifyToken($tokenFromEmail);
+
+// Step 4: Prepare signing (requires Web eID)
+$prepare = $client->kyc()->prepareSigning([
+    'token' => $tokenFromEmail,
+    'directorId' => $directorId,
+    'certificate' => $base64Certificate
+]);
+
+// Step 5: Get contract PDF
+$contractPdf = $client->kyc()->getContract($directorId, $tokenFromEmail);
+
+// Step 6: Finalize signing
+$result = $client->kyc()->finalizeSigning([
+    'token' => $tokenFromEmail,
+    'directorId' => $directorId,
+    'signature' => $base64Signature
+]);
+```
+
+## Error Handling
+
+The SDK provides robust error handling with detailed exception information:
+
+```php
+use LetsPeppolSdk\Exceptions\ApiException;
+use LetsPeppolSdk\Exceptions\AuthenticationException;
+
+try {
+    $company = $client->app()->getCompany();
+} catch (AuthenticationException $e) {
+    // Handle authentication errors
+    echo "Authentication failed: " . $e->getMessage();
+} catch (ApiException $e) {
+    // Check error type
+    if ($e->isNetworkError()) {
+        echo "Network connectivity issue";
+    } elseif ($e->isClientError()) {
+        echo "Invalid request: " . $e->getMessage();
+    } elseif ($e->isServerError()) {
+        echo "Server error, please retry";
+    }
+    
+    // Get detailed error information
+    $statusCode = $e->getStatusCode(); // HTTP status code
+    $responseData = $e->getResponseData(); // API response data
+    $errorReport = $e->getErrorReport(); // Comprehensive error details
+    
+    // Handle specific errors
+    if ($statusCode === 404) {
+        echo "Resource not found";
+    } elseif ($statusCode === 422) {
+        echo "Validation failed";
+        print_r($responseData['errors']);
+    } elseif ($statusCode === 429) {
+        echo "Rate limit exceeded";
+    }
+}
+```
+
+### Error Handling Features
+
+- **Intelligent error parsing**: Automatically extracts error messages from API responses
+- **HTTP status categorization**: Bad Request (400), Unauthorized (401), Forbidden (403), Not Found (404), Validation Error (422), Rate Limit (429), Server Error (5xx)
+- **Network error detection**: Categorizes connection issues, timeouts, and other network problems
+- **Detailed error reports**: Get comprehensive debugging information with `getErrorReport()`
+- **Helper methods**: `isNetworkError()`, `isClientError()`, `isServerError()` for easy error type checking
+
+See [ERROR_HANDLING_GUIDE.md](ERROR_HANDLING_GUIDE.md) for comprehensive error handling patterns and examples.
+
+## API Documentation
+
+All methods are fully documented with:
+- Complete request/response JSON schemas
+- Usage examples with code snippets
+- Parameter descriptions and types
+- Error scenarios and HTTP status codes
+
+Example documentation from KycClient:
+
+```php
+/**
+ * Get company information by Peppol ID
+ *
+ * **Response JSON:**
+ * {
+ *   "peppolId": "0208:BE0123456789",
+ *   "name": "Company Name BVBA",
+ *   "address": {...}
+ * }
+ *
+ * **Example:**
+ * $company = $client->kyc()->getCompany('0208:BE0123456789');
+ *
+ * @throws ApiException When company not found (404)
+ */
+```
+
+View the source code for complete API documentation on every method.
+
+## Custom Base URLs
+    }
+}
+## Features
+
+- * Complete coverage of all LetsPeppol API endpoints
+- * Authentication and registration flow
+- * Document management (create, read, update, delete)
+- * Document validation and transmission
+- * Partner and product management
+- * Peppol Directory integration
+- * Registry management
+- * Type-safe method signatures
+- * Comprehensive error handling
+- * Framework-agnostic (works with any PHP application)
+
+## Testing
+
+Run the test suite:
+
+```bash
+composer test
+```
+
+Run code style checks:
+
+```bash
+composer cs-check
+```
+
+Fix code style issues:
+
+```bash
+composer cs-fix
+```
+
+## Resources
+
+- [LetsPeppol Official Website](https://letspeppol.org)
+- [LetsPeppol GitHub Repository](https://github.com/letspeppol/letspeppol)
+- [Peppol Network Information](https://peppol.org)
+
+## License
+
+This SDK is open-source software licensed under the MIT license.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## Support
+
+For issues related to:
+- This SDK: Open an issue on GitHub
+- LetsPeppol platform: Visit [letspeppol.org](https://letspeppol.org) or the [official repository](https://github.com/letspeppol/letspeppol)
