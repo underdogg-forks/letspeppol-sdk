@@ -428,7 +428,7 @@ class KycClient extends BaseResource
     {
         $result = $this->requestWithHeaders('POST', '/sapi/company/peppol/register');
         
-        if ($result['body']) {
+        if ($result['body'] !== '') {
             $newToken = $result['body'];
             $this->session->setToken($newToken);
             return ['token' => $newToken, 'status' => 'updated'];
