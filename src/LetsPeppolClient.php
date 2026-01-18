@@ -31,16 +31,18 @@ class LetsPeppolClient
      * @param string $proxyUrl Proxy API base URL
      * @param string $appUrl App API base URL
      * @param string|null $token Optional JWT token for authenticated requests
+     * @param string|null $logFile Optional path to log file for request/response logging
      */
     public function __construct(
         string $kycUrl = 'https://kyc.letspeppol.org',
         string $proxyUrl = 'https://proxy.letspeppol.org',
         string $appUrl = 'https://app.letspeppol.org',
-        ?string $token = null
+        ?string $token = null,
+        ?string $logFile = null
     ) {
-        $this->kycSession = new Session($kycUrl, $token);
-        $this->proxySession = new Session($proxyUrl, $token);
-        $this->appSession = new Session($appUrl, $token);
+        $this->kycSession = new Session($kycUrl, $token, [], $logFile);
+        $this->proxySession = new Session($proxyUrl, $token, [], $logFile);
+        $this->appSession = new Session($appUrl, $token, [], $logFile);
 
         $this->kycClient = new KycClient($this->kycSession);
         $this->proxyClient = new ProxyClient($this->proxySession);
@@ -121,8 +123,9 @@ class LetsPeppolClient
         string $token,
         string $kycUrl = 'https://kyc.letspeppol.org',
         string $proxyUrl = 'https://proxy.letspeppol.org',
-        string $appUrl = 'https://app.letspeppol.org'
+        string $appUrl = 'https://app.letspeppol.org',
+        ?string $logFile = null
     ): self {
-        return new self($kycUrl, $proxyUrl, $appUrl, $token);
+        return new self($kycUrl, $proxyUrl, $appUrl, $token, $logFile);
     }
 }
