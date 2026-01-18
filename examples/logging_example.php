@@ -96,7 +96,7 @@ echo "=========================\n\n";
 
 echo "The GuzzleClient automatically handles:\n";
 echo "  - 401 Unauthorized: Throws 'Authentication failure' exception\n";
-echo "  - 500 Internal Server Error: Prints response body and throws exception\n";
+echo "  - 500 Internal Server Error: Logs response body and throws exception\n";
 echo "  - Other errors: Standard Guzzle error handling\n\n";
 
 // Example 7: Log file format

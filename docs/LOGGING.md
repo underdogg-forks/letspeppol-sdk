@@ -139,9 +139,11 @@ RESPONSE: {code} - {res_body}
 
 **Example:**
 ```
-POST /api/v1/authenticate HTTP/1.1 {"email":"user@example.com","password":"***"} - {"Content-Type":"application/json","User-Agent":"LetsPeppol PHP SDK"}
+POST /api/v1/authenticate HTTP/1.1 {"email":"user@example.com","password":"super-secret-password"} - {"Content-Type":"application/json","User-Agent":"LetsPeppol PHP SDK"}
 RESPONSE: 200 - {"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...","expiresIn":3600}
 ```
+
+**Note:** The example above shows that sensitive data like passwords and tokens are logged as-is. Implement application-level sanitization if needed.
 
 ## Error Handling
 
@@ -159,13 +161,13 @@ try {
 ```
 
 ### 500 Internal Server Error
-Prints the response body and throws an exception: `"Internal server error"`
+Logs the response body (via Monolog logger or error_log) and throws an exception: `"Internal server error"`
 
 ```php
 try {
     $response = $client->request('POST', '/endpoint');
 } catch (\Exception $e) {
-    // Response body was printed to stdout
+    // Response body was logged via the configured logger or error_log()
     // $e->getMessage() === "Internal server error"
 }
 ```

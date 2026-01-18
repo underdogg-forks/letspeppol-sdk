@@ -31,6 +31,9 @@ class GuzzleClient extends \GuzzleHttp\Client
     public function __construct(array $config = [], ?string $logFile = null)
     {
         // If log file is configured, add logging handler stack
+        // WARNING: Logs include request/response bodies and headers which may contain
+        // sensitive information (API keys, tokens, passwords, personal data).
+        // Ensure log files are secured and comply with data protection regulations.
         if (!empty($logFile)) {
             $config['handler'] = $this->createLoggingHandlerStack([
                 '{method} {uri} HTTP/{version} {req_body} - {req_headers}',

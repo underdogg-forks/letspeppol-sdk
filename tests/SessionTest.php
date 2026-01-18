@@ -49,6 +49,7 @@ class SessionTest extends TestCase
         $session = new Session('https://api.example.com');
         $client = $session->getClient();
         $this->assertInstanceOf(\GuzzleHttp\Client::class, $client);
+        $this->assertInstanceOf(\LetsPeppolSdk\GuzzleClient::class, $client);
     }
 
     public function testSessionGetBaseUrlReturnsUrl(): void
