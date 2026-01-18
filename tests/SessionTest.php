@@ -24,123 +24,220 @@ class SessionTest extends TestCase
         }
     }
 
-    public function testSessionCanBeInstantiatedWithMinimalParameters(): void
+    /**
+     * @test
+     */
+    public function it_can_be_instantiated_with_minimal_parameters(): void
     {
+        // Act
         $session = new Session('https://api.example.com');
+
+        // Assert
         $this->assertInstanceOf(Session::class, $session);
     }
 
-    public function testSessionCanBeInstantiatedWithToken(): void
+    /**
+     * @test
+     */
+    public function it_can_be_instantiated_with_token(): void
     {
+        // Act
         $session = new Session('https://api.example.com', 'test-token');
+
+        // Assert
         $this->assertInstanceOf(Session::class, $session);
         $this->assertSame('test-token', $session->getToken());
     }
 
-    public function testSessionCanBeInstantiatedWithLogFile(): void
+    /**
+     * @test
+     */
+    public function it_can_be_instantiated_with_log_file(): void
     {
+        // Act
         $session = new Session('https://api.example.com', null, [], $this->tempLogFile);
+
+        // Assert
         $this->assertInstanceOf(Session::class, $session);
         $this->assertSame($this->tempLogFile, $session->getLogFile());
     }
 
-    public function testSessionGetClientReturnsClient(): void
+    /**
+     * @test
+     */
+    public function it_returns_guzzle_client_instance(): void
     {
+        // Arrange
         $session = new Session('https://api.example.com');
+
+        // Act
         $client = $session->getClient();
+
+        // Assert
         $this->assertInstanceOf(\GuzzleHttp\Client::class, $client);
         $this->assertInstanceOf(\LetsPeppolSdk\GuzzleClient::class, $client);
     }
 
-    public function testSessionGetBaseUrlReturnsUrl(): void
+    /**
+     * @test
+     */
+    public function it_returns_base_url(): void
     {
+        // Arrange
         $session = new Session('https://api.example.com');
+
+        // Act & Assert
         $this->assertSame('https://api.example.com', $session->getBaseUrl());
     }
 
-    public function testSessionTrimsTrailingSlashFromBaseUrl(): void
+    /**
+     * @test
+     */
+    public function it_trims_trailing_slash_from_base_url(): void
     {
+        // Arrange
         $session = new Session('https://api.example.com/');
+
+        // Act & Assert
         $this->assertSame('https://api.example.com', $session->getBaseUrl());
     }
 
-    public function testSessionGetTokenReturnsNull(): void
+    /**
+     * @test
+     */
+    public function it_returns_null_when_token_not_set(): void
     {
+        // Arrange
         $session = new Session('https://api.example.com');
+
+        // Act & Assert
         $this->assertNull($session->getToken());
     }
 
-    public function testSessionGetTokenReturnsToken(): void
+    /**
+     * @test
+     */
+    public function it_returns_token_when_set(): void
     {
+        // Arrange
         $session = new Session('https://api.example.com', 'my-token');
+
+        // Act & Assert
         $this->assertSame('my-token', $session->getToken());
     }
 
-    public function testSessionSetTokenUpdatesToken(): void
+    /**
+     * @test
+     */
+    public function it_updates_token_when_set(): void
     {
+        // Arrange
         $session = new Session('https://api.example.com');
         $this->assertNull($session->getToken());
 
+        // Act
         $session->setToken('new-token');
+
+        // Assert
         $this->assertSame('new-token', $session->getToken());
     }
 
-    public function testSessionGetLogFileReturnsNull(): void
+    /**
+     * @test
+     */
+    public function it_returns_null_when_log_file_not_set(): void
     {
+        // Arrange
         $session = new Session('https://api.example.com');
+
+        // Act & Assert
         $this->assertNull($session->getLogFile());
     }
 
-    public function testSessionGetLogFileReturnsLogFile(): void
+    /**
+     * @test
+     */
+    public function it_returns_log_file_when_set(): void
     {
+        // Arrange
         $session = new Session('https://api.example.com', null, [], $this->tempLogFile);
+
+        // Act & Assert
         $this->assertSame($this->tempLogFile, $session->getLogFile());
     }
 
-    public function testSessionSetLogFileUpdatesLogFile(): void
+    /**
+     * @test
+     */
+    public function it_updates_log_file_when_set(): void
     {
+        // Arrange
         $session = new Session('https://api.example.com');
         $this->assertNull($session->getLogFile());
 
+        // Act
         $session->setLogFile($this->tempLogFile);
+
+        // Assert
         $this->assertSame($this->tempLogFile, $session->getLogFile());
     }
 
-    public function testSessionSetLogFileCanBeSetToNull(): void
+    /**
+     * @test
+     */
+    public function it_allows_log_file_to_be_set_to_null(): void
     {
+        // Arrange
         $session = new Session('https://api.example.com', null, [], $this->tempLogFile);
         $this->assertSame($this->tempLogFile, $session->getLogFile());
 
+        // Act
         $session->setLogFile(null);
+
+        // Assert
         $this->assertNull($session->getLogFile());
     }
 
-    public function testSessionRecreatesClientWhenTokenIsSet(): void
+    /**
+     * @test
+     */
+    public function it_recreates_client_when_token_is_set(): void
     {
+        // Arrange
         $session = new Session('https://api.example.com');
         $client1 = $session->getClient();
 
+        // Act
         $session->setToken('new-token');
         $client2 = $session->getClient();
 
-        // Client should be recreated (different instance)
+        // Assert
         $this->assertNotSame($client1, $client2);
     }
 
-    public function testSessionRecreatesClientWhenLogFileIsSet(): void
+    /**
+     * @test
+     */
+    public function it_recreates_client_when_log_file_is_set(): void
     {
+        // Arrange
         $session = new Session('https://api.example.com');
         $client1 = $session->getClient();
 
+        // Act
         $session->setLogFile($this->tempLogFile);
         $client2 = $session->getClient();
 
-        // Client should be recreated (different instance)
+        // Assert
         $this->assertNotSame($client1, $client2);
     }
 
-    public function testSessionAcceptsCustomClientOptions(): void
+    /**
+     * @test
+     */
+    public function it_accepts_custom_client_options(): void
     {
+        // Arrange
         $options = [
             'timeout' => 60,
             'headers' => [
@@ -148,12 +245,19 @@ class SessionTest extends TestCase
             ],
         ];
 
+        // Act
         $session = new Session('https://api.example.com', null, $options);
+
+        // Assert
         $this->assertInstanceOf(Session::class, $session);
     }
 
-    public function testSessionWithAllParameters(): void
+    /**
+     * @test
+     */
+    public function it_works_with_all_parameters(): void
     {
+        // Act
         $session = new Session(
             'https://api.example.com/',
             'test-token',
@@ -161,6 +265,7 @@ class SessionTest extends TestCase
             $this->tempLogFile
         );
 
+        // Assert
         $this->assertSame('https://api.example.com', $session->getBaseUrl());
         $this->assertSame('test-token', $session->getToken());
         $this->assertSame($this->tempLogFile, $session->getLogFile());
