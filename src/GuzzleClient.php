@@ -66,7 +66,13 @@ class GuzzleClient extends \GuzzleHttp\Client
 
         // Handle internal server error
         if ($response->getStatusCode() === 500) {
-            print_r((string) $response->getBody());
+            $body = (string) $response->getBody();
+            // Log or output error for debugging (as per reference implementation)
+            if ($this->logger !== null) {
+                $this->logger->error('Internal server error', ['body' => $body]);
+            } else {
+                error_log('Internal server error: ' . $body);
+            }
             throw new \Exception('Internal server error');
         }
 
@@ -102,7 +108,7 @@ class GuzzleClient extends \GuzzleHttp\Client
      */
     private function getLogger(string $messageFormat, string $logFile): callable
     {
-        if (empty($this->logger)) {
+        if ($this->logger === null) {
             $this->logger = new Logger('letspeppol-sdk-php');
             $formatter = new LineFormatter(null, null, true, true);
             $handler = new StreamHandler($logFile);
