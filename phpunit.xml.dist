@@ -5,8 +5,17 @@
          colors="true"
 >
     <testsuites>
-        <testsuite name="LetsPeppol SDK Test Suite">
-            <directory>tests</directory>
+        <testsuite name="Unit">
+            <directory>tests/Unit</directory>
+        </testsuite>
+        <testsuite name="Feature">
+            <directory>tests/Feature</directory>
+        </testsuite>
+        <testsuite name="Legacy">
+            <file>tests/ConfigTest.php</file>
+            <file>tests/GuzzleClientTest.php</file>
+            <file>tests/LetsPeppolClientTest.php</file>
+            <file>tests/SessionTest.php</file>
         </testsuite>
     </testsuites>
     <source>
