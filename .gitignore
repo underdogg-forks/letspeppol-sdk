@@ -24,3 +24,4 @@ package-lock.json
 /.zed
 /packages.txt
 /stan.txt
+.php-cs-fixer.cache

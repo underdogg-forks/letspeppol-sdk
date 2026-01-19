@@ -1,0 +1,71 @@
+{
+  "list_response": {
+    "content": [
+      {
+        "id": "doc123",
+        "documentType": "INVOICE",
+        "direction": "INCOMING",
+        "total": 1000.00,
+        "currency": "EUR",
+        "read": false,
+        "invoiceNumber": "INV-001",
+        "issueDate": "2024-01-09",
+        "partnerName": "Example Partner"
+      },
+      {
+        "id": "doc456",
+        "documentType": "INVOICE",
+        "direction": "INCOMING",
+        "total": 500.00,
+        "currency": "EUR",
+        "read": false,
+        "invoiceNumber": "INV-002",
+        "issueDate": "2024-01-10",
+        "partnerName": "Another Partner"
+      }
+    ],
+    "totalElements": 2,
+    "page": 0,
+    "size": 10
+  },
+  "single_document": {
+    "id": "doc123",
+    "documentType": "INVOICE",
+    "direction": "INCOMING",
+    "invoiceNumber": "INV-2024-001",
+    "issueDate": "2024-01-09",
+    "dueDate": "2024-02-09",
+    "total": 1000.00,
+    "currency": "EUR",
+    "partnerName": "Supplier Company",
+    "partnerPeppolId": "0208:BE0987654321",
+    "ubl": "<Invoice>...</Invoice>",
+    "read": false,
+    "paid": false
+  },
+  "validation_success": {
+    "valid": true,
+    "errors": [],
+    "warnings": []
+  },
+  "validation_failure": {
+    "valid": false,
+    "errors": [
+      "Invoice number is required",
+      "Invalid VAT number format"
+    ],
+    "warnings": []
+  },
+  "created_draft": {
+    "id": "doc123",
+    "documentType": "INVOICE",
+    "invoiceNumber": "INV-2024-001",
+    "status": "DRAFT",
+    "createdAt": "2024-01-09T10:00:00Z"
+  },
+  "sent_document": {
+    "id": "doc123",
+    "status": "SENT",
+    "sentAt": "2024-01-09T10:05:00Z"
+  }
+}

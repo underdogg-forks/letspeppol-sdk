@@ -30,7 +30,7 @@ class LetsPeppolException extends Exception
         array $responseData = [],
         ?Throwable $previous = null,
         ?string $endpoint = null,
-        ?string $method = null
+        ?string $method = null,
     ) {
         parent::__construct($message, $code, $previous);
         $this->responseData = $responseData;
@@ -126,14 +126,14 @@ class LetsPeppolException extends Exception
     public function getErrorReport(): array
     {
         return [
-            'message' => $this->getMessage(),
-            'code' => $this->getCode(),
-            'endpoint' => $this->endpoint,
-            'method' => $this->method,
-            'is_network_error' => $this->isNetworkError(),
-            'is_client_error' => $this->isClientError(),
-            'is_server_error' => $this->isServerError(),
-            'response_data' => $this->responseData,
+            'message'            => $this->getMessage(),
+            'code'               => $this->getCode(),
+            'endpoint'           => $this->endpoint,
+            'method'             => $this->method,
+            'is_network_error'   => $this->isNetworkError(),
+            'is_client_error'    => $this->isClientError(),
+            'is_server_error'    => $this->isServerError(),
+            'response_data'      => $this->responseData,
             'previous_exception' => $this->getPrevious() ? get_class($this->getPrevious()) : null,
         ];
     }

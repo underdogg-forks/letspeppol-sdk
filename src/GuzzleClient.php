@@ -15,7 +15,7 @@ use Psr\Http\Message\ResponseInterface;
 
 /**
  * Custom Guzzle HTTP client with logging support
- * 
+ *
  * Extends GuzzleHttp\Client to add:
  * - Request/response logging via Monolog
  * - Custom error handling for 401 and 500 status codes
@@ -35,7 +35,7 @@ class GuzzleClient extends \GuzzleHttp\Client
     public function __construct(array $config = [], ?string $logFile = null)
     {
         // Fall back to Config::$logFile if no log file provided
-        if ($logFile === null && !empty(Config::$logFile)) {
+        if ($logFile === null && ! empty(Config::$logFile)) {
             $logFile = Config::$logFile;
         }
 
@@ -43,10 +43,10 @@ class GuzzleClient extends \GuzzleHttp\Client
         // WARNING: Logs include request/response bodies and headers which may contain
         // sensitive information (API keys, tokens, passwords, personal data).
         // Ensure log files are secured and comply with data protection regulations.
-        if (!empty($logFile)) {
+        if (! empty($logFile)) {
             // Validate log file path early
             $this->validateLogFilePath($logFile);
-            
+
             // Merge logging handler with existing handler if present
             if (isset($config['handler']) && $config['handler'] instanceof HandlerStack) {
                 // Add logging middleware to existing handler stack
@@ -76,16 +76,16 @@ class GuzzleClient extends \GuzzleHttp\Client
     private function validateLogFilePath(string $logFile): void
     {
         $directory = \dirname($logFile);
-        
+
         // Check if directory exists or can be created
-        if ($directory !== '' && !\is_dir($directory)) {
-            if (!@mkdir($directory, 0777, true) && !\is_dir($directory)) {
+        if ($directory !== '' && ! \is_dir($directory)) {
+            if (! @mkdir($directory, 0777, true) && ! \is_dir($directory)) {
                 throw new \RuntimeException(sprintf('Unable to create log directory: %s', $directory));
             }
         }
-        
+
         // Check if directory is writable
-        if (!\is_writable($directory)) {
+        if (! \is_writable($directory)) {
             throw new \RuntimeException(sprintf('Log directory is not writable: %s', $directory));
         }
     }
@@ -118,6 +118,7 @@ class GuzzleClient extends \GuzzleHttp\Client
             if ($this->logger !== null) {
                 $this->logger->error('Internal server error', ['body' => $body]);
             }
+
             throw new ServerErrorException('Internal server error: ' . $body);
         }
 
@@ -136,10 +137,10 @@ class GuzzleClient extends \GuzzleHttp\Client
             '{method} {uri} HTTP/{version} {req_body} - {req_headers}',
             "RESPONSE: {code} - {res_body}\n",
         ];
-        
+
         foreach ($messageFormats as $messageFormat) {
             $stack->unshift(
-                $this->getLogger($messageFormat, $logFile)
+                $this->getLogger($messageFormat, $logFile),
             );
         }
     }
@@ -154,10 +155,10 @@ class GuzzleClient extends \GuzzleHttp\Client
     private function createLoggingHandlerStack(array $messageFormats, string $logFile): HandlerStack
     {
         $stack = HandlerStack::create();
-        
+
         foreach ($messageFormats as $messageFormat) {
             $stack->unshift(
-                $this->getLogger($messageFormat, $logFile)
+                $this->getLogger($messageFormat, $logFile),
             );
         }
 
@@ -183,7 +184,7 @@ class GuzzleClient extends \GuzzleHttp\Client
 
         return Middleware::log(
             $this->logger,
-            new MessageFormatter($messageFormat)
+            new MessageFormatter($messageFormat),
         );
     }
 }
