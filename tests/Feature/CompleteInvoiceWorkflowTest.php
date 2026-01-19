@@ -253,11 +253,6 @@ XML;
     public function it_processes_incoming_and_outgoing_documents(): void
     {
         // Arrange
-        $appClient = $this->getMockBuilder(AppClient::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['listDocuments'])
-            ->getMock();
-
         $proxyClient = $this->getMockBuilder(ProxyClient::class)
             ->disableOriginalConstructor()
             ->onlyMethods(['getAllNewDocuments', 'markDownloaded'])
