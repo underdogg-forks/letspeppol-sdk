@@ -6,6 +6,8 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\MessageFormatter;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\RequestOptions;
+use LetsPeppolSdk\Exceptions\AuthenticationException;
+use LetsPeppolSdk\Exceptions\ServerErrorException;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -26,19 +28,37 @@ class GuzzleClient extends \GuzzleHttp\Client
      * Create a new GuzzleClient instance
      *
      * @param array $config Guzzle client configuration
-     * @param string|null $logFile Path to log file. If provided, enables request/response logging
+     * @param string|null $logFile Path to log file. If provided, enables request/response logging.
+     *                              Falls back to Config::$logFile if not provided.
+     * @throws \RuntimeException If log file directory cannot be created or is not writable
      */
     public function __construct(array $config = [], ?string $logFile = null)
     {
+        // Fall back to Config::$logFile if no log file provided
+        if ($logFile === null && !empty(Config::$logFile)) {
+            $logFile = Config::$logFile;
+        }
+
         // If log file is configured, add logging handler stack
         // WARNING: Logs include request/response bodies and headers which may contain
         // sensitive information (API keys, tokens, passwords, personal data).
         // Ensure log files are secured and comply with data protection regulations.
         if (!empty($logFile)) {
-            $config['handler'] = $this->createLoggingHandlerStack([
-                '{method} {uri} HTTP/{version} {req_body} - {req_headers}',
-                "RESPONSE: {code} - {res_body}\n",
-            ], $logFile);
+            // Validate log file path early
+            $this->validateLogFilePath($logFile);
+            
+            // Merge logging handler with existing handler if present
+            if (isset($config['handler']) && $config['handler'] instanceof HandlerStack) {
+                // Add logging middleware to existing handler stack
+                $stack = $config['handler'];
+                $this->addLoggingMiddleware($stack, $logFile);
+            } else {
+                // Create new handler stack with logging
+                $config['handler'] = $this->createLoggingHandlerStack([
+                    '{method} {uri} HTTP/{version} {req_body} - {req_headers}',
+                    "RESPONSE: {code} - {res_body}\n",
+                ], $logFile);
+            }
         }
 
         // Ensure http_errors is disabled so we can handle errors manually
@@ -48,13 +68,37 @@ class GuzzleClient extends \GuzzleHttp\Client
     }
 
     /**
+     * Validate that the log file path is writable
+     *
+     * @param string $logFile Path to log file
+     * @throws \RuntimeException If path is not writable
+     */
+    private function validateLogFilePath(string $logFile): void
+    {
+        $directory = \dirname($logFile);
+        
+        // Check if directory exists or can be created
+        if ($directory !== '' && !\is_dir($directory)) {
+            if (!@mkdir($directory, 0777, true) && !\is_dir($directory)) {
+                throw new \RuntimeException(sprintf('Unable to create log directory: %s', $directory));
+            }
+        }
+        
+        // Check if directory is writable
+        if (!\is_writable($directory)) {
+            throw new \RuntimeException(sprintf('Log directory is not writable: %s', $directory));
+        }
+    }
+
+    /**
      * Override request method to add custom error handling
      *
      * @param string $method HTTP method
      * @param string $uri URI
      * @param array $options Request options
      * @return ResponseInterface
-     * @throws \Exception When authentication fails (401) or server error occurs (500)
+     * @throws AuthenticationException When authentication fails (401)
+     * @throws ServerErrorException When server error occurs (500)
      */
     public function request(string $method, $uri = '', array $options = []): ResponseInterface
     {
@@ -64,20 +108,40 @@ class GuzzleClient extends \GuzzleHttp\Client
 
         // Handle authentication failure
         if ($response->getStatusCode() === 401) {
-            throw new \Exception('Authentication failure');
+            throw new AuthenticationException('Authentication failure');
         }
 
         // Handle internal server error
         if ($response->getStatusCode() === 500) {
             $body = (string) $response->getBody();
-            // Log or output error for debugging (as per reference implementation)
+            // Log error for debugging
             if ($this->logger !== null) {
                 $this->logger->error('Internal server error', ['body' => $body]);
             }
-            throw new \Exception('Internal server error');
+            throw new ServerErrorException('Internal server error: ' . $body);
         }
 
         return $response;
+    }
+
+    /**
+     * Add logging middleware to an existing handler stack
+     *
+     * @param HandlerStack $stack Handler stack to add middleware to
+     * @param string $logFile Path to log file
+     */
+    private function addLoggingMiddleware(HandlerStack $stack, string $logFile): void
+    {
+        $messageFormats = [
+            '{method} {uri} HTTP/{version} {req_body} - {req_headers}',
+            "RESPONSE: {code} - {res_body}\n",
+        ];
+        
+        foreach ($messageFormats as $messageFormat) {
+            $stack->unshift(
+                $this->getLogger($messageFormat, $logFile)
+            );
+        }
     }
 
     /**
@@ -112,14 +176,6 @@ class GuzzleClient extends \GuzzleHttp\Client
         if ($this->logger === null) {
             $this->logger = new Logger('letspeppol-sdk-php');
             $formatter = new LineFormatter(null, null, true, true);
-
-            $directory = \dirname($logFile);
-            if ($directory !== '' && !\is_dir($directory)) {
-                // Attempt to create the directory recursively if it does not exist
-                if (!@mkdir($directory, 0777, true) && !\is_dir($directory)) {
-                    throw new \RuntimeException(sprintf('Unable to create log directory: %s', $directory));
-                }
-            }
             $handler = new StreamHandler($logFile);
             $handler->setFormatter($formatter);
             $this->logger->pushHandler($handler);

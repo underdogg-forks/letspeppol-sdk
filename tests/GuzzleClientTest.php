@@ -6,6 +6,8 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use LetsPeppolSdk\GuzzleClient;
+use LetsPeppolSdk\Exceptions\AuthenticationException;
+use LetsPeppolSdk\Exceptions\ServerErrorException;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -96,7 +98,7 @@ class GuzzleClientTest extends TestCase
         $client = new GuzzleClient(['handler' => $handlerStack]);
 
         // Assert
-        $this->expectException(\Exception::class);
+        $this->expectException(AuthenticationException::class);
         $this->expectExceptionMessage('Authentication failure');
 
         // Act
@@ -116,7 +118,7 @@ class GuzzleClientTest extends TestCase
         $client = new GuzzleClient(['handler' => $handlerStack]);
 
         // Assert
-        $this->expectException(\Exception::class);
+        $this->expectException(ServerErrorException::class);
         $this->expectExceptionMessage('Internal server error');
 
         // Act
@@ -255,7 +257,7 @@ class GuzzleClientTest extends TestCase
         ]);
 
         // Assert
-        $this->expectException(\Exception::class);
+        $this->expectException(ServerErrorException::class);
         $this->expectExceptionMessage('Internal server error');
 
         // Act
@@ -272,5 +274,60 @@ class GuzzleClientTest extends TestCase
 
         // Assert
         $this->assertTrue(method_exists($client, 'request'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_falls_back_to_config_log_file(): void
+    {
+        // Arrange
+        \LetsPeppolSdk\Config::$logFile = $this->tempLogFile;
+
+        // Act
+        $client = new GuzzleClient();
+
+        // Assert
+        $this->assertInstanceOf(GuzzleClient::class, $client);
+
+        // Cleanup
+        \LetsPeppolSdk\Config::$logFile = '';
+    }
+
+    /**
+     * @test
+     */
+    public function it_validates_log_directory_on_construction(): void
+    {
+        // Arrange
+        $invalidPath = '/invalid/readonly/path/test.log';
+
+        // Assert
+        $this->expectException(\RuntimeException::class);
+
+        // Act
+        new GuzzleClient([], $invalidPath);
+    }
+
+    /**
+     * @test
+     */
+    public function it_preserves_existing_handler_stack(): void
+    {
+        // Arrange
+        $mock = new MockHandler([
+            new Response(200, [], 'OK'),
+        ]);
+        $existingStack = HandlerStack::create($mock);
+        
+        // Act - provide both existing handler and log file
+        $client = new GuzzleClient([
+            'handler' => $existingStack,
+        ], $this->tempLogFile);
+
+        // Assert - client should work with both logging and mock handler
+        $this->assertInstanceOf(GuzzleClient::class, $client);
+        $response = $client->request('GET', '/test');
+        $this->assertSame(200, $response->getStatusCode());
     }
 }
