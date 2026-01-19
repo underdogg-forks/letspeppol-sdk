@@ -7,6 +7,7 @@ use LetsPeppolSdk\Resources\AppClient;
 use LetsPeppolSdk\Resources\ProxyClient;
 use LetsPeppolSdk\Exceptions\ApiException;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 /**
  * Feature test for complete invoice sending workflow
@@ -30,10 +31,7 @@ class CompleteInvoiceWorkflowTest extends TestCase
 </Invoice>
 XML;
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_completes_full_invoice_sending_workflow(): void
     {
         // Arrange
@@ -137,10 +135,7 @@ XML;
             $this->fail('Workflow should complete successfully: ' . $e->getMessage());
         }
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_stops_workflow_when_validation_fails(): void
     {
         // Arrange
@@ -181,10 +176,7 @@ XML;
             $this->fail('Should handle validation failure without exception: ' . $e->getMessage());
         }
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_handles_missing_document_id(): void
     {
         // Arrange
@@ -212,10 +204,7 @@ XML;
             $this->fail('Document ID should be missing');
         }
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_handles_send_document_error(): void
     {
         // Arrange
@@ -255,10 +244,7 @@ XML;
         // Assert
         $this->assertTrue($errorCaught);
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_processes_incoming_and_outgoing_documents(): void
     {
         // Arrange
@@ -294,10 +280,7 @@ XML;
             $proxyClient->markDownloaded($doc['id']);
         }
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_retrieves_account_statistics(): void
     {
         // Arrange
@@ -324,10 +307,7 @@ XML;
         $this->assertEquals(8, $stats['outgoing']);
         $this->assertEquals(250.00, $stats['balance']);
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_schedules_document_for_future_sending(): void
     {
         // Arrange

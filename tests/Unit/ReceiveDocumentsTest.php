@@ -5,6 +5,7 @@ namespace LetsPeppolSdk\Tests\Unit;
 use LetsPeppolSdk\Resources\ProxyClient;
 use LetsPeppolSdk\Exceptions\ApiException;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
@@ -20,10 +21,7 @@ class ReceiveDocumentsTest extends TestCase
     {
         parent::setUp();
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_receives_new_documents_from_proxy(): void
     {
         // Arrange
@@ -63,10 +61,7 @@ class ReceiveDocumentsTest extends TestCase
         $this->assertEquals('doc123', $newDocs[0]['id']);
         $this->assertEquals('INVOICE', $newDocs[0]['documentType']);
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_marks_document_as_downloaded(): void
     {
         // Arrange
@@ -87,10 +82,7 @@ class ReceiveDocumentsTest extends TestCase
         // Assert - Method should complete without exception
         $this->assertTrue(true);
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_processes_multiple_new_documents(): void
     {
         // Arrange
@@ -127,10 +119,7 @@ class ReceiveDocumentsTest extends TestCase
             $proxyClient->markDownloaded($doc['id']);
         }
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_returns_empty_array_when_no_new_documents(): void
     {
         // Arrange
@@ -154,10 +143,7 @@ class ReceiveDocumentsTest extends TestCase
         $this->assertEmpty($newDocs);
         $this->assertCount(0, $newDocs);
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_throws_exception_when_receiving_documents_fails(): void
     {
         // Arrange
@@ -178,10 +164,7 @@ class ReceiveDocumentsTest extends TestCase
         // Act
         $proxyClient->getAllNewDocuments(50);
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_handles_document_processing_workflow(): void
     {
         // Arrange

@@ -5,6 +5,7 @@ namespace LetsPeppolSdk\Tests\Unit;
 use LetsPeppolSdk\Resources\AppClient;
 use LetsPeppolSdk\Exceptions\ApiException;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
@@ -20,10 +21,7 @@ class DocumentManagementTest extends TestCase
     {
         parent::setUp();
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_lists_documents_with_filters(): void
     {
         // Arrange
@@ -77,10 +75,7 @@ class DocumentManagementTest extends TestCase
         $this->assertEquals(2, $response['totalElements']);
         $this->assertCount(2, $response['content']);
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_marks_document_as_read(): void
     {
         // Arrange
@@ -109,10 +104,7 @@ class DocumentManagementTest extends TestCase
         $this->assertArrayHasKey('read', $response);
         $this->assertTrue($response['read']);
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_lists_unread_invoices(): void
     {
         // Arrange
@@ -148,10 +140,7 @@ class DocumentManagementTest extends TestCase
         $this->assertEquals(3, $response['totalElements']);
         $this->assertCount(3, $response['content']);
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_processes_and_marks_documents_as_read(): void
     {
         // Arrange
@@ -177,10 +166,7 @@ class DocumentManagementTest extends TestCase
             $this->assertTrue($result['read']);
         }
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_throws_exception_when_document_not_found(): void
     {
         // Arrange

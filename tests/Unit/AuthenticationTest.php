@@ -6,6 +6,7 @@ use LetsPeppolSdk\LetsPeppolClient;
 use LetsPeppolSdk\Resources\KycClient;
 use LetsPeppolSdk\Exceptions\AuthenticationException;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
@@ -21,10 +22,7 @@ class AuthenticationTest extends TestCase
     {
         parent::setUp();
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_authenticates_successfully_and_returns_token(): void
     {
         // Arrange
@@ -49,10 +47,7 @@ class AuthenticationTest extends TestCase
         $this->assertStringStartsWith('eyJ', $token);
         $this->assertEquals($expectedToken, $token);
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_throws_authentication_exception_on_invalid_credentials(): void
     {
         // Arrange
@@ -76,10 +71,7 @@ class AuthenticationTest extends TestCase
         // Act
         $client->authenticate($email, $password);
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_can_set_token_after_authentication(): void
     {
         // Arrange
@@ -92,10 +84,7 @@ class AuthenticationTest extends TestCase
         // Assert
         $this->assertEquals($token, $client->getToken());
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_returns_token_substring_for_display(): void
     {
         // Arrange

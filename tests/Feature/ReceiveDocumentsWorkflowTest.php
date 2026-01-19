@@ -5,6 +5,7 @@ namespace LetsPeppolSdk\Tests\Feature;
 use LetsPeppolSdk\Resources\ProxyClient;
 use LetsPeppolSdk\Exceptions\ApiException;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 /**
  * Feature test for receiving documents workflow
@@ -13,9 +14,7 @@ use PHPUnit\Framework\TestCase;
  */
 class ReceiveDocumentsWorkflowTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function it_receives_and_processes_new_documents(): void
     {
         // Arrange
@@ -74,10 +73,7 @@ class ReceiveDocumentsWorkflowTest extends TestCase
             $this->fail('Should not throw exception: ' . $e->getMessage());
         }
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_handles_no_new_documents(): void
     {
         // Arrange
@@ -103,10 +99,7 @@ class ReceiveDocumentsWorkflowTest extends TestCase
             $this->fail('Should not throw exception: ' . $e->getMessage());
         }
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_handles_error_during_document_retrieval(): void
     {
         // Arrange
@@ -132,10 +125,7 @@ class ReceiveDocumentsWorkflowTest extends TestCase
         // Assert
         $this->assertTrue($errorCaught);
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_processes_document_and_marks_downloaded(): void
     {
         // Arrange
@@ -172,10 +162,7 @@ class ReceiveDocumentsWorkflowTest extends TestCase
             $proxyClient->markDownloaded($doc['id']);
         }
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_retrieves_specific_document_details(): void
     {
         // Arrange
@@ -208,10 +195,7 @@ class ReceiveDocumentsWorkflowTest extends TestCase
         $this->assertEquals('INVOICE', $document['documentType']);
         $this->assertArrayHasKey('ubl', $document);
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_marks_multiple_documents_as_downloaded_in_batch(): void
     {
         // Arrange
@@ -231,10 +215,7 @@ class ReceiveDocumentsWorkflowTest extends TestCase
         // Assert - method completes without exception
         $this->assertTrue(true);
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_gets_status_updates_for_documents(): void
     {
         // Arrange

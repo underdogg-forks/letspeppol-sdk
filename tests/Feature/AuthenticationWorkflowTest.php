@@ -7,6 +7,7 @@ use LetsPeppolSdk\Resources\KycClient;
 use LetsPeppolSdk\Exceptions\AuthenticationException;
 use LetsPeppolSdk\Exceptions\ApiException;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 /**
  * Feature test for authentication workflow
@@ -15,9 +16,7 @@ use PHPUnit\Framework\TestCase;
  */
 class AuthenticationWorkflowTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function it_completes_authentication_workflow(): void
     {
         // Arrange
@@ -69,10 +68,7 @@ class AuthenticationWorkflowTest extends TestCase
             $this->fail('API call should succeed: ' . $e->getMessage());
         }
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_handles_authentication_failure(): void
     {
         // Arrange
@@ -100,10 +96,7 @@ class AuthenticationWorkflowTest extends TestCase
         // Assert
         $this->assertTrue($authFailed, 'Should catch authentication exception');
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_handles_api_error_during_account_info_retrieval(): void
     {
         // Arrange
@@ -141,10 +134,7 @@ class AuthenticationWorkflowTest extends TestCase
         // Assert
         $this->assertTrue($apiErrorCaught);
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_sets_and_retrieves_token(): void
     {
         // Arrange
@@ -158,10 +148,7 @@ class AuthenticationWorkflowTest extends TestCase
         // Assert
         $this->assertEquals($token, $retrievedToken);
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_creates_client_with_token(): void
     {
         // Arrange

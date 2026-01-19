@@ -6,6 +6,7 @@ use LetsPeppolSdk\LetsPeppolClient;
 use LetsPeppolSdk\Resources\AppClient;
 use LetsPeppolSdk\Exceptions\ApiException;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 /**
  * Feature test for document management workflow
@@ -14,9 +15,7 @@ use PHPUnit\Framework\TestCase;
  */
 class DocumentManagementWorkflowTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function it_lists_and_processes_unread_invoices(): void
     {
         // Arrange
@@ -87,10 +86,7 @@ class DocumentManagementWorkflowTest extends TestCase
             $this->fail('Should not throw exception: ' . $e->getMessage());
         }
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_handles_document_listing_error(): void
     {
         // Arrange
@@ -118,10 +114,7 @@ class DocumentManagementWorkflowTest extends TestCase
         // Assert
         $this->assertTrue($errorCaught);
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_retrieves_document_details(): void
     {
         // Arrange
@@ -154,10 +147,7 @@ class DocumentManagementWorkflowTest extends TestCase
         $this->assertEquals('INV-2024-001', $document['invoiceNumber']);
         $this->assertArrayHasKey('ubl', $document);
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_marks_document_as_paid(): void
     {
         // Arrange
@@ -178,10 +168,7 @@ class DocumentManagementWorkflowTest extends TestCase
         // Assert
         $this->assertTrue($result['paid']);
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_processes_empty_document_list(): void
     {
         // Arrange
@@ -212,10 +199,7 @@ class DocumentManagementWorkflowTest extends TestCase
         $this->assertEquals(0, $response['totalElements']);
         $this->assertEmpty($response['content']);
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_filters_documents_by_multiple_criteria(): void
     {
         // Arrange

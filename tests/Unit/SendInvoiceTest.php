@@ -5,6 +5,7 @@ namespace LetsPeppolSdk\Tests\Unit;
 use LetsPeppolSdk\Resources\AppClient;
 use LetsPeppolSdk\Exceptions\ApiException;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
@@ -30,10 +31,7 @@ class SendInvoiceTest extends TestCase
 </Invoice>
 XML;
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_validates_ubl_xml_successfully(): void
     {
         // Arrange
@@ -62,10 +60,7 @@ XML;
         $this->assertTrue($validation['valid']);
         $this->assertEmpty($validation['errors']);
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_fails_validation_with_errors(): void
     {
         // Arrange
@@ -96,10 +91,7 @@ XML;
         $this->assertCount(2, $validation['errors']);
         $this->assertContains('Invoice number is required', $validation['errors']);
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_creates_document_as_draft(): void
     {
         // Arrange
@@ -129,10 +121,7 @@ XML;
         $this->assertEquals('doc123', $document['id']);
         $this->assertEquals('DRAFT', $document['status']);
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_sends_document_successfully(): void
     {
         // Arrange
@@ -160,10 +149,7 @@ XML;
         $this->assertIsArray($sent);
         $this->assertEquals('SENT', $sent['status']);
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_handles_complete_send_invoice_workflow(): void
     {
         // Arrange
@@ -205,10 +191,7 @@ XML;
             $this->fail('Validation should pass');
         }
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_stops_workflow_when_validation_fails(): void
     {
         // Arrange
@@ -236,10 +219,7 @@ XML;
         $this->assertFalse($validation['valid']);
         $this->assertNotEmpty($validation['errors']);
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_throws_exception_when_sending_fails(): void
     {
         // Arrange
@@ -262,10 +242,7 @@ XML;
         // Act
         $appClient->sendDocument($documentId);
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_handles_document_id_retrieval(): void
     {
         // Arrange
@@ -281,10 +258,7 @@ XML;
         $this->assertNotNull($documentId);
         $this->assertEquals('doc123', $documentId);
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_handles_missing_document_id(): void
     {
         // Arrange

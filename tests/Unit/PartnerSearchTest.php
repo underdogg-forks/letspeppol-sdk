@@ -5,6 +5,7 @@ namespace LetsPeppolSdk\Tests\Unit;
 use LetsPeppolSdk\Resources\AppClient;
 use LetsPeppolSdk\Exceptions\ApiException;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 
 /**
@@ -20,10 +21,7 @@ class PartnerSearchTest extends TestCase
     {
         parent::setUp();
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_finds_partner_by_peppol_id(): void
     {
         // Arrange
@@ -58,10 +56,7 @@ class PartnerSearchTest extends TestCase
         $this->assertEquals('Example Partner Company', $partners[0]['name']);
         $this->assertEquals($peppolId, $partners[0]['peppolId']);
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_returns_empty_array_when_partner_not_found(): void
     {
         // Arrange
@@ -85,10 +80,7 @@ class PartnerSearchTest extends TestCase
         $this->assertIsArray($partners);
         $this->assertEmpty($partners);
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_handles_partner_search_with_valid_peppol_id(): void
     {
         // Arrange
@@ -122,10 +114,7 @@ class PartnerSearchTest extends TestCase
             $this->fail('Partner should be found');
         }
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_lists_all_partners(): void
     {
         // Arrange
@@ -163,10 +152,7 @@ class PartnerSearchTest extends TestCase
         $this->assertIsArray($partners);
         $this->assertCount(3, $partners);
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_throws_exception_on_api_error_during_search(): void
     {
         // Arrange

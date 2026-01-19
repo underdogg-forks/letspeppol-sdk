@@ -5,6 +5,7 @@ namespace LetsPeppolSdk\Tests\Feature;
 use LetsPeppolSdk\Resources\AppClient;
 use LetsPeppolSdk\Exceptions\ApiException;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\Test;
 
 /**
  * Feature test for partner search and management workflow
@@ -13,9 +14,7 @@ use PHPUnit\Framework\TestCase;
  */
 class PartnerManagementWorkflowTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function it_searches_for_partner_and_finds_result(): void
     {
         // Arrange
@@ -55,10 +54,7 @@ class PartnerManagementWorkflowTest extends TestCase
             $this->fail('Should not throw exception: ' . $e->getMessage());
         }
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_handles_partner_not_found_scenario(): void
     {
         // Arrange
@@ -88,10 +84,7 @@ class PartnerManagementWorkflowTest extends TestCase
             $this->fail('Should not throw exception: ' . $e->getMessage());
         }
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_creates_partner_when_not_found(): void
     {
         // Arrange
@@ -131,10 +124,7 @@ class PartnerManagementWorkflowTest extends TestCase
             $this->assertEquals($peppolId, $partner['peppolId']);
         }
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_lists_all_partners(): void
     {
         // Arrange
@@ -168,10 +158,7 @@ class PartnerManagementWorkflowTest extends TestCase
         $this->assertEquals('Partner 1', $partners[0]['name']);
         $this->assertEquals('Partner 2', $partners[1]['name']);
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_updates_existing_partner(): void
     {
         // Arrange
@@ -204,10 +191,7 @@ class PartnerManagementWorkflowTest extends TestCase
         $this->assertEquals('Updated Partner Name', $result['name']);
         $this->assertEquals('updated@example.com', $result['email']);
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_deletes_partner(): void
     {
         // Arrange
@@ -227,10 +211,7 @@ class PartnerManagementWorkflowTest extends TestCase
         // Assert - method completes without exception
         $this->assertTrue(true);
     }
-
-    /**
-     * @test
-     */
+    #[Test]
     public function it_handles_partner_search_error(): void
     {
         // Arrange
