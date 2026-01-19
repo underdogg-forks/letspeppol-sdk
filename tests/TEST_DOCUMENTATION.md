@@ -167,7 +167,7 @@ When adding new tests:
 3. Use the `LetsPeppolSdk\Tests\Unit` or `LetsPeppolSdk\Tests\Feature` namespace
 4. Extend `PHPUnit\Framework\TestCase`
 5. Follow the existing naming conventions
-6. Add the `@test` annotation or prefix method with `test`
+6. Add the `#[Test]` attribute to test methods
 7. Include both success and failure scenarios
 
 ## Configuration

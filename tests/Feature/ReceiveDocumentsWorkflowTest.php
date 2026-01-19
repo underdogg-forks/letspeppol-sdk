@@ -4,7 +4,6 @@ namespace LetsPeppolSdk\Tests\Feature;
 
 use LetsPeppolSdk\Resources\ProxyClient;
 use LetsPeppolSdk\Exceptions\ApiException;
-use LetsPeppolSdk\Tests\Fixtures\FixtureLoader;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -96,7 +95,6 @@ class ReceiveDocumentsWorkflowTest extends TestCase
 
             // Assert
             $this->assertEmpty($newDocs);
-            $this->assertEquals(0, count($newDocs));
 
         } catch (ApiException $e) {
             $this->fail('Should not throw exception: ' . $e->getMessage());
@@ -116,17 +114,12 @@ class ReceiveDocumentsWorkflowTest extends TestCase
             ->with(50)
             ->willThrowException(new ApiException('Error receiving documents', 500));
 
-        // Act
-        $errorCaught = false;
-        try {
-            $proxyClient->getAllNewDocuments(50);
-        } catch (ApiException $e) {
-            $errorCaught = true;
-            $this->assertStringContainsString('Error receiving documents', $e->getMessage());
-        }
-
         // Assert
-        $this->assertTrue($errorCaught);
+        $this->expectException(ApiException::class);
+        $this->expectExceptionMessage('Error receiving documents');
+
+        // Act
+        $proxyClient->getAllNewDocuments(50);
     }
     #[Test]
     public function it_processes_document_and_marks_downloaded(): void

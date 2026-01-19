@@ -2,10 +2,8 @@
 
 namespace LetsPeppolSdk\Tests\Feature;
 
-use LetsPeppolSdk\LetsPeppolClient;
 use LetsPeppolSdk\Resources\AppClient;
 use LetsPeppolSdk\Exceptions\ApiException;
-use LetsPeppolSdk\Tests\Fixtures\FixtureLoader;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -102,20 +100,15 @@ class DocumentManagementWorkflowTest extends TestCase
             ->method('listDocuments')
             ->willThrowException(new ApiException('Error listing documents', 500));
 
-        // Act
-        $errorCaught = false;
-        try {
-            $appClient->listDocuments([
-                'type' => 'INVOICE',
-                'direction' => 'INCOMING'
-            ], 0, 10);
-        } catch (ApiException $e) {
-            $errorCaught = true;
-            $this->assertStringContainsString('Error listing documents', $e->getMessage());
-        }
-
         // Assert
-        $this->assertTrue($errorCaught);
+        $this->expectException(ApiException::class);
+        $this->expectExceptionMessage('Error listing documents');
+
+        // Act
+        $appClient->listDocuments([
+            'type' => 'INVOICE',
+            'direction' => 'INCOMING'
+        ], 0, 10);
     }
     #[Test]
     public function it_retrieves_document_details(): void

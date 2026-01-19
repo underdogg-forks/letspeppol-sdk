@@ -25,7 +25,7 @@ class AuthenticationWorkflowTest extends TestCase
         // Arrange
         $email = 'user@example.com';
         $password = 'password123';
-        $expectedToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.test.token';
+        $expectedToken = 'FAKE_TOKEN_FOR_TESTING';
 
         $client = $this->getMockBuilder(LetsPeppolClient::class)
             ->onlyMethods(['authenticate'])
@@ -58,7 +58,7 @@ class AuthenticationWorkflowTest extends TestCase
             
             // Step 2: Display token (first 20 chars)
             $tokenPreview = substr($token, 0, 20);
-            $this->assertEquals('eyJhbGciOiJIUzI1NiIs', $tokenPreview);
+            $this->assertEquals('FAKE_TOKEN_FOR_TESTI', $tokenPreview);
             
             // Step 3: Get account info
             $account = $kycClient->getAccountInfo();
