@@ -51,9 +51,10 @@ abstract class BaseResource
     protected function post(string $endpoint, array $data = [], array $headers = []): array
     {
         $options = ['json' => $data];
-        if (!empty($headers)) {
+        if (! empty($headers)) {
             $options['headers'] = $headers;
         }
+
         return $this->request('POST', $endpoint, $options);
     }
 
@@ -102,23 +103,23 @@ abstract class BaseResource
             if ($statusCode >= 200 && $statusCode < 300) {
                 // Try to decode JSON, return as array if successful
                 $decoded = json_decode($body, true);
-                
+
                 // Check for JSON decode errors
                 if (json_last_error() !== JSON_ERROR_NONE && $body !== '') {
                     throw new ApiException(
                         "Invalid JSON response: " . json_last_error_msg(),
                         $statusCode,
-                        ['body' => $body, 'json_error' => json_last_error_msg()]
+                        ['body' => $body, 'json_error' => json_last_error_msg()],
                     );
                 }
-                
+
                 return $decoded ?? [];
             }
 
             // Error status codes - attempt to parse error response
             $errorData = [];
             $errorMessage = $body;
-            
+
             // Try to parse JSON error response
             if ($body !== '') {
                 $decoded = json_decode($body, true);
@@ -131,21 +132,23 @@ abstract class BaseResource
 
             // Create detailed error message based on status code
             $errorPrefix = $this->getErrorPrefix($statusCode);
+
             throw new ApiException(
                 "{$errorPrefix}: {$statusCode} - {$errorMessage}",
                 $statusCode,
-                $errorData
+                $errorData,
             );
         } catch (ApiException $e) {
             throw $e;
         } catch (GuzzleException $e) {
             // Categorize network errors
             $errorType = $this->categorizeGuzzleException($e);
+
             throw new ApiException(
                 "{$errorType}: {$e->getMessage()}",
                 $e->getCode(),
                 ['exception_class' => get_class($e), 'error_type' => $errorType],
-                $e
+                $e,
             );
         }
     }
@@ -160,18 +163,18 @@ abstract class BaseResource
     {
         // Common error message fields
         $fields = ['message', 'error', 'error_description', 'detail', 'title'];
-        
+
         foreach ($fields as $field) {
             if (isset($data[$field]) && is_string($data[$field])) {
                 return $data[$field];
             }
         }
-        
+
         // Check nested error objects
         if (isset($data['error']) && is_array($data['error'])) {
             return $this->extractErrorMessage($data['error']);
         }
-        
+
         return null;
     }
 
@@ -191,8 +194,8 @@ abstract class BaseResource
             $statusCode === 409 => 'Conflict',
             $statusCode === 422 => 'Validation Error',
             $statusCode === 429 => 'Rate Limit Exceeded',
-            $statusCode >= 500 => 'Server Error',
-            default => 'API Error',
+            $statusCode >= 500  => 'Server Error',
+            default             => 'API Error',
         };
     }
 
@@ -220,7 +223,7 @@ abstract class BaseResource
         if ($e instanceof \GuzzleHttp\Exception\RequestException) {
             return 'Request Error';
         }
-        
+
         return 'Network Error';
     }
 
@@ -247,18 +250,20 @@ abstract class BaseResource
 
             // Error status codes
             $errorPrefix = $this->getErrorPrefix($statusCode);
+
             throw new ApiException(
                 "{$errorPrefix}: {$statusCode} - " . substr($body, 0, 200),
                 $statusCode,
-                ['body_preview' => substr($body, 0, 500)]
+                ['body_preview' => substr($body, 0, 500)],
             );
         } catch (GuzzleException $e) {
             $errorType = $this->categorizeGuzzleException($e);
+
             throw new ApiException(
                 "{$errorType}: {$e->getMessage()}",
                 $e->getCode(),
                 ['exception_class' => get_class($e)],
-                $e
+                $e,
             );
         }
     }
@@ -285,26 +290,29 @@ abstract class BaseResource
                 foreach ($response->getHeaders() as $name => $values) {
                     $headers[$name] = $values[0] ?? '';
                 }
+
                 return [
-                    'body' => $body,
+                    'body'    => $body,
                     'headers' => $headers,
                 ];
             }
 
             // Error status codes
             $errorPrefix = $this->getErrorPrefix($statusCode);
+
             throw new ApiException(
                 "{$errorPrefix}: {$statusCode} - {$body}",
                 $statusCode,
-                ['body' => $body]
+                ['body' => $body],
             );
         } catch (GuzzleException $e) {
             $errorType = $this->categorizeGuzzleException($e);
+
             throw new ApiException(
                 "{$errorType}: {$e->getMessage()}",
                 $e->getCode(),
                 ['exception_class' => get_class($e)],
-                $e
+                $e,
             );
         }
     }

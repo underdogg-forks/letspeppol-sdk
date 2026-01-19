@@ -4,7 +4,7 @@ namespace LetsPeppolSdk;
 
 /**
  * Configuration class for LetsPeppol SDK
- * 
+ *
  * Stores global configuration settings such as API endpoint, key, and log file path.
  */
 class Config
@@ -21,7 +21,7 @@ class Config
 
     /**
      * Log file path for request/response logging
-     * 
+     *
      * When set, all HTTP requests and responses will be logged to this file.
      * When empty, logging is disabled.
      */
@@ -29,9 +29,9 @@ class Config
 
     /**
      * Log file path for request/response logging (deprecated alias)
-     * 
+     *
      * @deprecated Use Config::$logFile instead. This property will be removed in a future version.
-     * 
+     *
      * Note: Direct assignment to $log_file will work due to PHP's property handling,
      * but reading from it requires using the new $logFile property.
      * For migration: Replace all Config::$log_file with Config::$logFile

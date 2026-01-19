@@ -2,8 +2,8 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use LetsPeppolSdk\LetsPeppolClient;
 use LetsPeppolSdk\Exceptions\ApiException;
+use LetsPeppolSdk\LetsPeppolClient;
 
 /**
  * Complete workflow example: From authentication to sending an invoice
@@ -59,14 +59,14 @@ try {
     echo "Step 4: Managing partners...\n";
     $targetPeppolId = '0208:BE0987654321'; // Example
     $searchResults = $client->app()->searchPartners($targetPeppolId);
-    
+
     if (empty($searchResults)) {
         echo "  Partner not found, creating...\n";
         $partner = $client->app()->createPartner([
-            'peppolId' => $targetPeppolId,
-            'name' => 'Example Partner Company',
+            'peppolId'  => $targetPeppolId,
+            'name'      => 'Example Partner Company',
             'vatNumber' => 'BE0987654321',
-            'email' => 'partner@example.com'
+            'email'     => 'partner@example.com',
         ]);
         echo "* Partner created: {$partner['name']}\n\n";
     } else {
@@ -76,7 +76,7 @@ try {
     // Step 5: Validate UBL XML
     echo "Step 5: Validating UBL XML...\n";
     $validation = $client->app()->validateDocument($sampleUblXml);
-    
+
     if (isset($validation['valid']) && $validation['valid']) {
         echo "* UBL validation passed\n\n";
     } else {
@@ -107,12 +107,12 @@ try {
     echo "Step 8: Checking for incoming documents...\n";
     $newDocs = $client->proxy()->getAllNewDocuments(10);
     echo "* Found " . count($newDocs) . " new document(s)\n";
-    
-    if (!empty($newDocs)) {
+
+    if (! empty($newDocs)) {
         echo "  Processing new documents:\n";
         foreach ($newDocs as $doc) {
             echo "  - Document {$doc['id']}: {$doc['documentType']}\n";
-            
+
             // Mark as downloaded after processing
             $client->proxy()->markDownloaded($doc['id']);
             echo "    * Marked as downloaded\n";
@@ -143,12 +143,12 @@ try {
     echo "\n* Error occurred:\n";
     echo "  Code: {$e->getCode()}\n";
     echo "  Message: {$e->getMessage()}\n";
-    
+
     $responseData = $e->getResponseData();
-    if (!empty($responseData)) {
+    if (! empty($responseData)) {
         echo "  Response data: " . json_encode($responseData, JSON_PRETTY_PRINT) . "\n";
     }
-    
+
     exit(1);
 } catch (Exception $e) {
     echo "\n* Unexpected error:\n";

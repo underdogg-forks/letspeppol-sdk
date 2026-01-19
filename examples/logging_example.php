@@ -2,13 +2,13 @@
 
 /**
  * Example demonstrating the new logging feature
- * 
+ *
  * This example shows how to use the LetsPeppol SDK with request/response logging enabled.
  */
 
-use LetsPeppolSdk\LetsPeppolClient;
 use LetsPeppolSdk\Config;
 use LetsPeppolSdk\GuzzleClient;
+use LetsPeppolSdk\LetsPeppolClient;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -37,7 +37,7 @@ $client = new LetsPeppolClient(
     proxyUrl: 'https://proxy.letspeppol.org',
     appUrl: 'https://app.letspeppol.org',
     token: null,
-    logFile: $logFile
+    logFile: $logFile,
 );
 
 echo "Client created with logging enabled\n";
@@ -59,7 +59,7 @@ echo "======================================\n\n";
 $token = 'YOUR_JWT_TOKEN_HERE';
 $clientWithToken = LetsPeppolClient::withToken(
     token: $token,
-    logFile: '/tmp/letspeppol-authenticated.log'
+    logFile: '/tmp/letspeppol-authenticated.log',
 );
 
 echo "Authenticated client created with logging\n";
@@ -72,7 +72,7 @@ echo "====================================\n\n";
 // Without logging
 $httpClient1 = new GuzzleClient([
     'base_uri' => 'https://api.example.com',
-    'headers' => [
+    'headers'  => [
         'Content-Type' => 'application/json',
     ],
 ]);
@@ -82,7 +82,7 @@ echo "GuzzleClient created without logging\n";
 // With logging
 $httpClient2 = new GuzzleClient([
     'base_uri' => 'https://api.example.com',
-    'headers' => [
+    'headers'  => [
         'Content-Type' => 'application/json',
     ],
 ], '/tmp/guzzle-requests.log');

@@ -2,13 +2,13 @@
 
 namespace LetsPeppolSdk;
 
+use LetsPeppolSdk\Resources\AppClient;
 use LetsPeppolSdk\Resources\KycClient;
 use LetsPeppolSdk\Resources\ProxyClient;
-use LetsPeppolSdk\Resources\AppClient;
 
 /**
  * Unified LetsPeppol API Client
- * 
+ *
  * Provides access to all LetsPeppol API modules:
  * - KYC: Authentication and registration
  * - Proxy: Document transmission and registry
@@ -38,7 +38,7 @@ class LetsPeppolClient
         string $proxyUrl = 'https://proxy.letspeppol.org',
         string $appUrl = 'https://app.letspeppol.org',
         ?string $token = null,
-        ?string $logFile = null
+        ?string $logFile = null,
     ) {
         $this->kycSession = new Session($kycUrl, $token, [], $logFile);
         $this->proxySession = new Session($proxyUrl, $token, [], $logFile);
@@ -84,6 +84,7 @@ class LetsPeppolClient
         $this->kycSession->setToken($token);
         $this->proxySession->setToken($token);
         $this->appSession->setToken($token);
+
         return $this;
     }
 
@@ -113,6 +114,7 @@ class LetsPeppolClient
     {
         $token = $this->kycClient->authenticate($email, $password);
         $this->setToken($token);
+
         return $token;
     }
 
@@ -124,7 +126,7 @@ class LetsPeppolClient
         string $kycUrl = 'https://kyc.letspeppol.org',
         string $proxyUrl = 'https://proxy.letspeppol.org',
         string $appUrl = 'https://app.letspeppol.org',
-        ?string $logFile = null
+        ?string $logFile = null,
     ): self {
         return new self($kycUrl, $proxyUrl, $appUrl, $token, $logFile);
     }
