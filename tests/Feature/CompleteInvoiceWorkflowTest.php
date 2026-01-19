@@ -6,7 +6,6 @@ use LetsPeppolSdk\LetsPeppolClient;
 use LetsPeppolSdk\Resources\AppClient;
 use LetsPeppolSdk\Resources\ProxyClient;
 use LetsPeppolSdk\Exceptions\ApiException;
-use LetsPeppolSdk\Tests\Fixtures\FixtureLoader;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -231,23 +230,17 @@ XML;
             ->with('doc123')
             ->willThrowException(new ApiException('Error sending invoice', 422));
 
-        // Act
-        $errorCaught = false;
-        try {
-            $validation = $appClient->validateDocument($this->sampleUblXml);
-
-            if ($validation['valid']) {
-                $document = $appClient->createDocument($this->sampleUblXml, true);
-                $appClient->sendDocument($document['id']);
-            }
-
-        } catch (ApiException $e) {
-            $errorCaught = true;
-            $this->assertStringContainsString('Error sending invoice', $e->getMessage());
-        }
-
         // Assert
-        $this->assertTrue($errorCaught);
+        $this->expectException(ApiException::class);
+        $this->expectExceptionMessage('Error sending invoice');
+
+        // Act
+        $validation = $appClient->validateDocument($this->sampleUblXml);
+
+        if ($validation['valid']) {
+            $document = $appClient->createDocument($this->sampleUblXml, true);
+            $appClient->sendDocument($document['id']);
+        }
     }
     #[Test]
     public function it_processes_incoming_and_outgoing_documents(): void

@@ -4,7 +4,6 @@ namespace LetsPeppolSdk\Tests\Feature;
 
 use LetsPeppolSdk\Resources\AppClient;
 use LetsPeppolSdk\Exceptions\ApiException;
-use LetsPeppolSdk\Tests\Fixtures\FixtureLoader;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -211,16 +210,11 @@ class PartnerManagementWorkflowTest extends TestCase
             ->with($peppolId)
             ->willThrowException(new ApiException('Error searching partners', 400));
 
-        // Act
-        $errorCaught = false;
-        try {
-            $appClient->searchPartners($peppolId);
-        } catch (ApiException $e) {
-            $errorCaught = true;
-            $this->assertStringContainsString('Error searching partners', $e->getMessage());
-        }
-
         // Assert
-        $this->assertTrue($errorCaught);
+        $this->expectException(ApiException::class);
+        $this->expectExceptionMessage('Error searching partners');
+
+        // Act
+        $appClient->searchPartners($peppolId);
     }
 }
