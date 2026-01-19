@@ -43,12 +43,12 @@ class Session
         // Set default headers
         $defaults = [
             'base_uri' => $this->baseUrl,
-            'headers' => [
-                'Accept' => 'application/json',
+            'headers'  => [
+                'Accept'       => 'application/json',
                 'Content-Type' => 'application/json',
-                'User-Agent' => 'LetsPeppol PHP SDK',
+                'User-Agent'   => 'LetsPeppol PHP SDK',
             ],
-            'timeout' => 30,
+            'timeout'     => 30,
             'http_errors' => false, // Handle errors manually
         ];
 
@@ -60,7 +60,7 @@ class Session
         // Use custom GuzzleClient with logging support
         return new GuzzleClient(
             array_replace_recursive($defaults, $this->clientOptions),
-            $this->logFile
+            $this->logFile,
         );
     }
 

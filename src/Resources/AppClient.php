@@ -66,7 +66,7 @@ class AppClient extends BaseResource
     public function validateDocument(string $ublXml): array
     {
         return $this->request('POST', '/sapi/document/validate', [
-            'body' => $ublXml,
+            'body'    => $ublXml,
             'headers' => ['Content-Type' => 'text/xml'],
         ]);
     }
@@ -237,9 +237,9 @@ class AppClient extends BaseResource
         }
 
         return $this->request('POST', '/sapi/document', [
-            'body' => $ublXml,
+            'body'    => $ublXml,
             'headers' => ['Content-Type' => 'text/xml'],
-            'query' => $params,
+            'query'   => $params,
         ]);
     }
 
@@ -269,9 +269,9 @@ class AppClient extends BaseResource
         }
 
         return $this->request('PUT', "/sapi/document/" . rawurlencode($id), [
-            'body' => $ublXml,
+            'body'    => $ublXml,
             'headers' => ['Content-Type' => 'text/xml'],
-            'query' => $params,
+            'query'   => $params,
         ]);
     }
 
@@ -302,7 +302,7 @@ class AppClient extends BaseResource
         }
 
         return $this->request('PUT', "/sapi/document/" . rawurlencode($id) . "/send", [
-            'query' => $params
+            'query' => $params,
         ]);
     }
 
@@ -367,6 +367,41 @@ class AppClient extends BaseResource
 
     /**
      * Get company information
+     *
+     * Retrieves full company profile for the authenticated user.
+     *
+     * **Request:**
+     * - GET /sapi/company
+     * - Requires: JWT token
+     *
+     * **Response JSON:**
+     * ```json
+     * {
+     *   "id": 123,
+     *   "peppolId": "0208:BE0123456789",
+     *   "vatNumber": "BE0123456789",
+     *   "name": "Company Name BVBA",
+     *   "email": "admin@company.com",
+     *   "address": {
+     *     "street": "Street Name 123",
+     *     "city": "Brussels",
+     *     "postalCode": "1000",
+     *     "country": "BE"
+     *   },
+     *   "phone": "+32 2 123 4567",
+     *   "website": "https://company.com"
+     * }
+     * ```
+     *
+     * **Example:**
+     * ```php
+     * $company = $client->app()->getCompany();
+     * echo "Company: {$company['name']}\n";
+     * echo "Peppol ID: {$company['peppolId']}\n";
+     * ```
+     *
+     * @return array Company information
+     * @throws ApiException When not authenticated (401)
      */
     public function getCompany(): array
     {
@@ -375,6 +410,56 @@ class AppClient extends BaseResource
 
     /**
      * Update company information
+     *
+     * Updates company profile details for the authenticated user.
+     *
+     * **Request JSON:**
+     * ```json
+     * {
+     *   "name": "Updated Company Name BVBA",
+     *   "email": "newemail@company.com",
+     *   "address": {
+     *     "street": "New Street 456",
+     *     "city": "Antwerp",
+     *     "postalCode": "2000",
+     *     "country": "BE"
+     *   },
+     *   "phone": "+32 3 987 6543",
+     *   "website": "https://newcompany.com"
+     * }
+     * ```
+     *
+     * **Response JSON:**
+     * ```json
+     * {
+     *   "id": 123,
+     *   "peppolId": "0208:BE0123456789",
+     *   "vatNumber": "BE0123456789",
+     *   "name": "Updated Company Name BVBA",
+     *   "email": "newemail@company.com",
+     *   "address": {
+     *     "street": "New Street 456",
+     *     "city": "Antwerp",
+     *     "postalCode": "2000",
+     *     "country": "BE"
+     *   },
+     *   "phone": "+32 3 987 6543",
+     *   "website": "https://newcompany.com"
+     * }
+     * ```
+     *
+     * **Example:**
+     * ```php
+     * $updated = $client->app()->updateCompany([
+     *     'name' => 'Updated Company Name BVBA',
+     *     'email' => 'newemail@company.com'
+     * ]);
+     * echo "Company updated: {$updated['name']}\n";
+     * ```
+     *
+     * @param array $companyData Company data to update
+     * @return array Updated company information
+     * @throws ApiException When not authenticated (401) or validation fails (422)
      */
     public function updateCompany(array $companyData): array
     {
@@ -385,6 +470,45 @@ class AppClient extends BaseResource
 
     /**
      * List partners
+     *
+     * Retrieves all business partners in the system.
+     *
+     * **Request:**
+     * - GET /sapi/partner
+     * - Requires: JWT token
+     *
+     * **Response JSON:**
+     * ```json
+     * [
+     *   {
+     *     "id": 1,
+     *     "name": "Partner Company Ltd",
+     *     "peppolId": "0208:BE0987654321",
+     *     "vatNumber": "BE0987654321",
+     *     "email": "contact@partner.com",
+     *     "country": "BE"
+     *   },
+     *   {
+     *     "id": 2,
+     *     "name": "Another Partner BV",
+     *     "peppolId": "0208:NL123456789B01",
+     *     "vatNumber": "NL123456789B01",
+     *     "email": "info@another.nl",
+     *     "country": "NL"
+     *   }
+     * ]
+     * ```
+     *
+     * **Example:**
+     * ```php
+     * $partners = $client->app()->listPartners();
+     * foreach ($partners as $partner) {
+     *     echo "{$partner['name']} ({$partner['peppolId']})\n";
+     * }
+     * ```
+     *
+     * @return array Array of partner objects
+     * @throws ApiException When not authenticated (401)
      */
     public function listPartners(): array
     {
@@ -393,6 +517,34 @@ class AppClient extends BaseResource
 
     /**
      * Search partners by Peppol ID
+     *
+     * Searches for partners matching the given Peppol ID in the directory.
+     *
+     * **Request:**
+     * - GET /sapi/partner/search?peppolId=0208:BE0987654321
+     *
+     * **Response JSON:**
+     * ```json
+     * [
+     *   {
+     *     "peppolId": "0208:BE0987654321",
+     *     "name": "Partner Company Ltd",
+     *     "country": "BE"
+     *   }
+     * ]
+     * ```
+     *
+     * **Example:**
+     * ```php
+     * $results = $client->app()->searchPartners('0208:BE0987654321');
+     * if (!empty($results)) {
+     *     echo "Found: {$results[0]['name']}\n";
+     * }
+     * ```
+     *
+     * @param string $peppolId Peppol participant ID to search for
+     * @return array Array of matching partners
+     * @throws ApiException When search fails (400)
      */
     public function searchPartners(string $peppolId): array
     {
@@ -401,6 +553,52 @@ class AppClient extends BaseResource
 
     /**
      * Create partner
+     *
+     * Adds a new business partner to the system.
+     *
+     * **Request JSON:**
+     * ```json
+     * {
+     *   "name": "New Partner Ltd",
+     *   "peppolId": "0208:BE0111222333",
+     *   "vatNumber": "BE0111222333",
+     *   "email": "contact@newpartner.com",
+     *   "country": "BE",
+     *   "address": {
+     *     "street": "Partner Street 789",
+     *     "city": "Ghent",
+     *     "postalCode": "9000",
+     *     "country": "BE"
+     *   }
+     * }
+     * ```
+     *
+     * **Response JSON:**
+     * ```json
+     * {
+     *   "id": 3,
+     *   "name": "New Partner Ltd",
+     *   "peppolId": "0208:BE0111222333",
+     *   "vatNumber": "BE0111222333",
+     *   "email": "contact@newpartner.com",
+     *   "country": "BE",
+     *   "createdAt": "2024-01-09T10:00:00Z"
+     * }
+     * ```
+     *
+     * **Example:**
+     * ```php
+     * $partner = $client->app()->createPartner([
+     *     'name' => 'New Partner Ltd',
+     *     'peppolId' => '0208:BE0111222333',
+     *     'email' => 'contact@newpartner.com'
+     * ]);
+     * echo "Partner created with ID: {$partner['id']}\n";
+     * ```
+     *
+     * @param array $partnerData Partner information
+     * @return array Created partner with ID
+     * @throws ApiException When validation fails (422) or partner already exists (409)
      */
     public function createPartner(array $partnerData): array
     {
@@ -409,6 +607,48 @@ class AppClient extends BaseResource
 
     /**
      * Update partner
+     *
+     * Updates an existing partner's information.
+     *
+     * **Request JSON:**
+     * ```json
+     * {
+     *   "name": "Updated Partner Name",
+     *   "email": "newemail@partner.com",
+     *   "address": {
+     *     "street": "New Address 123",
+     *     "city": "Brussels",
+     *     "postalCode": "1000",
+     *     "country": "BE"
+     *   }
+     * }
+     * ```
+     *
+     * **Response JSON:**
+     * ```json
+     * {
+     *   "id": 3,
+     *   "name": "Updated Partner Name",
+     *   "peppolId": "0208:BE0111222333",
+     *   "vatNumber": "BE0111222333",
+     *   "email": "newemail@partner.com",
+     *   "updatedAt": "2024-01-09T11:00:00Z"
+     * }
+     * ```
+     *
+     * **Example:**
+     * ```php
+     * $updated = $client->app()->updatePartner(3, [
+     *     'name' => 'Updated Partner Name',
+     *     'email' => 'newemail@partner.com'
+     * ]);
+     * echo "Partner updated: {$updated['name']}\n";
+     * ```
+     *
+     * @param int $id Partner ID
+     * @param array $partnerData Updated partner data
+     * @return array Updated partner information
+     * @throws ApiException When partner not found (404) or validation fails (422)
      */
     public function updatePartner(int $id, array $partnerData): array
     {
@@ -417,6 +657,18 @@ class AppClient extends BaseResource
 
     /**
      * Delete partner
+     *
+     * Removes a partner from the system.
+     *
+     * **Example:**
+     * ```php
+     * $client->app()->deletePartner(3);
+     * echo "Partner deleted successfully\n";
+     * ```
+     *
+     * @param int $id Partner ID to delete
+     * @return void
+     * @throws ApiException When partner not found (404) or has active documents (409)
      */
     public function deletePartner(int $id): void
     {
@@ -427,6 +679,50 @@ class AppClient extends BaseResource
 
     /**
      * List products
+     *
+     * Retrieves all products from the catalog.
+     *
+     * **Request:**
+     * - GET /sapi/product
+     * - Requires: JWT token
+     *
+     * **Response JSON:**
+     * ```json
+     * [
+     *   {
+     *     "id": 1,
+     *     "name": "Product A",
+     *     "sku": "PROD-001",
+     *     "description": "High quality product",
+     *     "price": 99.99,
+     *     "currency": "EUR",
+     *     "vatRate": 21.0,
+     *     "categoryId": 5,
+     *     "inStock": true
+     *   },
+     *   {
+     *     "id": 2,
+     *     "name": "Product B",
+     *     "sku": "PROD-002",
+     *     "description": "Premium service",
+     *     "price": 149.99,
+     *     "currency": "EUR",
+     *     "vatRate": 21.0,
+     *     "inStock": true
+     *   }
+     * ]
+     * ```
+     *
+     * **Example:**
+     * ```php
+     * $products = $client->app()->listProducts();
+     * foreach ($products as $product) {
+     *     echo "{$product['name']}: {$product['price']} {$product['currency']}\n";
+     * }
+     * ```
+     *
+     * @return array Array of product objects
+     * @throws ApiException When not authenticated (401)
      */
     public function listProducts(): array
     {
@@ -435,6 +731,53 @@ class AppClient extends BaseResource
 
     /**
      * Create product
+     *
+     * Adds a new product to the catalog.
+     *
+     * **Request JSON:**
+     * ```json
+     * {
+     *   "name": "New Product",
+     *   "sku": "PROD-003",
+     *   "description": "Excellent new product",
+     *   "price": 79.99,
+     *   "currency": "EUR",
+     *   "vatRate": 21.0,
+     *   "categoryId": 5,
+     *   "inStock": true
+     * }
+     * ```
+     *
+     * **Response JSON:**
+     * ```json
+     * {
+     *   "id": 3,
+     *   "name": "New Product",
+     *   "sku": "PROD-003",
+     *   "description": "Excellent new product",
+     *   "price": 79.99,
+     *   "currency": "EUR",
+     *   "vatRate": 21.0,
+     *   "categoryId": 5,
+     *   "inStock": true,
+     *   "createdAt": "2024-01-09T10:00:00Z"
+     * }
+     * ```
+     *
+     * **Example:**
+     * ```php
+     * $product = $client->app()->createProduct([
+     *     'name' => 'New Product',
+     *     'sku' => 'PROD-003',
+     *     'price' => 79.99,
+     *     'currency' => 'EUR'
+     * ]);
+     * echo "Product created with ID: {$product['id']}\n";
+     * ```
+     *
+     * @param array $productData Product information
+     * @return array Created product with ID
+     * @throws ApiException When validation fails (422) or SKU already exists (409)
      */
     public function createProduct(array $productData): array
     {
@@ -443,6 +786,46 @@ class AppClient extends BaseResource
 
     /**
      * Update product
+     *
+     * Updates an existing product's information.
+     *
+     * **Request JSON:**
+     * ```json
+     * {
+     *   "name": "Updated Product Name",
+     *   "price": 89.99,
+     *   "description": "Updated description",
+     *   "inStock": false
+     * }
+     * ```
+     *
+     * **Response JSON:**
+     * ```json
+     * {
+     *   "id": 3,
+     *   "name": "Updated Product Name",
+     *   "sku": "PROD-003",
+     *   "description": "Updated description",
+     *   "price": 89.99,
+     *   "currency": "EUR",
+     *   "inStock": false,
+     *   "updatedAt": "2024-01-09T11:00:00Z"
+     * }
+     * ```
+     *
+     * **Example:**
+     * ```php
+     * $updated = $client->app()->updateProduct(3, [
+     *     'name' => 'Updated Product Name',
+     *     'price' => 89.99
+     * ]);
+     * echo "Product updated: {$updated['name']}\n";
+     * ```
+     *
+     * @param int $id Product ID
+     * @param array $productData Updated product data
+     * @return array Updated product information
+     * @throws ApiException When product not found (404) or validation fails (422)
      */
     public function updateProduct(int $id, array $productData): array
     {
@@ -451,6 +834,18 @@ class AppClient extends BaseResource
 
     /**
      * Delete product
+     *
+     * Removes a product from the catalog.
+     *
+     * **Example:**
+     * ```php
+     * $client->app()->deleteProduct(3);
+     * echo "Product deleted successfully\n";
+     * ```
+     *
+     * @param int $id Product ID to delete
+     * @return void
+     * @throws ApiException When product not found (404) or in use in documents (409)
      */
     public function deleteProduct(int $id): void
     {
@@ -461,6 +856,61 @@ class AppClient extends BaseResource
 
     /**
      * List root categories
+     *
+     * Retrieves top-level product categories.
+     *
+     * **Request:**
+     * - GET /sapi/product-category?deep=false
+     *
+     * **Response JSON (deep=false):**
+     * ```json
+     * [
+     *   {
+     *     "id": 1,
+     *     "name": "Electronics",
+     *     "parentId": null,
+     *     "hasChildren": true
+     *   },
+     *   {
+     *     "id": 2,
+     *     "name": "Services",
+     *     "parentId": null,
+     *     "hasChildren": false
+     *   }
+     * ]
+     * ```
+     *
+     * **Response JSON (deep=true):**
+     * ```json
+     * [
+     *   {
+     *     "id": 1,
+     *     "name": "Electronics",
+     *     "parentId": null,
+     *     "children": [
+     *       {
+     *         "id": 5,
+     *         "name": "Computers",
+     *         "parentId": 1,
+     *         "children": []
+     *       }
+     *     ]
+     *   }
+     * ]
+     * ```
+     *
+     * **Example:**
+     * ```php
+     * // Get root categories only
+     * $categories = $client->app()->listRootCategories();
+     *
+     * // Get full category tree
+     * $tree = $client->app()->listRootCategories(true);
+     * ```
+     *
+     * @param bool $deep If true, includes nested subcategories (default: false)
+     * @return array Array of root category objects
+     * @throws ApiException When not authenticated (401)
      */
     public function listRootCategories(bool $deep = false): array
     {
@@ -469,6 +919,40 @@ class AppClient extends BaseResource
 
     /**
      * List all categories flat
+     *
+     * Retrieves all categories in a flat array.
+     *
+     * **Response JSON:**
+     * ```json
+     * [
+     *   {
+     *     "id": 1,
+     *     "name": "Electronics",
+     *     "parentId": null
+     *   },
+     *   {
+     *     "id": 5,
+     *     "name": "Computers",
+     *     "parentId": 1
+     *   },
+     *   {
+     *     "id": 2,
+     *     "name": "Services",
+     *     "parentId": null
+     *   }
+     * ]
+     * ```
+     *
+     * **Example:**
+     * ```php
+     * $allCategories = $client->app()->listAllCategoriesFlat();
+     * foreach ($allCategories as $cat) {
+     *     echo "{$cat['name']} (ID: {$cat['id']})\n";
+     * }
+     * ```
+     *
+     * @return array Array of all categories in flat structure
+     * @throws ApiException When not authenticated (401)
      */
     public function listAllCategoriesFlat(): array
     {
@@ -477,6 +961,47 @@ class AppClient extends BaseResource
 
     /**
      * Get category by ID
+     *
+     * Retrieves a specific category with optional subcategories.
+     *
+     * **Response JSON (deep=false):**
+     * ```json
+     * {
+     *   "id": 1,
+     *   "name": "Electronics",
+     *   "parentId": null,
+     *   "hasChildren": true
+     * }
+     * ```
+     *
+     * **Response JSON (deep=true):**
+     * ```json
+     * {
+     *   "id": 1,
+     *   "name": "Electronics",
+     *   "parentId": null,
+     *   "children": [
+     *     {
+     *       "id": 5,
+     *       "name": "Computers",
+     *       "parentId": 1,
+     *       "children": []
+     *     }
+     *   ]
+     * }
+     * ```
+     *
+     * **Example:**
+     * ```php
+     * $category = $client->app()->getCategory(1, true);
+     * echo "Category: {$category['name']}\n";
+     * echo "Subcategories: " . count($category['children']) . "\n";
+     * ```
+     *
+     * @param int $id Category ID
+     * @param bool $deep If true, includes nested subcategories (default: false)
+     * @return array Category object with optional children
+     * @throws ApiException When category not found (404)
      */
     public function getCategory(int $id, bool $deep = false): array
     {
@@ -485,6 +1010,39 @@ class AppClient extends BaseResource
 
     /**
      * Create category
+     *
+     * Adds a new product category.
+     *
+     * **Request JSON:**
+     * ```json
+     * {
+     *   "name": "Software",
+     *   "parentId": 1
+     * }
+     * ```
+     *
+     * **Response JSON:**
+     * ```json
+     * {
+     *   "id": 10,
+     *   "name": "Software",
+     *   "parentId": 1,
+     *   "createdAt": "2024-01-09T10:00:00Z"
+     * }
+     * ```
+     *
+     * **Example:**
+     * ```php
+     * $category = $client->app()->createCategory([
+     *     'name' => 'Software',
+     *     'parentId' => 1
+     * ]);
+     * echo "Category created with ID: {$category['id']}\n";
+     * ```
+     *
+     * @param array $categoryData Category information (name, optional parentId)
+     * @return array Created category with ID
+     * @throws ApiException When validation fails (422) or parent not found (404)
      */
     public function createCategory(array $categoryData): array
     {
@@ -493,6 +1051,39 @@ class AppClient extends BaseResource
 
     /**
      * Update category
+     *
+     * Updates an existing category's information.
+     *
+     * **Request JSON:**
+     * ```json
+     * {
+     *   "name": "Updated Category Name",
+     *   "parentId": 2
+     * }
+     * ```
+     *
+     * **Response JSON:**
+     * ```json
+     * {
+     *   "id": 10,
+     *   "name": "Updated Category Name",
+     *   "parentId": 2,
+     *   "updatedAt": "2024-01-09T11:00:00Z"
+     * }
+     * ```
+     *
+     * **Example:**
+     * ```php
+     * $updated = $client->app()->updateCategory(10, [
+     *     'name' => 'Updated Category Name'
+     * ]);
+     * echo "Category updated: {$updated['name']}\n";
+     * ```
+     *
+     * @param int $id Category ID
+     * @param array $categoryData Updated category data
+     * @return array Updated category information
+     * @throws ApiException When category not found (404) or validation fails (422)
      */
     public function updateCategory(int $id, array $categoryData): array
     {
@@ -501,6 +1092,18 @@ class AppClient extends BaseResource
 
     /**
      * Delete category
+     *
+     * Removes a product category.
+     *
+     * **Example:**
+     * ```php
+     * $client->app()->deleteCategory(10);
+     * echo "Category deleted successfully\n";
+     * ```
+     *
+     * @param int $id Category ID to delete
+     * @return void
+     * @throws ApiException When category not found (404) or has products/children (409)
      */
     public function deleteCategory(int $id): void
     {
@@ -511,6 +1114,33 @@ class AppClient extends BaseResource
 
     /**
      * Get donation statistics
+     *
+     * Retrieves platform-wide donation statistics.
+     *
+     * **Request:**
+     * - GET /api/stats/donation
+     * - No authentication required (public endpoint)
+     *
+     * **Response JSON:**
+     * ```json
+     * {
+     *   "totalDonations": 25000.00,
+     *   "currency": "EUR",
+     *   "donorCount": 350,
+     *   "averageDonation": 71.43,
+     *   "lastUpdated": "2024-01-09T10:00:00Z"
+     * }
+     * ```
+     *
+     * **Example:**
+     * ```php
+     * $stats = $client->app()->getDonationStats();
+     * echo "Total donations: {$stats['totalDonations']} {$stats['currency']}\n";
+     * echo "Number of donors: {$stats['donorCount']}\n";
+     * ```
+     *
+     * @return array Donation statistics
+     * @throws ApiException When request fails
      */
     public function getDonationStats(): array
     {
@@ -519,6 +1149,44 @@ class AppClient extends BaseResource
 
     /**
      * Get account totals
+     *
+     * Retrieves financial totals for the authenticated account.
+     *
+     * **Request:**
+     * - GET /sapi/stats/account
+     * - Requires: JWT token
+     *
+     * **Response JSON:**
+     * ```json
+     * {
+     *   "totalIncoming": 50000.00,
+     *   "totalOutgoing": 35000.00,
+     *   "unpaidIncoming": 5000.00,
+     *   "unpaidOutgoing": 2000.00,
+     *   "currency": "EUR",
+     *   "documentCounts": {
+     *     "incomingInvoices": 45,
+     *     "outgoingInvoices": 32,
+     *     "incomingCreditNotes": 3,
+     *     "outgoingCreditNotes": 1
+     *   },
+     *   "period": {
+     *     "from": "2024-01-01T00:00:00Z",
+     *     "to": "2024-01-09T23:59:59Z"
+     *   }
+     * }
+     * ```
+     *
+     * **Example:**
+     * ```php
+     * $totals = $client->app()->getAccountTotals();
+     * echo "Total incoming: {$totals['totalIncoming']} {$totals['currency']}\n";
+     * echo "Total outgoing: {$totals['totalOutgoing']} {$totals['currency']}\n";
+     * echo "Unpaid incoming: {$totals['unpaidIncoming']}\n";
+     * ```
+     *
+     * @return array Account financial totals and document counts
+     * @throws ApiException When not authenticated (401)
      */
     public function getAccountTotals(): array
     {
@@ -529,11 +1197,65 @@ class AppClient extends BaseResource
 
     /**
      * Search Peppol Directory
+     *
+     * Searches the public Peppol Directory for registered participants.
+     *
+     * **Request:**
+     * - GET /api/peppol-directory?name=Company&participant=0208:BE0123456789
+     * - At least one parameter required
+     * - No authentication required (public endpoint)
+     *
+     * **Response JSON:**
+     * ```json
+     * [
+     *   {
+     *     "peppolId": "0208:BE0123456789",
+     *     "name": "Company Name BVBA",
+     *     "country": "BE",
+     *     "geoInfo": {
+     *       "latitude": 50.8503,
+     *       "longitude": 4.3517
+     *     },
+     *     "registeredAt": "2023-06-15T10:00:00Z"
+     *   },
+     *   {
+     *     "peppolId": "0208:BE0987654321",
+     *     "name": "Another Company Ltd",
+     *     "country": "BE",
+     *     "geoInfo": {
+     *       "latitude": 51.2194,
+     *       "longitude": 4.4025
+     *     },
+     *     "registeredAt": "2023-08-20T14:30:00Z"
+     *   }
+     * ]
+     * ```
+     *
+     * **Example:**
+     * ```php
+     * // Search by name
+     * $results = $client->app()->searchPeppolDirectory(name: 'ACME Corporation');
+     *
+     * // Search by Peppol ID
+     * $results = $client->app()->searchPeppolDirectory(participant: '0208:BE0123456789');
+     *
+     * // Combined search
+     * $results = $client->app()->searchPeppolDirectory('Company', '0208:BE');
+     *
+     * foreach ($results as $company) {
+     *     echo "{$company['name']} - {$company['peppolId']}\n";
+     * }
+     * ```
+     *
+     * @param string|null $name Company name to search for (partial match)
+     * @param string|null $participant Peppol participant ID to search for (partial match)
+     * @return array Array of matching companies from Peppol Directory
+     * @throws ApiException When no search criteria provided (400)
      */
     public function searchPeppolDirectory(?string $name = null, ?string $participant = null): array
     {
         $params = array_filter([
-            'name' => $name,
+            'name'        => $name,
             'participant' => $participant,
         ], function ($value) {
             return $value !== null;

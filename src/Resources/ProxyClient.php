@@ -181,8 +181,8 @@ class ProxyClient extends BaseResource
     public function createDocument(array $documentData, bool $noArchive = false): array
     {
         return $this->request('POST', '/sapi/document', [
-            'json' => $documentData,
-            'query' => ['noArchive' => $noArchive ? 'true' : 'false']
+            'json'  => $documentData,
+            'query' => ['noArchive' => $noArchive ? 'true' : 'false'],
         ]);
     }
 
@@ -213,8 +213,8 @@ class ProxyClient extends BaseResource
     public function updateDocument(string $id, array $documentData, bool $noArchive = false): array
     {
         return $this->request('PUT', "/sapi/document/" . rawurlencode($id), [
-            'json' => $documentData,
-            'query' => ['noArchive' => $noArchive ? 'true' : 'false']
+            'json'  => $documentData,
+            'query' => ['noArchive' => $noArchive ? 'true' : 'false'],
         ]);
     }
 
@@ -265,7 +265,7 @@ class ProxyClient extends BaseResource
     public function markDownloaded(string $id, bool $noArchive = false): void
     {
         $this->request('PUT', "/sapi/document/" . rawurlencode($id) . "/downloaded", [
-            'query' => ['noArchive' => $noArchive ? 'true' : 'false']
+            'query' => ['noArchive' => $noArchive ? 'true' : 'false'],
         ]);
     }
 
@@ -287,8 +287,8 @@ class ProxyClient extends BaseResource
     public function markDownloadedBatch(array $documentIds, bool $noArchive = false): void
     {
         $this->request('PUT', '/sapi/document/downloaded', [
-            'json' => $documentIds,
-            'query' => ['noArchive' => $noArchive ? 'true' : 'false']
+            'json'  => $documentIds,
+            'query' => ['noArchive' => $noArchive ? 'true' : 'false'],
         ]);
     }
 
@@ -310,18 +310,37 @@ class ProxyClient extends BaseResource
     public function deleteDocument(string $id, bool $noArchive = false): void
     {
         $this->request('DELETE', "/sapi/document/" . rawurlencode($id), [
-            'query' => ['noArchive' => $noArchive ? 'true' : 'false']
+            'query' => ['noArchive' => $noArchive ? 'true' : 'false'],
         ]);
     }
 
     /**
      * Get registry information
      *
-     * Retrieves current Peppol Access Point registry information.
+     * Retrieves current Peppol Access Point registry information for the authenticated company.
+     *
+     * **Request:**
+     * - GET /sapi/registry
+     * - Requires: JWT token
+     *
+     * **Response JSON:**
+     * ```json
+     * {
+     *   "peppolId": "0208:BE0123456789",
+     *   "registered": true,
+     *   "capabilities": ["SEND", "RECEIVE"],
+     *   "accessPointUrl": "https://ap.example.com",
+     *   "registeredAt": "2024-01-01T10:00:00Z"
+     * }
+     * ```
      *
      * **Example:**
      * ```php
      * $registry = $client->proxy()->getRegistry();
+     * if ($registry['registered']) {
+     *     echo "Registered on Access Point\n";
+     *     echo "Capabilities: " . implode(', ', $registry['capabilities']) . "\n";
+     * }
      * ```
      *
      * @return array Registry information including registration status
@@ -335,7 +354,26 @@ class ProxyClient extends BaseResource
     /**
      * Register on Access Point
      *
-     * Registers company on Peppol Access Point.
+     * Registers company on Peppol Access Point to enable document transmission.
+     *
+     * **Request JSON:**
+     * ```json
+     * {
+     *   "peppolId": "0208:BE0123456789",
+     *   "capabilities": ["SEND", "RECEIVE"]
+     * }
+     * ```
+     *
+     * **Response JSON:**
+     * ```json
+     * {
+     *   "peppolId": "0208:BE0123456789",
+     *   "registered": true,
+     *   "capabilities": ["SEND", "RECEIVE"],
+     *   "accessPointUrl": "https://ap.example.com",
+     *   "registeredAt": "2024-01-09T10:00:00Z"
+     * }
+     * ```
      *
      * **Example:**
      * ```php
@@ -343,11 +381,12 @@ class ProxyClient extends BaseResource
      *     'peppolId' => '0208:BE0123456789',
      *     'capabilities' => ['SEND', 'RECEIVE']
      * ]);
+     * echo "Registered on: {$result['accessPointUrl']}\n";
      * ```
      *
-     * @param array $registrationData Registration details
-     * @return array Registration result
-     * @throws ApiException When registration fails (400, 409)
+     * @param array $registrationData Registration details (peppolId, capabilities)
+     * @return array Registration result with access point details
+     * @throws ApiException When registration fails (400) or already registered (409)
      */
     public function registerOnAccessPoint(array $registrationData): array
     {
@@ -359,9 +398,23 @@ class ProxyClient extends BaseResource
      *
      * Removes company registration from Peppol Access Point.
      *
+     * **Request:**
+     * - PUT /sapi/registry/unregister
+     * - Requires: JWT token
+     *
+     * **Response JSON:**
+     * ```json
+     * {
+     *   "peppolId": "0208:BE0123456789",
+     *   "registered": false,
+     *   "unregisteredAt": "2024-01-09T11:00:00Z"
+     * }
+     * ```
+     *
      * **Example:**
      * ```php
      * $result = $client->proxy()->unregisterFromAccessPoint();
+     * echo "Unregistered at: {$result['unregisteredAt']}\n";
      * ```
      *
      * @return array Unregistration result
@@ -377,9 +430,14 @@ class ProxyClient extends BaseResource
      *
      * Completely removes registry entry from the system.
      *
+     * **Request:**
+     * - DELETE /sapi/registry
+     * - Requires: JWT token
+     *
      * **Example:**
      * ```php
      * $client->proxy()->deleteRegistry();
+     * echo "Registry entry deleted\n";
      * ```
      *
      * @return void
@@ -393,12 +451,23 @@ class ProxyClient extends BaseResource
     /**
      * Health check
      *
-     * Performs a health check on the proxy service.
+     * Performs a health check on the proxy service to verify availability.
+     *
+     * **Request:**
+     * - GET /api/monitor
+     * - No authentication required (public endpoint)
+     *
+     * **Response:**
+     * - Plain text status message (e.g., "OK", "Service is healthy")
      *
      * **Example:**
      * ```php
-     * $status = $client->proxy()->healthCheck();
-     * echo "Status: $status";
+     * try {
+     *     $status = $client->proxy()->healthCheck();
+     *     echo "Service status: $status\n";
+     * } catch (ApiException $e) {
+     *     echo "Service unavailable: {$e->getMessage()}\n";
+     * }
      * ```
      *
      * @return string Health status response
@@ -412,15 +481,24 @@ class ProxyClient extends BaseResource
     /**
      * Top up balance (for testing/monitoring)
      *
-     * Adds balance to account for testing purposes.
+     * Adds balance to account for testing purposes. This is typically used in
+     * development/staging environments for testing purposes.
+     *
+     * **Request:**
+     * - GET /api/monitor/{amount}
+     * - No authentication required (monitoring endpoint)
+     *
+     * **Response:**
+     * - Plain text confirmation message
      *
      * **Example:**
      * ```php
      * $result = $client->proxy()->topUpBalance(100);
+     * echo "Top-up result: $result\n";
      * ```
      *
      * @param int $amount Amount to add to balance
-     * @return string Top-up result
+     * @return string Top-up result message
      * @throws ApiException When request fails
      */
     public function topUpBalance(int $amount): string

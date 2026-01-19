@@ -2,8 +2,8 @@
 
 namespace LetsPeppolSdk\Resources;
 
-use LetsPeppolSdk\Exceptions\AuthenticationException;
 use LetsPeppolSdk\Exceptions\ApiException;
+use LetsPeppolSdk\Exceptions\AuthenticationException;
 
 /**
  * KYC API Client for LetsPeppol authentication and registration
@@ -55,12 +55,13 @@ class KycClient extends BaseResource
             if ($statusCode === 200) {
                 $token = $body;
                 $this->session->setToken($token);
+
                 return $token;
             }
 
             throw new AuthenticationException(
                 "Authentication failed: {$statusCode} - {$body}",
-                $statusCode
+                $statusCode,
             );
         } catch (AuthenticationException $e) {
             throw $e;
@@ -273,7 +274,7 @@ class KycClient extends BaseResource
     public function getContract(int $directorId, string $token): string
     {
         return $this->requestRaw('GET', "/api/identity/contract/{$directorId}", [
-            'query' => ['token' => $token]
+            'query' => ['token' => $token],
         ]);
     }
 
@@ -315,12 +316,12 @@ class KycClient extends BaseResource
     public function finalizeSigning(array $data): array
     {
         $result = $this->requestWithHeaders('POST', '/api/identity/sign/finalize', [
-            'json' => $data
+            'json' => $data,
         ]);
 
         return [
-            'pdf' => $result['body'],
-            'status' => $result['headers']['Registration-Status'] ?? '',
+            'pdf'      => $result['body'],
+            'status'   => $result['headers']['Registration-Status'] ?? '',
             'provider' => $result['headers']['Registration-Provider'] ?? '',
         ];
     }
@@ -411,8 +412,8 @@ class KycClient extends BaseResource
     public function searchCompanies(?string $vatNumber = null, ?string $peppolId = null, ?string $companyName = null): array
     {
         $params = array_filter([
-            'vatNumber' => $vatNumber,
-            'peppolId' => $peppolId,
+            'vatNumber'   => $vatNumber,
+            'peppolId'    => $peppolId,
             'companyName' => $companyName,
         ], function ($value) {
             return $value !== null;
@@ -423,38 +424,135 @@ class KycClient extends BaseResource
 
     /**
      * Register on Peppol Directory
+     *
+     * Registers the authenticated company on the public Peppol Directory, making it
+     * discoverable by other Peppol participants. May return a new JWT token.
+     *
+     * **Request:**
+     * - POST /sapi/company/peppol/register
+     * - Requires: JWT token
+     *
+     * **Response:**
+     * - Body: New JWT token (if registration status changed) or empty
+     *
+     * **Return format:**
+     * ```json
+     * {
+     *   "token": "new_jwt_token_here...",
+     *   "status": "updated"
+     * }
+     * ```
+     * Or if already registered:
+     * ```json
+     * {
+     *   "status": "already_registered"
+     * }
+     * ```
+     *
+     * **Example:**
+     * ```php
+     * $result = $client->kyc()->registerPeppol();
+     * if ($result['status'] === 'updated') {
+     *     echo "Registered! New token: {$result['token']}\n";
+     *     $client->setToken($result['token']);
+     * } else {
+     *     echo "Already registered\n";
+     * }
+     * ```
+     *
+     * @return array Registration result with status and optional new token
+     * @throws ApiException When not authenticated (401) or registration fails
      */
     public function registerPeppol(): array
     {
         $result = $this->requestWithHeaders('POST', '/sapi/company/peppol/register');
-        
+
         if ($result['body'] !== '') {
             $newToken = $result['body'];
             $this->session->setToken($newToken);
+
             return ['token' => $newToken, 'status' => 'updated'];
         }
-        
+
         return ['status' => 'already_registered'];
     }
 
     /**
      * Unregister from Peppol Directory
+     *
+     * Removes the authenticated company from the public Peppol Directory.
+     * May return a new JWT token reflecting the updated status.
+     *
+     * **Request:**
+     * - POST /sapi/company/peppol/unregister
+     * - Requires: JWT token
+     *
+     * **Response:**
+     * - Body: New JWT token (if status changed) or empty
+     *
+     * **Return format:**
+     * ```json
+     * {
+     *   "token": "new_jwt_token_here...",
+     *   "status": "updated"
+     * }
+     * ```
+     * Or if already unregistered:
+     * ```json
+     * {
+     *   "status": "already_unregistered"
+     * }
+     * ```
+     *
+     * **Example:**
+     * ```php
+     * $result = $client->kyc()->unregisterPeppol();
+     * if ($result['status'] === 'updated') {
+     *     echo "Unregistered! New token: {$result['token']}\n";
+     *     $client->setToken($result['token']);
+     * } else {
+     *     echo "Already unregistered\n";
+     * }
+     * ```
+     *
+     * @return array Unregistration result with status and optional new token
+     * @throws ApiException When not authenticated (401) or operation fails
      */
     public function unregisterPeppol(): array
     {
         $result = $this->requestWithHeaders('POST', '/sapi/company/peppol/unregister');
-        
+
         if ($result['body']) {
             $newToken = $result['body'];
             $this->session->setToken($newToken);
+
             return ['token' => $newToken, 'status' => 'updated'];
         }
-        
+
         return ['status' => 'already_unregistered'];
     }
 
     /**
      * Download signed contract
+     *
+     * Downloads the digitally signed registration contract PDF.
+     *
+     * **Request:**
+     * - GET /sapi/company/signed-contract
+     * - Requires: JWT token
+     *
+     * **Response:**
+     * - Binary PDF content
+     *
+     * **Example:**
+     * ```php
+     * $pdfContent = $client->kyc()->getSignedContract();
+     * file_put_contents('signed_contract.pdf', $pdfContent);
+     * echo "Contract saved to signed_contract.pdf\n";
+     * ```
+     *
+     * @return string PDF content as binary string
+     * @throws ApiException When not authenticated (401) or contract not found (404)
      */
     public function getSignedContract(): string
     {
@@ -492,7 +590,7 @@ class KycClient extends BaseResource
     public function forgotPassword(string $email, ?string $language = null): void
     {
         $options = ['json' => ['email' => $email]];
-        
+
         if ($language) {
             $options['headers'] = ['Accept-Language' => $language];
         }
@@ -532,7 +630,7 @@ class KycClient extends BaseResource
     public function resetPassword(string $token, string $newPassword): void
     {
         $this->post('/api/password/reset', [
-            'token' => $token,
+            'token'       => $token,
             'newPassword' => $newPassword,
         ]);
     }
