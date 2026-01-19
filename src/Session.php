@@ -13,6 +13,7 @@ class Session
     private string $baseUrl;
     private ?string $token;
     private array $clientOptions;
+    private ?string $logFile;
 
     /**
      * Create a new Session instance configured with optional JWT token and API base URL.
@@ -20,12 +21,14 @@ class Session
      * @param string $baseUrl Base API URL
      * @param string|null $token Optional JWT token for authenticated requests
      * @param array $clientOptions Optional Guzzle client options to merge with defaults
+     * @param string|null $logFile Optional path to log file for request/response logging
      */
-    public function __construct(string $baseUrl, ?string $token = null, array $clientOptions = [])
+    public function __construct(string $baseUrl, ?string $token = null, array $clientOptions = [], ?string $logFile = null)
     {
         $this->baseUrl = rtrim($baseUrl, '/');
         $this->token = $token;
         $this->clientOptions = $clientOptions;
+        $this->logFile = $logFile;
 
         $this->client = $this->createClient();
     }
@@ -54,7 +57,11 @@ class Session
             $defaults['headers']['Authorization'] = "Bearer {$this->token}";
         }
 
-        return new Client(array_replace_recursive($defaults, $this->clientOptions));
+        // Use custom GuzzleClient with logging support
+        return new GuzzleClient(
+            array_replace_recursive($defaults, $this->clientOptions),
+            $this->logFile
+        );
     }
 
     /**
@@ -85,6 +92,30 @@ class Session
     public function getToken(): ?string
     {
         return $this->token;
+    }
+
+    /**
+     * Get the log file path.
+     *
+     * @return string|null
+     */
+    public function getLogFile(): ?string
+    {
+        return $this->logFile;
+    }
+
+    /**
+     * Set the log file path and recreate the client with logging enabled.
+     *
+     * @param string|null $logFile Path to log file or null to disable logging
+     * @return void
+     */
+    public function setLogFile(?string $logFile): void
+    {
+        $this->logFile = $logFile;
+
+        // Recreate client with new log file setting
+        $this->client = $this->createClient();
     }
 
     /**
