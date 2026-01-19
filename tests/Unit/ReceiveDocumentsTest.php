@@ -4,23 +4,19 @@ namespace LetsPeppolSdk\Tests\Unit;
 
 use LetsPeppolSdk\Resources\ProxyClient;
 use LetsPeppolSdk\Exceptions\ApiException;
+use LetsPeppolSdk\Tests\Fixtures\FixtureLoader;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * Unit test for receiving documents functionality
  *
  * Tests based on receiveDocumentsExample() from problem statement
  */
+#[CoversClass(ProxyClient::class)]
 class ReceiveDocumentsTest extends TestCase
 {
-    private ProxyClient|MockObject $proxyClientMock;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
     #[Test]
     public function it_receives_new_documents_from_proxy(): void
     {
@@ -64,6 +60,8 @@ class ReceiveDocumentsTest extends TestCase
     #[Test]
     public function it_marks_document_as_downloaded(): void
     {
+        $this->expectNotToPerformAssertions();
+        
         // Arrange
         $documentId = 'doc123';
 
@@ -78,9 +76,6 @@ class ReceiveDocumentsTest extends TestCase
 
         // Act
         $proxyClient->markDownloaded($documentId);
-
-        // Assert - Method should complete without exception
-        $this->assertTrue(true);
     }
     #[Test]
     public function it_processes_multiple_new_documents(): void

@@ -6,14 +6,19 @@ use LetsPeppolSdk\LetsPeppolClient;
 use LetsPeppolSdk\Resources\AppClient;
 use LetsPeppolSdk\Resources\ProxyClient;
 use LetsPeppolSdk\Exceptions\ApiException;
+use LetsPeppolSdk\Tests\Fixtures\FixtureLoader;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * Feature test for complete invoice sending workflow
  *
  * Tests based on sendInvoiceExample() and complete workflow from problem statement
  */
+#[CoversClass(LetsPeppolClient::class)]
+#[CoversClass(AppClient::class)]
+#[CoversClass(ProxyClient::class)]
 class CompleteInvoiceWorkflowTest extends TestCase
 {
     private string $sampleUblXml;

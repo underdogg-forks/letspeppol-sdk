@@ -4,23 +4,19 @@ namespace LetsPeppolSdk\Tests\Unit;
 
 use LetsPeppolSdk\Resources\AppClient;
 use LetsPeppolSdk\Exceptions\ApiException;
+use LetsPeppolSdk\Tests\Fixtures\FixtureLoader;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * Unit test for document management functionality
  *
  * Tests based on documentManagementExample() from problem statement
  */
+#[CoversClass(AppClient::class)]
 class DocumentManagementTest extends TestCase
 {
-    private AppClient|MockObject $appClientMock;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
     #[Test]
     public function it_lists_documents_with_filters(): void
     {
@@ -31,29 +27,7 @@ class DocumentManagementTest extends TestCase
             'read' => false
         ];
 
-        $expectedResponse = [
-            'content' => [
-                [
-                    'id' => 'doc123',
-                    'documentType' => 'INVOICE',
-                    'direction' => 'INCOMING',
-                    'total' => 1000.00,
-                    'currency' => 'EUR',
-                    'read' => false
-                ],
-                [
-                    'id' => 'doc456',
-                    'documentType' => 'INVOICE',
-                    'direction' => 'INCOMING',
-                    'total' => 500.00,
-                    'currency' => 'EUR',
-                    'read' => false
-                ]
-            ],
-            'totalElements' => 2,
-            'page' => 0,
-            'size' => 10
-        ];
+        $expectedResponse = FixtureLoader::load('documents', 'list_response');
 
         $appClient = $this->getMockBuilder(AppClient::class)
             ->disableOriginalConstructor()

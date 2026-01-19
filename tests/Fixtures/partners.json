@@ -1,0 +1,26 @@
+{
+  "single_partner": {
+    "id": 1,
+    "peppolId": "0208:BE0987654321",
+    "name": "Example Partner Company",
+    "vatNumber": "BE0987654321",
+    "email": "partner@example.com"
+  },
+  "partner_list": [
+    {
+      "id": 1,
+      "name": "Partner 1",
+      "peppolId": "0208:BE0111111111"
+    },
+    {
+      "id": 2,
+      "name": "Partner 2",
+      "peppolId": "0208:BE0222222222"
+    },
+    {
+      "id": 3,
+      "name": "Partner 3",
+      "peppolId": "0208:BE0333333333"
+    }
+  ]
+}

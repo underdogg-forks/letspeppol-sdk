@@ -1,0 +1,38 @@
+{
+  "new_documents": [
+    {
+      "id": "doc123",
+      "documentType": "INVOICE",
+      "direction": "INCOMING",
+      "senderPeppolId": "0208:BE0987654321",
+      "receiverPeppolId": "0208:BE0123456789",
+      "ubl": "<Invoice>...</Invoice>",
+      "receivedAt": "2024-01-09T10:30:00Z",
+      "status": "RECEIVED"
+    },
+    {
+      "id": "doc456",
+      "documentType": "CREDIT_NOTE",
+      "direction": "INCOMING",
+      "senderPeppolId": "0208:BE0111111111",
+      "receiverPeppolId": "0208:BE0123456789",
+      "ubl": "<CreditNote>...</CreditNote>",
+      "receivedAt": "2024-01-09T11:00:00Z",
+      "status": "RECEIVED"
+    }
+  ],
+  "status_updates": [
+    {
+      "id": "doc123",
+      "status": "DELIVERED",
+      "statusMessage": "Document successfully delivered",
+      "lastUpdated": "2024-01-09T10:35:00Z"
+    },
+    {
+      "id": "doc456",
+      "status": "PENDING",
+      "statusMessage": "Awaiting delivery",
+      "lastUpdated": "2024-01-09T10:30:00Z"
+    }
+  ]
+}

@@ -4,18 +4,19 @@ namespace LetsPeppolSdk\Tests\Unit;
 
 use LetsPeppolSdk\Resources\AppClient;
 use LetsPeppolSdk\Exceptions\ApiException;
+use LetsPeppolSdk\Tests\Fixtures\FixtureLoader;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * Unit test for sending invoice functionality
  *
  * Tests based on sendInvoiceExample() from problem statement
  */
+#[CoversClass(AppClient::class)]
 class SendInvoiceTest extends TestCase
 {
-    private AppClient|MockObject $appClientMock;
     private string $sampleUblXml;
 
     protected function setUp(): void
@@ -241,35 +242,5 @@ XML;
 
         // Act
         $appClient->sendDocument($documentId);
-    }
-    #[Test]
-    public function it_handles_document_id_retrieval(): void
-    {
-        // Arrange
-        $document = [
-            'id' => 'doc123',
-            'status' => 'DRAFT'
-        ];
-
-        // Act
-        $documentId = $document['id'] ?? null;
-
-        // Assert
-        $this->assertNotNull($documentId);
-        $this->assertEquals('doc123', $documentId);
-    }
-    #[Test]
-    public function it_handles_missing_document_id(): void
-    {
-        // Arrange
-        $document = [
-            'status' => 'DRAFT'
-        ];
-
-        // Act
-        $documentId = $document['id'] ?? null;
-
-        // Assert
-        $this->assertNull($documentId);
     }
 }

@@ -5,14 +5,17 @@ namespace LetsPeppolSdk\Tests\Feature;
 use LetsPeppolSdk\LetsPeppolClient;
 use LetsPeppolSdk\Resources\AppClient;
 use LetsPeppolSdk\Exceptions\ApiException;
+use LetsPeppolSdk\Tests\Fixtures\FixtureLoader;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * Feature test for document management workflow
  *
  * Tests based on documentManagementExample() and complete workflow
  */
+#[CoversClass(AppClient::class)]
 class DocumentManagementWorkflowTest extends TestCase
 {
     #[Test]

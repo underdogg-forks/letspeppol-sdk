@@ -8,12 +8,15 @@ use LetsPeppolSdk\Exceptions\AuthenticationException;
 use LetsPeppolSdk\Exceptions\ApiException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * Feature test for authentication workflow
  *
  * Tests the complete authentication flow based on authenticateExample()
  */
+#[CoversClass(LetsPeppolClient::class)]
+#[CoversClass(KycClient::class)]
 class AuthenticationWorkflowTest extends TestCase
 {
     #[Test]

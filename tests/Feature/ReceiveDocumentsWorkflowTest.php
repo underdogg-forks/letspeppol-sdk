@@ -4,14 +4,17 @@ namespace LetsPeppolSdk\Tests\Feature;
 
 use LetsPeppolSdk\Resources\ProxyClient;
 use LetsPeppolSdk\Exceptions\ApiException;
+use LetsPeppolSdk\Tests\Fixtures\FixtureLoader;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * Feature test for receiving documents workflow
  *
  * Tests based on receiveDocumentsExample() from problem statement
  */
+#[CoversClass(ProxyClient::class)]
 class ReceiveDocumentsWorkflowTest extends TestCase
 {
     #[Test]
@@ -198,6 +201,8 @@ class ReceiveDocumentsWorkflowTest extends TestCase
     #[Test]
     public function it_marks_multiple_documents_as_downloaded_in_batch(): void
     {
+        $this->expectNotToPerformAssertions();
+        
         // Arrange
         $documentIds = ['doc1', 'doc2', 'doc3'];
         $proxyClient = $this->getMockBuilder(ProxyClient::class)
@@ -211,9 +216,6 @@ class ReceiveDocumentsWorkflowTest extends TestCase
 
         // Act
         $proxyClient->markDownloadedBatch($documentIds);
-
-        // Assert - method completes without exception
-        $this->assertTrue(true);
     }
     #[Test]
     public function it_gets_status_updates_for_documents(): void

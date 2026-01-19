@@ -7,21 +7,17 @@ use LetsPeppolSdk\Resources\KycClient;
 use LetsPeppolSdk\Exceptions\AuthenticationException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * Unit test for authentication functionality
  *
  * Tests the authentication method based on the authenticateExample() from problem statement
  */
+#[CoversClass(LetsPeppolClient::class)]
+#[CoversClass(KycClient::class)]
 class AuthenticationTest extends TestCase
 {
-    private LetsPeppolClient|MockObject $clientMock;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
     #[Test]
     public function it_authenticates_successfully_and_returns_token(): void
     {
@@ -83,18 +79,5 @@ class AuthenticationTest extends TestCase
 
         // Assert
         $this->assertEquals($token, $client->getToken());
-    }
-    #[Test]
-    public function it_returns_token_substring_for_display(): void
-    {
-        // Arrange
-        $fullToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
-        
-        // Act
-        $shortToken = substr($fullToken, 0, 20);
-
-        // Assert
-        $this->assertEquals('eyJhbGciOiJIUzI1NiIs', $shortToken);
-        $this->assertEquals(20, strlen($shortToken));
     }
 }

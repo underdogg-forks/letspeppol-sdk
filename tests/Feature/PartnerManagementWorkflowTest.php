@@ -4,14 +4,17 @@ namespace LetsPeppolSdk\Tests\Feature;
 
 use LetsPeppolSdk\Resources\AppClient;
 use LetsPeppolSdk\Exceptions\ApiException;
+use LetsPeppolSdk\Tests\Fixtures\FixtureLoader;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * Feature test for partner search and management workflow
  *
  * Tests based on partnerSearchExample() and complete workflow
  */
+#[CoversClass(AppClient::class)]
 class PartnerManagementWorkflowTest extends TestCase
 {
     #[Test]
@@ -62,19 +65,10 @@ class PartnerManagementWorkflowTest extends TestCase
             ->willReturn([]);
 
         // Act
-        try {
-            $partners = $appClient->searchPartners($peppolId);
+        $partners = $appClient->searchPartners($peppolId);
 
-            if (empty($partners)) {
-                // Partner not found - this is expected
-                $this->assertEmpty($partners);
-            } else {
-                $this->fail('Should not find non-existent partner');
-            }
-
-        } catch (ApiException $e) {
-            $this->fail('Should not throw exception: ' . $e->getMessage());
-        }
+        // Assert
+        $this->assertEmpty($partners);
     }
     #[Test]
     public function it_creates_partner_when_not_found(): void
@@ -186,6 +180,8 @@ class PartnerManagementWorkflowTest extends TestCase
     #[Test]
     public function it_deletes_partner(): void
     {
+        $this->expectNotToPerformAssertions();
+        
         // Arrange
         $partnerId = 1;
         $appClient = $this->getMockBuilder(AppClient::class)
@@ -199,9 +195,6 @@ class PartnerManagementWorkflowTest extends TestCase
 
         // Act
         $appClient->deletePartner($partnerId);
-
-        // Assert - method completes without exception
-        $this->assertTrue(true);
     }
     #[Test]
     public function it_handles_partner_search_error(): void

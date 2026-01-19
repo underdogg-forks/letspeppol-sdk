@@ -4,37 +4,26 @@ namespace LetsPeppolSdk\Tests\Unit;
 
 use LetsPeppolSdk\Resources\AppClient;
 use LetsPeppolSdk\Exceptions\ApiException;
+use LetsPeppolSdk\Tests\Fixtures\FixtureLoader;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\Attributes\CoversClass;
 
 /**
  * Unit test for partner search functionality
  *
  * Tests based on partnerSearchExample() from problem statement
  */
+#[CoversClass(AppClient::class)]
 class PartnerSearchTest extends TestCase
 {
-    private AppClient|MockObject $appClientMock;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
     #[Test]
     public function it_finds_partner_by_peppol_id(): void
     {
         // Arrange
         $peppolId = '0208:BE0987654321';
-        $expectedPartners = [
-            [
-                'id' => 1,
-                'peppolId' => '0208:BE0987654321',
-                'name' => 'Example Partner Company',
-                'vatNumber' => 'BE0987654321',
-                'email' => 'partner@example.com'
-            ]
-        ];
+        $partnerData = FixtureLoader::load('partners', 'single_partner');
+        $expectedPartners = [$partnerData];
 
         $appClient = $this->getMockBuilder(AppClient::class)
             ->disableOriginalConstructor()
