@@ -24,6 +24,11 @@
             "LetsPeppolSdk\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "LetsPeppolSdk\\Tests\\": "tests/"
+        }
+    },
     "scripts": {
         "cs-fix": "php-cs-fixer fix --config=.php-cs-fixer.dist.php",
         "cs-check": "php-cs-fixer fix --dry-run --diff --config=.php-cs-fixer.dist.php"
