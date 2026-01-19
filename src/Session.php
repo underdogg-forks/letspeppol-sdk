@@ -3,7 +3,6 @@
 namespace LetsPeppolSdk;
 
 use GuzzleHttp\Client;
-use LetsPeppolSdk\GuzzleClient;
 
 /**
  * This class manages an HTTP session to the LetsPeppol API.

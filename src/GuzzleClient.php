@@ -73,8 +73,6 @@ class GuzzleClient extends \GuzzleHttp\Client
             // Log or output error for debugging (as per reference implementation)
             if ($this->logger !== null) {
                 $this->logger->error('Internal server error', ['body' => $body]);
-            } else {
-                error_log('Internal server error: ' . $body);
             }
             throw new \Exception('Internal server error');
         }
@@ -114,6 +112,14 @@ class GuzzleClient extends \GuzzleHttp\Client
         if ($this->logger === null) {
             $this->logger = new Logger('letspeppol-sdk-php');
             $formatter = new LineFormatter(null, null, true, true);
+
+            $directory = \dirname($logFile);
+            if ($directory !== '' && !\is_dir($directory)) {
+                // Attempt to create the directory recursively if it does not exist
+                if (!@mkdir($directory, 0777, true) && !\is_dir($directory)) {
+                    throw new \RuntimeException(sprintf('Unable to create log directory: %s', $directory));
+                }
+            }
             $handler = new StreamHandler($logFile);
             $handler->setFormatter($formatter);
             $this->logger->pushHandler($handler);

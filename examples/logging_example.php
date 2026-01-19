@@ -55,7 +55,7 @@ echo "HTTP requests will not be logged\n\n";
 echo "Example 4: Factory method with logging\n";
 echo "======================================\n\n";
 
-$token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...';
+$token = 'YOUR_JWT_TOKEN_HERE';
 $clientWithToken = LetsPeppolClient::withToken(
     token: $token,
     logFile: '/tmp/letspeppol-authenticated.log'
