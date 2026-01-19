@@ -40,19 +40,11 @@ class PartnerManagementWorkflowTest extends TestCase
             ->willReturn($expectedPartners);
 
         // Act - Simulate the workflow
-        try {
-            $partners = $appClient->searchPartners($peppolId);
+        $partners = $appClient->searchPartners($peppolId);
 
-            if (!empty($partners)) {
-                $partner = $partners[0];
-                $this->assertEquals('Example Partner Company', $partner['name']);
-            } else {
-                $this->fail('Partner should be found');
-            }
-
-        } catch (ApiException $e) {
-            $this->fail('Should not throw exception: ' . $e->getMessage());
-        }
+        // Assert
+        $this->assertNotEmpty($partners);
+        $this->assertEquals('Example Partner Company', $partners[0]['name']);
     }
     #[Test]
     public function it_handles_partner_not_found_scenario(): void
