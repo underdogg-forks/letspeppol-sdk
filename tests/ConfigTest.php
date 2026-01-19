@@ -15,12 +15,9 @@ class ConfigTest extends TestCase
         // Reset config to default state before each test
         Config::$endpoint = '';
         Config::$key = '';
-        Config::$log_file = '';
+        Config::$logFile = '';
     }
 
-    /**
-     * @test
-     */
     /**
      * @test
      */
@@ -29,12 +26,9 @@ class ConfigTest extends TestCase
         // Assert
         $this->assertSame('', Config::$endpoint);
         $this->assertSame('', Config::$key);
-        $this->assertSame('', Config::$log_file);
+        $this->assertSame('', Config::$logFile);
     }
 
-    /**
-     * @test
-     */
     /**
      * @test
      */
@@ -50,9 +44,6 @@ class ConfigTest extends TestCase
     /**
      * @test
      */
-    /**
-     * @test
-     */
     public function it_allows_setting_key(): void
     {
         // Act
@@ -65,21 +56,15 @@ class ConfigTest extends TestCase
     /**
      * @test
      */
-    /**
-     * @test
-     */
     public function it_allows_setting_log_file(): void
     {
         // Act
-        Config::$log_file = '/var/log/test.log';
+        Config::$logFile = '/var/log/test.log';
 
         // Assert
-        $this->assertSame('/var/log/test.log', Config::$log_file);
+        $this->assertSame('/var/log/test.log', Config::$logFile);
     }
 
-    /**
-     * @test
-     */
     /**
      * @test
      */
@@ -88,17 +73,14 @@ class ConfigTest extends TestCase
         // Arrange & Act
         Config::$endpoint = 'https://api.example.com';
         Config::$key = 'my-key';
-        Config::$log_file = '/tmp/test.log';
+        Config::$logFile = '/tmp/test.log';
 
         // Assert
         $this->assertSame('https://api.example.com', Config::$endpoint);
         $this->assertSame('my-key', Config::$key);
-        $this->assertSame('/tmp/test.log', Config::$log_file);
+        $this->assertSame('/tmp/test.log', Config::$logFile);
     }
 
-    /**
-     * @test
-     */
     /**
      * @test
      */
@@ -107,16 +89,16 @@ class ConfigTest extends TestCase
         // Arrange
         Config::$endpoint = 'https://api.example.com';
         Config::$key = 'my-key';
-        Config::$log_file = '/tmp/test.log';
+        Config::$logFile = '/tmp/test.log';
 
         // Act
         Config::$endpoint = '';
         Config::$key = '';
-        Config::$log_file = '';
+        Config::$logFile = '';
 
         // Assert
         $this->assertSame('', Config::$endpoint);
         $this->assertSame('', Config::$key);
-        $this->assertSame('', Config::$log_file);
+        $this->assertSame('', Config::$logFile);
     }
 }

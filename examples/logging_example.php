@@ -6,10 +6,11 @@
  * This example shows how to use the LetsPeppol SDK with request/response logging enabled.
  */
 
-require_once __DIR__ . '/../vendor/autoload.php';
-
 use LetsPeppolSdk\LetsPeppolClient;
 use LetsPeppolSdk\Config;
+use LetsPeppolSdk\GuzzleClient;
+
+require_once __DIR__ . '/../vendor/autoload.php';
 
 // Example 1: Using the Config class (inspired by the peppyrus pattern)
 echo "Example 1: Using Config class\n";
@@ -17,12 +18,12 @@ echo "==============================\n\n";
 
 Config::$endpoint = 'https://api.letspeppol.org';
 Config::$key = 'your-api-key-here';
-Config::$log_file = '/tmp/letspeppol-sdk.log';
+Config::$logFile = '/tmp/letspeppol-sdk.log';
 
 echo "Config set:\n";
 echo "  - Endpoint: " . Config::$endpoint . "\n";
 echo "  - API Key: " . (empty(Config::$key) ? 'not set' : '***') . "\n";
-echo "  - Log File: " . Config::$log_file . "\n\n";
+echo "  - Log File: " . Config::$logFile . "\n\n";
 
 // Example 2: Creating a client with logging enabled
 echo "Example 2: Client with logging enabled\n";
@@ -67,8 +68,6 @@ echo "Token: " . substr($token, 0, 30) . "...\n\n";
 // Example 5: Direct use of GuzzleClient
 echo "Example 5: Direct GuzzleClient usage\n";
 echo "====================================\n\n";
-
-use LetsPeppolSdk\GuzzleClient;
 
 // Without logging
 $httpClient1 = new GuzzleClient([

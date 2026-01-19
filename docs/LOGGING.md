@@ -29,7 +29,7 @@ use LetsPeppolSdk\Config;
 
 Config::$endpoint = 'https://api.letspeppol.org';
 Config::$key = 'your-api-key';
-Config::$log_file = '/var/log/letspeppol.log';
+Config::$logFile = '/var/log/letspeppol.log';
 ```
 
 ### 3. Session Updates

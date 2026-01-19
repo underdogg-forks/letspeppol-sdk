@@ -7,7 +7,7 @@ This directory contains PHPUnit tests for the LetsPeppol SDK.
 ### ConfigTest.php
 Tests for the `Config` class:
 - Default values
-- Setting and getting endpoint, key, and log_file
+- Setting and getting endpoint, key, and logFile
 - Independence of configuration values
 - Resetting configuration
 
@@ -42,21 +42,25 @@ Tests for the `LetsPeppolClient` class:
 ## Running Tests
 
 Run all tests:
+
 ```bash
 vendor/bin/phpunit tests/
 ```
 
 Run with testdox format (readable output):
+
 ```bash
 vendor/bin/phpunit tests/ --testdox
 ```
 
 Run specific test file:
+
 ```bash
 vendor/bin/phpunit tests/ConfigTest.php
 ```
 
 Run specific test method:
+
 ```bash
 vendor/bin/phpunit tests/ConfigTest.php --filter testConfigHasDefaultValues
 ```
